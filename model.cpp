@@ -35,23 +35,22 @@ void Model::initializeP()
 }
 void Model::initializeAlpha()
 {
-    alpha = new double*[numberOfPossibleStatesZ];
-    for(int i = 0; i < numberOfPossibleStatesZ; i++)
-    {
-        alpha[i] = new double[numberOfPossibleStatesZ];
-        for(int j = 0; j < numberOfPossibleStatesZ; j++)
-            alpha[i][j] = 0;
-    }
+    alpha = new double[numberOfPossibleStatesZ];
+    /*for(int i = 0; i < numberOfPossibleStatesZ; i++)
+            alpha[i] = 0;*/
 }
 void Model::initializeBeta()
 {
-    beta = new double*[numberOfPossibleStatesZ];
-    for(int i = 0; i < numberOfPossibleStatesZ; i++)
-    {
-        beta[i] = new double[numberOfPossibleStatesZ];
-        for(int j = 0; j < numberOfPossibleStatesZ; j++)
-            beta[i][j] = 0;
-    }
+    beta = new double[numberOfPossibleStatesZ];
+    /*for(int i = 0; i < numberOfPossibleStatesZ; i++)
+            beta[i] = 0;*/
+}
+void Model::initializeGamma()
+{
+    gamma = new double[numberOfPossibleStatesZ];
+    /*for(int i = 0; i < numberOfPossibleStatesZ; i++)
+        gamma[i] = 0;*/
+
 }
 void Model::initializeKsi()
 {
@@ -63,43 +62,47 @@ void Model::initializeKsi()
             ksi[i][j] = transitionProbs[i][j] * P[j];
     }
 }
-void Model::computeAlpha()
+void Model::computeAlpha(int currentObservedState)
 {
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
-        alpha[0][i] = P[i]*emissionProbs[X[0]][i];
+        alpha[0] += P[i] * emissionProbs[X[currentObservedState]][i];
 
-    for(int k = 1; k < numberOfObservedVars; k++)
-        for(int i = 0; i < numberOfPossibleStatesZ; i++)
-            for(int j = 0; j < numberOfPossibleStatesZ; j++)
-                alpha[k][i] += alpha[k-1][i] * emissionProbs[X[k]][j] * transitionProbs[i][j];
+
+    for(int i = 1; i < numberOfPossibleStatesZ; i++)
+    {
+        for(int j = 0; j < numberOfPossibleStatesZ; j++)
+            {
+                alpha[i] += alpha[i-1] * emissionProbs[X[currentObservedState]][i] * transitionProbs[i][j];
+
+            }
+    }
+
 }
-void Model::computeBeta()
+void Model::computeBeta(int currentObservedState)
 {
+     beta[numberOfPossibleStatesZ-1] = 1;
+
+        for(int i = numberOfPossibleStatesZ-2; i >=0; i--)
+            for(int j = 0; j < numberOfPossibleStatesZ; j++)
+                beta[i] += beta[i+1] * emissionProbs[X[currentObservedState]][i] * transitionProbs[i][j];
+}
+void Model::computeGamma(int currentObservedState)
+{
+
+    double zbir = 0;
+
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
-        beta[numberOfObservedVars-1][i] = 1;
+        zbir += alpha[i] * beta[i];
 
-    for(int k = numberOfObservedVars-2; k >= 0; k--)
-        for(int i = 0; i < numberOfPossibleStatesZ; i++)
-            for(int j = 0; j < numberOfPossibleStatesZ; j++)
-                beta[k][i] += beta[k+1][i] * emissionProbs[X[k+1]][j] * transitionProbs[i][j];
+    double normCoef = 1 / zbir;
+
+    for(int i = 0; i < numberOfPossibleStatesZ; i++)
+    {
+        gamma[i] = alpha[i] * beta[i] * normCoef;
+    }
+
 }
-void Model::computeNormalized()
-{
-    normalizedProbs = new double*[numberOfPossibleStatesZ];
-    for (int k = 0; k < numberOfObservedVars; k++)
-        {
-            normalizedProbs[k] = new double[numberOfPossibleStatesZ];
-            float zbir = 0;
 
-            for(int i = 0; i < numberOfPossibleStatesZ; i++)
-                zbir += alpha[k][i] * beta[k][i];
-
-            float x = 1 / zbir;
-
-            for (int i = 0; i < numberOfPossibleStatesZ; i++)
-                normalizedProbs[k][i] = alpha[k][i] * beta[k][i] * x;
-        }
-}
 //fillArrayForGamma
 //computeKsi
 //computeCurrentT
@@ -116,6 +119,12 @@ void Model::setArrayX(vector<int> &values)
         X[i] = values.at(i);
     }
 }
+void Model::printGamma()
+{
+    for (int j = 0; j < numberOfPossibleStatesZ; j++)
+        cout << gamma[j] << " ";
+    cout << endl;
+}
 void Model::printNormalizedMatrix()
 {
     for (int i = 0; i < numberOfObservedVars; i++)
@@ -127,30 +136,28 @@ void Model::printNormalizedMatrix()
 
     cout << endl;
 
-    for (int i = 0; i < numberOfPossibleStatesZ; i++)
-        {
-            for (int j = 0; j < numberOfPossibleStatesZ; j++)
-                cout << ksi[i][j] << " ";
-            cout << endl;
-        }
-
 }
 
 void Model::train()
 {
-
+    int currentObservedState = 0;
     initializeT();
     initializeE();
     initializeP();
+
     initializeAlpha();
     initializeBeta();
     initializeKsi();
 
-    computeAlpha();
-    computeBeta();
-    computeNormalized();
 
-    printNormalizedMatrix();
+    //for(int currentObservedState = 0; currentObservedState < numberOfPossibleStatesX; currentObservedState++)
+      //  {
+            computeAlpha(currentObservedState);
+            computeBeta(currentObservedState);
+            computeGamma(currentObservedState);
+            printGamma();
+       // }
+
 
 }
 
