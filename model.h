@@ -25,12 +25,19 @@ private:
 
     void initializeT();
     void initializeE();
+
     void initializeP();
+
     void initializeAlpha();
+
     void initializeBeta();
+
     void computeAlpha();
+
     void computeBeta();
+
     void computeNormalized();
+
         //fillArrayForGamma
         //computeKsi
         //computeCurrentT

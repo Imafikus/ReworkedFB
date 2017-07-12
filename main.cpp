@@ -17,7 +17,6 @@ void setValues(vector<int> &values, Model &model)
 int main()
 {
     Model model(4, 2, 4);
-    //Model *model1= new Model(4, 2, 4);
     vector<int> values;
     setValues(values, model);
     model.setArrayX(values);
