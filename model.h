@@ -47,12 +47,12 @@ private:
 
     void computeNextP(int currentObservedState);
 
+    void computeKsi(int currentObservedState);
+
     void computeNormalized();
 
-        //fillArrayForGamma
-        //computeKsi
+
         //computeCurrentT
-        //computeCurrentP
         //computeCurrentE
 
 public:

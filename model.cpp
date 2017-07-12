@@ -58,8 +58,6 @@ void Model::initializeKsi()
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
     {
         ksi[i] = new double[numberOfPossibleStatesZ];
-        for(int j = 0; j < numberOfPossibleStatesZ; j++)
-            ksi[i][j] = transitionProbs[i][j] * P[j];
     }
 }
 void Model::computeAlpha(int currentObservedState)
@@ -88,7 +86,6 @@ void Model::computeBeta(int currentObservedState)
 }
 void Model::computeGamma(int currentObservedState)
 {
-
     double zbir = 0;
 
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
@@ -100,8 +97,8 @@ void Model::computeGamma(int currentObservedState)
     {
         gamma[i] = alpha[i] * beta[i] * normCoef;
     }
-
 }
+
 void Model::computeNextP(int currentObservedState)
 {
     double denominator = gamma[currentObservedState];
@@ -110,13 +107,29 @@ void Model::computeNextP(int currentObservedState)
         numerator += gamma[i];
     P[currentObservedState] = denominator / numerator;
 }
-//fillArrayForGamma
-//computeKsi
+void Model::computeKsi(int currentObservedState)
+{
+    double zbir;
+    double normCoef;
+
+    for(int i = 0; i < numberOfPossibleStatesZ; i++)
+        {
+            zbir = 0;
+            for(int j = 0; j < numberOfPossibleStatesZ; j++)
+                zbir += alpha[i] * emissionProbs[X[currentObservedState]][j] * transitionProbs[j][i] * beta[j];
+
+            normCoef = 1 / zbir;
+
+            for(int j = 0; j < numberOfPossibleStatesZ; j++)
+                ksi[i][j] = alpha[i] * emissionProbs[X[currentObservedState]][j] * transitionProbs[j][i] * beta[j] * normCoef;
+        }
+}
+
 //computeCurrentT
-//computeCurrentP
+
 //computeCurrentE
 
-//public functions
+//PUBLIC FUNCTIONS
 
 void Model::setArrayX(vector<int> &values)
 {
