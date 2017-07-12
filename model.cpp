@@ -53,7 +53,16 @@ void Model::initializeBeta()
             beta[i][j] = 0;
     }
 }
-
+void Model::initializeKsi()
+{
+    ksi = new double*[numberOfPossibleStatesZ];
+    for(int i = 0; i < numberOfPossibleStatesZ; i++)
+    {
+        ksi[i] = new double[numberOfPossibleStatesZ];
+        for(int j = 0; j < numberOfPossibleStatesZ; j++)
+            ksi[i][j] = transitionProbs[i][j] * P[j];
+    }
+}
 void Model::computeAlpha()
 {
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
@@ -112,23 +121,30 @@ void Model::printNormalizedMatrix()
     for (int i = 0; i < numberOfObservedVars; i++)
         {
             for (int j = 0; j < numberOfPossibleStatesZ; j++)
-                cout << normalizedProbs[i][j];
+                cout << normalizedProbs[i][j] << " ";
             cout << endl;
         }
+
+    cout << endl;
+
+    for (int i = 0; i < numberOfPossibleStatesZ; i++)
+        {
+            for (int j = 0; j < numberOfPossibleStatesZ; j++)
+                cout << ksi[i][j] << " ";
+            cout << endl;
+        }
+
 }
 
 void Model::train()
 {
-    double gama[1000];
-    double ksi[1000];
-
-
 
     initializeT();
     initializeE();
     initializeP();
     initializeAlpha();
     initializeBeta();
+    initializeKsi();
 
     computeAlpha();
     computeBeta();

@@ -19,6 +19,9 @@ private:
     double **alpha; //forward part
     double **beta; // backward part
 
+    double **ksi;
+    double *gamma;
+
     //double probs[1000][1000];
     double **normalizedProbs;
 
@@ -31,6 +34,8 @@ private:
     void initializeAlpha();
 
     void initializeBeta();
+
+    void initializeKsi();
 
     void computeAlpha();
 
