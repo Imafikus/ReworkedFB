@@ -45,6 +45,8 @@ private:
 
     void computeGamma(int currentObservedState);
 
+    void computeNextP(int currentObservedState);
+
     void computeNormalized();
 
         //fillArrayForGamma

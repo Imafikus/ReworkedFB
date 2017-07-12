@@ -102,7 +102,14 @@ void Model::computeGamma(int currentObservedState)
     }
 
 }
-
+void Model::computeNextP(int currentObservedState)
+{
+    double denominator = gamma[currentObservedState];
+    double numerator = 0;
+    for(int i = 0; i <= currentObservedState; i++)
+        numerator += gamma[i];
+    P[currentObservedState] = denominator / numerator;
+}
 //fillArrayForGamma
 //computeKsi
 //computeCurrentT
