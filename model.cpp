@@ -107,13 +107,10 @@ void Model::computeGamma()
     }
 }
 
-void Model::computeNextP(int currentObservedState)
+void Model::computeNextP()
 {
-    double denominator = gamma[currentObservedState];
-    double numerator = 0;
-    for(int i = 0; i <= currentObservedState; i++)
-        numerator += gamma[i];
-    P[currentObservedState] = denominator / numerator;
+    for(int i = 0; i < numberOfPossibleStatesZ; i++)
+        P[i] = gamma[0][i];
 }
 void Model::computeKsi(int currentObservedState)
 {
@@ -161,22 +158,26 @@ void Model::computeCurrentT(int currentObservedState)
 }
 void Model::computeMi()
 {
-    for(int i = 0; i < numberOfObservedVars; i++)
+    for(int i = 0; i < numberOfPossibleStatesX; i++)
         for(int l = 0; l < numberOfPossibleStatesZ; l++)
         {
             double br = 0;
+<<<<<<< HEAD
             double im = 0;
+	    for (int n=0; n<numberOfObservedVars; n++)
+=======
+            double im = 0; 
+	    for (int n=0; n<numberOfObservedVars; n++) 
+>>>>>>> cec0e45dd1c6db99e82a4bb6151a03597873c330
+	    {
+	    	if (X[n] == i) br += gamma[n][l];
+		im += gamma[n][l];
+	    }
 
-            for(int j = 0; j < numberOfPossibleStatesZ; j++)
-                if(X[i] == j) br += gamma[i][j];
-
-            for(int j = 0; j < numberOfPossibleStatesZ; j++)
-                im += gamma[i][j];
             mi[i][l] = br / im;
         }
 }
 
-//computeMiForCurrentE
 //computeCurrentE
 
 //PUBLIC FUNCTIONS
@@ -222,11 +223,10 @@ void Model::train()
       //  {
             computeAlpha();
             computeBeta();
-            computeGamma(currentObservedState);
+            computeGamma();
             computeKsi(currentObservedState);
             printGamma();
        // }
 
 
 }
-

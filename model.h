@@ -48,13 +48,13 @@ private:
 
     void computeGamma();
 
-    void computeNextP(int currentObservedState);
+    void computeNextP();
 
     void computeKsi(int currentObservedState);
 
     void computeCurrentT(int currentObservedState);
 
-    void computeMi(int currendObservedState);
+    void computeMi();
 
     void computeCurrentE();
 
