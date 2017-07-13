@@ -173,9 +173,38 @@ void Model::computeMi()
             mi[i][l] = br / im;
         }
 }
+void Model::computeE()
+{
+    for(int a = 0; a < numberOfPossibleStatesX; a++)
+        for(int b = 0; b < numberOfPossibleStatesZ; b++)
+            {
+                 emissionProbs[a][b] = 1;
 
-//computeMiForCurrentE
-//computeCurrentE
+                 helpX = new int[numberOfPossibleStatesX];
+                 helpZ = new int[numberOfPossibleStatesZ];
+
+                for(int i = 0; i < numberOfPossibleStatesX; i++)
+                    {
+                        if(i == a) helpX[i] = 1;
+                        else helpX[i] = 0;
+                    }
+                for(int i = 0; i < numberOfPossibleStatesZ; i++)
+                    {
+                        if(i == b) helpZ[i] = 1;
+                        else helpZ[i] = 0;
+                    }
+
+                for(int i = 0; i < numberOfPossibleStatesX; i++)
+                    for(int j = 0; j < numberOfPossibleStatesZ; j++)
+                        {
+                            if( (helpX[i] * helpZ[j]) == 1) emissionProbs[a][b] *= mi[i][j];
+                            else emissionProbs[a][b] *= 1;
+                        }
+                delete[] helpX;
+                delete[] helpZ;
+            }
+}
+
 
 //PUBLIC FUNCTIONS
 
@@ -193,16 +222,7 @@ void Model::printGamma()
         cout << gamma[j] << " ";
     cout << endl;
 }
-void Model::printNormalizedMatrix()
-{
-    for (int i = 0; i < numberOfObservedVars; i++)
-        {
-            for (int j = 0; j < numberOfPossibleStatesZ; j++)
-                cout << normalizedProbs[i][j] << " ";
-            cout << endl;
-        }
-    cout << endl;
-}
+
 
 void Model::train()
 {

@@ -16,6 +16,9 @@ private:
     double *P; //probs for Z1 to take some of the possible states
     int *X; // array of inputs
 
+    int *helpX;
+    int *helpZ;
+
     double **alpha; //forward part
     double **beta; // backward part
 
@@ -56,9 +59,8 @@ private:
 
     void computeMi();
 
-    void computeCurrentE();
+    void computeE();
 
-    void computeNormalized();
 
 
         //computeCurrentE
