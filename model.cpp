@@ -59,10 +59,10 @@ void Model::initializeKsi()
 }
 void Model::initializeMi()
 {
-    mi = new double[numberOfObservedVars];
+    mi = new double*[numberOfObservedVars];
 
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
-        mi[i] = new[numberOfPossibleStatesZ] ;
+        mi[i] = new double[numberOfPossibleStatesZ] ;
 }
 void Model::computeAlpha()
 {
@@ -159,16 +159,21 @@ void Model::computeCurrentT(int currentObservedState)
         }
     }
 }
-void Model::computeMiForCurrentE(int currentObservedState)
+void Model::computeMi()
 {
-    double br = 0;
-    double im = 0;
-    for(int i = 0; i < numberOfObservedVars)
+    for(int i = 0; i < numberOfObservedVars; i++)
+        for(int l = 0; l < numberOfPossibleStatesZ; l++)
+        {
+            double br = 0;
+            double im = 0;
 
+            for(int j = 0; j < numberOfPossibleStatesZ; j++)
+                if(X[i] == j) br += gamma[i][j];
 
-
-
-
+            for(int j = 0; j < numberOfPossibleStatesZ; j++)
+                im += gamma[i][j];
+            mi[i][l] = br / im;
+        }
 }
 
 //computeMiForCurrentE

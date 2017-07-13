@@ -20,8 +20,8 @@ private:
     double **beta; // backward part
 
     double **ksi;
-    double *gamma;
-    double *mi;
+    double **gamma;
+    double **mi;
 
 
     double **normalizedProbs;
@@ -46,7 +46,7 @@ private:
 
     void computeBeta();
 
-    void computeGamma(int currentObservedState);
+    void computeGamma();
 
     void computeNextP(int currentObservedState);
 
@@ -54,7 +54,7 @@ private:
 
     void computeCurrentT(int currentObservedState);
 
-    void computeMiForCurrentE(int currendObservedState);
+    void computeMi(int currendObservedState);
 
     void computeCurrentE();
 
