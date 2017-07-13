@@ -60,6 +60,13 @@ void Model::initializeKsi()
         ksi[i] = new double[numberOfPossibleStatesZ];
     }
 }
+void Model::initializeMi()
+{
+    mi = new double[numberOfPossibleStatesZ];
+
+    for(int i = 0; i < numberOfPossibleStatesZ; i++)
+        mi[i] = 0;
+}
 void Model::computeAlpha()
 {
     for(int k = 0; k < numberOfObservedVars; k++)
@@ -85,18 +92,21 @@ void Model::computeBeta()
     }
 }
 
-void Model::computeGamma(int currentObservedState)
+void Model::computeGamma()
 {
-    double zbir = 0;
-
-    for(int i = 0; i < numberOfPossibleStatesZ; i++)
-        zbir += alpha[currentObservedState][i] * beta[currentObservedState][i];
-
-    double normCoef = 1 / zbir;
-
-    for(int i = 0; i < numberOfPossibleStatesZ; i++)
+    for(int k = 0; k < numberOfObservedVars; k++)
     {
-        gamma[i] = alpha[currentObservedState][i] * beta[currentObservedState][i] * normCoef;
+        double zbir = 0;
+
+        for(int i = 0; i < numberOfPossibleStatesZ; i++)
+            zbir += alpha[k][i] * beta[k][i];
+
+        double normCoef = 1 / zbir;
+
+        for(int i = 0; i < numberOfPossibleStatesZ; i++)
+        {
+            gamma[k][i] = alpha[k][i] * beta[k][i] * normCoef;
+        }
     }
 }
 
@@ -152,8 +162,19 @@ void Model::computeCurrentT(int currentObservedState)
         }
     }
 }
+void Model::computeMiForCurrentE(int currentObservedState)
+{
+    double br = 0;
+    double im = 0;
+    for(int i = 0; i < numberOfObservedVars)
 
 
+
+
+
+}
+
+//computeMiForCurrentE
 //computeCurrentE
 
 //PUBLIC FUNCTIONS

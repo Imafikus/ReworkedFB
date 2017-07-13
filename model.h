@@ -21,8 +21,9 @@ private:
 
     double **ksi;
     double *gamma;
+    double *mi;
 
-    //double probs[1000][1000];
+
     double **normalizedProbs;
 
 
@@ -39,6 +40,8 @@ private:
 
     void initializeKsi();
 
+    void initializeMi();
+
     void computeAlpha();
 
     void computeBeta();
@@ -50,6 +53,10 @@ private:
     void computeKsi(int currentObservedState);
 
     void computeCurrentT(int currentObservedState);
+
+    void computeMiForCurrentE(int currendObservedState);
+
+    void computeCurrentE();
 
     void computeNormalized();
 
