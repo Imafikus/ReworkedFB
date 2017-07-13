@@ -107,13 +107,11 @@ void Model::computeGamma()
     }
 }
 
-void Model::computeNextP(int currentObservedState)
+void Model::computeNextP()
 {
-    double denominator = gamma[currentObservedState];
-    double numerator = 0;
-    for(int i = 0; i <= currentObservedState; i++)
-        numerator += gamma[i];
-    P[currentObservedState] = denominator / numerator;
+    for(int i = 0; i < numberOfPossibleStatesZ; i++)
+
+    P[i] = gamma[0][i];
 }
 void Model::computeKsi(int currentObservedState)
 {
@@ -222,7 +220,7 @@ void Model::train()
       //  {
             computeAlpha();
             computeBeta();
-            computeGamma(currentObservedState);
+            computeGamma();
             computeKsi(currentObservedState);
             printGamma();
        // }
