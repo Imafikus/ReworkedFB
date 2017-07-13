@@ -35,37 +35,34 @@ void Model::initializeP()
 }
 void Model::initializeAlpha()
 {
-    alpha = new double*[numberOfPossibleStatesZ];
+    alpha = new double*[numberOfObservedVars];
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
             alpha[i] = new double[numberOfPossibleStatesZ];
 }
 void Model::initializeBeta()
 {
-    beta = new double*[numberOfPossibleStatesZ];
+    beta = new double*[numberOfObservedVars];
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
             beta[i] = new double[numberOfPossibleStatesZ];
 }
 void Model::initializeGamma()
 {
-    gamma = new double[numberOfPossibleStatesZ];
-    /*for(int i = 0; i < numberOfPossibleStatesZ; i++)
-        gamma[i] = 0;*/
-
+    gamma = new double *[numberOfObservedVars];
+    for(int i = 0; i < numberOfPossibleStatesZ; i++)
+        gamma[i] = new double [numberOfPossibleStatesZ];
 }
 void Model::initializeKsi()
 {
     ksi = new double*[numberOfPossibleStatesZ];
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
-    {
-        ksi[i] = new double[numberOfPossibleStatesZ];
-    }
+            ksi[i] = new double[numberOfPossibleStatesZ];
 }
 void Model::initializeMi()
 {
-    mi = new double[numberOfPossibleStatesZ];
+    mi = new double[numberOfObservedVars];
 
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
-        mi[i] = 0;
+        mi[i] = new[numberOfPossibleStatesZ] ;
 }
 void Model::computeAlpha()
 {
