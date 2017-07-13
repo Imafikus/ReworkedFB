@@ -49,10 +49,11 @@ private:
 
     void computeKsi(int currentObservedState);
 
+    void computeCurrentT(int currentObservedState);
+
     void computeNormalized();
 
 
-        //computeCurrentT
         //computeCurrentE
 
 public:

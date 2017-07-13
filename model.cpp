@@ -130,8 +130,29 @@ void Model::computeKsi(int currentObservedState)
 
     }
 }
+void Model::computeCurrentT(int currentObservedState)
+{
+    double br = 0;
+    double im1 = 0;
+    double im2 = 0;
 
-//computeCurrentT
+    for(int i = 0; i < numberOfPossibleStatesZ; i++)
+    {
+        for(int j = 0; j <= currentObservedState; i++)
+            im1 += ksi[i][j];
+
+        for(int l = 0; l < currentObservedState; l++)
+            for(int j = 0; j <numberOfPossibleStatesZ; j++)
+                im2 += ksi[l][j];
+
+        for(int j = 0; j < numberOfPossibleStatesZ; j++)
+        {
+            br = ksi[i][j];
+            transitionProbs[i][j] = br / (im1 + im2);
+        }
+    }
+}
+
 
 //computeCurrentE
 
