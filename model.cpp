@@ -161,17 +161,17 @@ void Model::computeCurrentT(int currentObservedState)
 }
 void Model::computeMi()
 {
-    for(int i = 0; i < numberOfObservedVars; i++)
+    for(int i = 0; i < numberOfPossibleStatesX; i++)
         for(int l = 0; l < numberOfPossibleStatesZ; l++)
         {
             double br = 0;
-            double im = 0;
+            double im = 0; 
+	    for (int n=0; n<numberOfObservedVars; n++) 
+	    {
+	    	if (X[n] == i) br += gamma[n][l];
+		im += gamma[n][l];
+	    }
 
-            for(int j = 0; j < numberOfPossibleStatesZ; j++)
-                if(X[i] == j) br += gamma[i][j];
-
-            for(int j = 0; j < numberOfPossibleStatesZ; j++)
-                im += gamma[i][j];
             mi[i][l] = br / im;
         }
 }
