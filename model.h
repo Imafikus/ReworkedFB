@@ -16,8 +16,8 @@ private:
     double *P; //probs for Z1 to take some of the possible states
     int *X; // array of inputs
 
-    double *alpha; //forward part
-    double *beta; // backward part
+    double **alpha; //forward part
+    double **beta; // backward part
 
     double **ksi;
     double *gamma;
@@ -39,9 +39,9 @@ private:
 
     void initializeKsi();
 
-    void computeAlpha(int currentObservedState);
+    void computeAlpha();
 
-    void computeBeta(int currentObservedState);
+    void computeBeta();
 
     void computeGamma(int currentObservedState);
 
