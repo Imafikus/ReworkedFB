@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1500052554 source:e:\petnica2k17\reworkedfb\reworkedfb\main.cpp
+1500065092 source:e:\petnica2k17\reworkedfb\reworkedfb\main.cpp
 	<iostream>
 	"model.h"
 	<vector>
@@ -12,4 +12,12 @@
 	"model.h"
 	<algorithm>
 	<iostream>
+
+1500061877 source:e:\petnica2k17\reworkedfb\reworkedfb\unittest.cpp
+	"unittest.h"
+	<iostream>
+	<fstream>
+	<cmath>
+
+1500061870 e:\petnica2k17\reworkedfb\reworkedfb\unittest.h
 

@@ -5,10 +5,10 @@
 #include<fstream>
 
 using namespace std;
-void initialization(int &observedVars, int &statesZ, int &statesX, double * &Pi, double ** &E, double ** &T, int * &X)
+void initialization(int &observedVars, int &statesZ, int &statesX, int * &X, double * &Pi, double ** &E, double ** &T)
 {
-    Pi = new double[statesZ];
     X = new int[observedVars];
+    Pi = new double[statesZ];
 
     E = new double*[statesX];
     T = new double*[statesZ];
@@ -16,9 +16,10 @@ void initialization(int &observedVars, int &statesZ, int &statesX, double * &Pi,
     for(int i = 0; i < statesZ; i++)
         {
             E[i] = new double[statesZ];
-            T[i] = new double[statesX];
+            T[i] = new double[statesZ];
         }
 }
+
 void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, double * &Pi, double ** &E, double ** &T, int &k)
 {
 
@@ -27,6 +28,8 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
     inf >> statesZ;
     inf >> statesX;
 
+    initialization(observedVars,statesZ, statesX, X, Pi, E, T);
+
     for(int i = 0; i < observedVars; i++)
         inf >> X[i];
 
@@ -34,11 +37,11 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
         inf >> Pi[i];
 
     for(int i = 0; i < statesZ; i++)
-        for(int j = 0; j < statesZ; i++)
+        for(int j = 0; j < statesZ; j++)
             inf >> T[i][j];
 
     for(int i = 0; i < statesX; i++)
-        for(int j = 0; j < statesZ; i++)
+        for(int j = 0; j < statesZ; j++)
             inf >> E[i][j];
 
     inf >> k;
@@ -55,9 +58,37 @@ int main()
     double ** T;
     int k;
 
+
     getInitialValues(observedVars,statesZ, statesX, X, Pi, E, T, k);
 
-    Model model(observedVars,statesZ, statesX, X, Pi, E, T, k);
+
+    cout << observedVars << " " << statesZ << " " << statesX << endl;
+
+    for(int i = 0; i < observedVars; i++)
+        cout << X[i] << " ";
+    cout << endl;
+
+    for(int i = 0; i < statesZ; i++)
+        cout << Pi[i] << " ";
+    cout << endl;
+
+    for(int i = 0; i < statesX; i++)
+        for(int j = 0; j < statesZ; j++)
+            cout << E[i][j] << " ";
+        cout << endl;
+
+    for(int i = 0; i < statesZ; i++)
+        for(int j = 0; j < statesZ; j++)
+            cout << T[i][j] << " ";
+        cout << endl;
+
+    cout << k << endl;
+
+}
+
+
+
+    /*Model model(observedVars,statesZ, statesX, X, Pi, E, T, k);
     model.train();
     return 0;
-}
+}*/
