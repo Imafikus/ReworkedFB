@@ -66,8 +66,10 @@ int main()
 
     double* testedPi = model.getP();
 
-
-
+    for (int i = 0; i < statesZ; i++)
+    {
+        cout << testedPi[i];
+    }
     UnitTest tester;
 
     tester.testP(testedPi, statesZ);
