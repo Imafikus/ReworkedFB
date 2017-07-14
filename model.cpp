@@ -236,12 +236,20 @@ void Model::train()
 void Model::testPi()
 {
     initializeAlpha();
+    cout << "initializeAlpha();" << endl;
     initializeBeta();
+    cout << " initializeBeta();" << endl;
     initializeGamma();
+    cout << "initializeGamma();" << endl;
 
     computeAlpha();
+
+    cout <<"computeAlpha" <<endl;
     computeBeta();
+    cout << "computeBeta()" << endl;
     computeGamma();
+    cout << "computeGamma" << endl;
     computeNextP();
+    cout << "computeNextP" <<endl;
 
 }

@@ -64,6 +64,8 @@ int main()
 
     Model model(observedVars, statesZ, statesX, X, Pi, E, T, k);
 
+    model.testPi();
+
     double* testedPi = model.getP();
 
     for (int i = 0; i < statesZ; i++)
