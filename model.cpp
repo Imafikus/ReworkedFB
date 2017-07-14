@@ -1,5 +1,5 @@
 #include "model.h"
-
+#include "unittest.h"
 #include <algorithm>
 #include <iostream>
 
@@ -231,5 +231,17 @@ void Model::train()
             computeKsi(currentObservedState);
        // }
 
+
+}
+void Model::testPi()
+{
+    initializeAlpha();
+    initializeBeta();
+    initializeGamma();
+
+    computeAlpha();
+    computeBeta();
+    computeGamma();
+    computeNextP();
 
 }

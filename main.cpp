@@ -1,5 +1,6 @@
 #include <iostream>
 #include "model.h"
+#include "unittest.h"
 #include <vector>
 #include <algorithm>
 #include<fstream>
@@ -61,34 +62,14 @@ int main()
 
     getInitialValues(observedVars,statesZ, statesX, X, Pi, E, T, k);
 
+    Model model(observedVars, statesZ, statesX, X, Pi, E, T, k);
 
-    cout << observedVars << " " << statesZ << " " << statesX << endl;
+    double* testedPi = model.getP();
 
-    for(int i = 0; i < observedVars; i++)
-        cout << X[i] << " ";
-    cout << endl;
 
-    for(int i = 0; i < statesZ; i++)
-        cout << Pi[i] << " ";
-    cout << endl;
 
-    for(int i = 0; i < statesX; i++)
-        for(int j = 0; j < statesZ; j++)
-            cout << E[i][j] << " ";
-        cout << endl;
+    UnitTest tester;
 
-    for(int i = 0; i < statesZ; i++)
-        for(int j = 0; j < statesZ; j++)
-            cout << T[i][j] << " ";
-        cout << endl;
-
-    cout << k << endl;
-
+    tester.testP(testedPi, statesZ);
 }
 
-
-
-    /*Model model(observedVars,statesZ, statesX, X, Pi, E, T, k);
-    model.train();
-    return 0;
-}*/

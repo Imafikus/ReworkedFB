@@ -33,13 +33,18 @@ void UnitTest::getExpectedE(int StatesX, int StatesZ)
 
 void UnitTest::getExpectedP(int StatesZ)
 {
-    ifstream inf("expectedPi.txt");
+    ifstream inf("pi.txt");
     expectedP = new double[StatesZ];
 
     for(int i = 0; i < StatesZ; i++)
         inf >> expectedP[i];
 }
-
+void UnitTest::printExpectedP(int statesZ)
+{
+    getExpectedP(statesZ);
+    for(int i = 0; i < statesZ; i++)
+        cout << expectedP[i] << " ";
+}
 void UnitTest::testT(double **computedT, int numberOfPossibleStatesZ)
 {
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
@@ -51,6 +56,7 @@ void UnitTest::testT(double **computedT, int numberOfPossibleStatesZ)
             }
     cout << "Uspesno zavrsen test!" <<endl;
 }
+
 void UnitTest::testE(double **computedE, int numberOfPossibleStatesX, int numberOfPossibleStatesZ)
 {
     for(int i = 0; i < numberOfPossibleStatesX; i++)
@@ -65,6 +71,8 @@ void UnitTest::testE(double **computedE, int numberOfPossibleStatesX, int number
 
 void UnitTest::testP(double *computedP, int numberOfPossibleStatesZ)
 {
+    getExpectedP(numberOfPossibleStatesZ);
+
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
         if(abs(computedP[i] - expectedP[i]) > k)
         {

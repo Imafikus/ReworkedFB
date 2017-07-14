@@ -41,11 +41,13 @@ private:
 
     void initializeMi();
 
+
     void computeAlpha();
 
     void computeBeta();
 
     void computeGamma();
+
 
     void computeNextP();
 
@@ -93,6 +95,7 @@ public:
 
 
     void train();
+    void testPi();
 };
 
 

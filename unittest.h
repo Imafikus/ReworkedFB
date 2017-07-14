@@ -20,6 +20,7 @@ public:
    void testT(double **computedT, int numberOfPossibleStatesZ);
    void testE(double **computedE, int numberOfPossibleStatesX, int numberOfPossibleStatesZ);
    void testP(double *computedP, int numberOfPossibleStatesZ);
+   void printExpectedP(int numberOfPossibleStatesZ);
 
 };
 
