@@ -65,37 +65,30 @@ public:
         P(m_P), transitionProbs(m_T), emissionProbs(m_E), numberOfIterations(m_Iter){}
 
     int getNumberOfObservedVars();
-
     void setNumberOfObservedVars(int m_setNumberOfObservedVars);
 
 
     int getNumberOfPossibleStatesZ();
-
     void setNumberOfPossibleStatesZ(int m_setNumberOfPossibleStatesZ);
 
 
     int getNumberOfPossibleStatesX();
-
     void setNumberOfPossibleStatesX(int m_setNumberOfPossibleStatesX);
 
 
     double *getP();
-
     void setP(double * m_P);
 
 
     double **getTransitonMatrix();
-
     void setTransitionMatrix(double **m_transitionProbs);
 
 
     double **getEmissionMatrix();
-
     void setEmissionMatrix (double **m_emissionProbs);
 
 
-    double *getArrayX();
-
+    int *getArrayX();
     void *setArrayX(int *m_X);
 
 

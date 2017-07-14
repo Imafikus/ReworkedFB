@@ -6,39 +6,7 @@
 using namespace std;
 
 
-    int getNumberOfObservedVars(){return numberOfObservedVars;}
 
-    void setNumberOfObservedVars(int m_setNumberOfObservedVars){numberOfObservedVars = m_setNumberOfObservedVars;}
-
-
-    int getNumberOfPossibleStatesZ(){return numberOfPossibleStatesZ;}
-
-    void setNumberOfPossibleStatesZ(int m_setNumberOfPossibleStatesZ){numberOfPossibleStatesZ =m_setNumberOfPossibleStatesZ;}
-
-
-    int getNumberOfPossibleStatesX(){return numberOfPossibleStatesX;}
-
-    void setNumberOfPossibleStatesX(int m_setNumberOfPossibleStatesX){numberOfPossibleStatesX =m_setNumberOfPossibleStatesX;}
-
-
-    double *getP(){return P;}
-
-    void setP(double * m_P) {P = m_P;}
-
-
-    double **getTransitonMatrix(){return transitionProbs};
-
-    void setTransitionMatrix(double **m_transitionProbs){transitionProbs = m_transitionProbs};
-
-
-    double **getEmissionMatrix(){return emissionProbs};
-
-    void setEmissionMatrix (double **m_emissionProbs){emissionProbs = m_emissionProbs};
-
-
-    double *getArrayX(){return X};
-
-    void *setArrayX(int *m_X){X = m_X};
 
 void Model::initializeAlpha()
 {
@@ -216,14 +184,39 @@ void Model::computeE()
 //PUBLIC FUNCTIONS
 
 
+int Model::getNumberOfObservedVars(){return numberOfObservedVars;}
+void Model::setNumberOfObservedVars(int m_setNumberOfObservedVars){numberOfObservedVars = m_setNumberOfObservedVars;}
 
+
+int Model::getNumberOfPossibleStatesZ(){return numberOfPossibleStatesZ;}
+void Model::setNumberOfPossibleStatesZ(int m_setNumberOfPossibleStatesZ){numberOfPossibleStatesZ =m_setNumberOfPossibleStatesZ;}
+
+
+int Model::getNumberOfPossibleStatesX(){return numberOfPossibleStatesX;}
+void Model::setNumberOfPossibleStatesX(int m_setNumberOfPossibleStatesX){numberOfPossibleStatesX =m_setNumberOfPossibleStatesX;}
+
+
+double *Model::getP(){return P;}
+void Model::setP(double * m_P){P = m_P;}
+
+
+double **Model::getTransitonMatrix(){return transitionProbs;}
+void Model::setTransitionMatrix(double **m_transitionProbs){transitionProbs = m_transitionProbs;}
+
+
+double **Model::getEmissionMatrix(){return emissionProbs;}
+void Model::setEmissionMatrix (double **m_emissionProbs){emissionProbs = m_emissionProbs;}
+
+
+int *Model::getArrayX(){return X;}
+void *Model::setArrayX(int *m_X){X = m_X;}
 
 void Model::train()
 {
     int currentObservedState = 0;//OVO OVDE SE PROSLEDJUJE u train()
-    initializeT();
+    /*initializeT();
     initializeE();
-    initializeP();
+    initializeP();*/
 
     initializeAlpha();
     initializeBeta();
@@ -236,7 +229,6 @@ void Model::train()
             computeBeta();
             computeGamma();
             computeKsi(currentObservedState);
-            printGamma();
        // }
 
 
