@@ -1,11 +1,12 @@
 # depslib dependency file v1.0
-1499942570 source:e:\petnica2k17\reworkedfb\reworkedfb\main.cpp
+1500052554 source:e:\petnica2k17\reworkedfb\reworkedfb\main.cpp
 	<iostream>
 	"model.h"
 	<vector>
 	<algorithm>
+	<fstream>
 
-1499977558 e:\petnica2k17\reworkedfb\reworkedfb\model.h
+1500052552 e:\petnica2k17\reworkedfb\reworkedfb\model.h
 	<vector>
 
 1499898435 source:e:\petnica2k17\reworkedfb\reworkedfb\model.cpp

@@ -10,6 +10,7 @@ private:
     int numberOfObservedVars;
     int numberOfPossibleStatesZ;
     int numberOfPossibleStatesX;
+    int numberOfIterations;
 
     double **emissionProbs; // Emission probs
     double **transitionProbs; // Transitiom probs
@@ -29,11 +30,6 @@ private:
 
     double **normalizedProbs;
 
-
-    void initializeT();
-    void initializeE();
-
-    void initializeP();
 
     void initializeAlpha();
 
@@ -62,28 +58,46 @@ private:
     void computeE();
 
 
-
-        //computeCurrentE
-
 public:
 
-    Model(int numberOfObservedVars, int numberOfPossibleStatesX, int numberOfPossibleStatesZ):
-        numberOfObservedVars(numberOfObservedVars),
-        numberOfPossibleStatesX(numberOfPossibleStatesX),
-        numberOfPossibleStatesZ(numberOfPossibleStatesZ) {}
+    Model(int m_observedVars, int m_statesZ, int m_statesX, int *m_X, double *m_P, double **m_T, double ** m_E, int m_Iter):
+        numberOfObservedVars(m_observedVars), numberOfPossibleStatesZ(m_statesZ), numberOfPossibleStatesX(m_statesX),
+        P(m_P), transitionProbs(m_T), emissionProbs(m_E), numberOfIterations(m_Iter){}
+
+    int getNumberOfObservedVars();
+
+    void setNumberOfObservedVars(int m_setNumberOfObservedVars);
 
 
-    int getNumberOfObservedVars(){return numberOfObservedVars;}
+    int getNumberOfPossibleStatesZ();
 
-    int getNumberOfPossibleStatesZ(){return numberOfPossibleStatesZ;}
+    void setNumberOfPossibleStatesZ(int m_setNumberOfPossibleStatesZ);
 
-    int getNumberOfPossibleStatesX(){return numberOfPossibleStatesX;}
 
-    void setArrayX(std::vector<int> &values);
+    int getNumberOfPossibleStatesX();
 
-    void printGamma();
+    void setNumberOfPossibleStatesX(int m_setNumberOfPossibleStatesX);
 
-    void printNormalizedMatrix();
+
+    double *getP();
+
+    void setP(double * m_P);
+
+
+    double **getTransitonMatrix();
+
+    void setTransitionMatrix(double **m_transitionProbs);
+
+
+    double **getEmissionMatrix();
+
+    void setEmissionMatrix (double **m_emissionProbs);
+
+
+    double *getArrayX();
+
+    void *setArrayX(int *m_X);
+
 
     void train();
 };

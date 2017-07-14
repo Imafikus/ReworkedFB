@@ -5,34 +5,41 @@
 
 using namespace std;
 
-void Model::initializeT()
-{
-    transitionProbs = new double*[numberOfPossibleStatesZ];
-    for(int i = 0; i < numberOfPossibleStatesZ; i++)
-    {
-        transitionProbs[i] = new double[numberOfPossibleStatesZ];
-        for(int j = 0; j < numberOfPossibleStatesZ; j++)
-            transitionProbs[i][j] = 1.0/numberOfPossibleStatesZ;
-    }
-}
 
-void Model::initializeE()
-{
-    emissionProbs = new double*[numberOfPossibleStatesX];
-    for(int i = 0; i < numberOfPossibleStatesX; i++)
-    {
-        emissionProbs[i] = new double[numberOfPossibleStatesZ];
-        for(int j = 0; j < numberOfPossibleStatesZ; j++)
-            emissionProbs[i][j] = 1.0/numberOfPossibleStatesX;
-    }
-}
+    int getNumberOfObservedVars(){return numberOfObservedVars;}
 
-void Model::initializeP()
-{
-    P = new double[numberOfPossibleStatesZ];
-    for(int i = 0; i < numberOfPossibleStatesZ; i++)
-        P[i] = 1.0/numberOfPossibleStatesZ;
-}
+    void setNumberOfObservedVars(int m_setNumberOfObservedVars){numberOfObservedVars = m_setNumberOfObservedVars;}
+
+
+    int getNumberOfPossibleStatesZ(){return numberOfPossibleStatesZ;}
+
+    void setNumberOfPossibleStatesZ(int m_setNumberOfPossibleStatesZ){numberOfPossibleStatesZ =m_setNumberOfPossibleStatesZ;}
+
+
+    int getNumberOfPossibleStatesX(){return numberOfPossibleStatesX;}
+
+    void setNumberOfPossibleStatesX(int m_setNumberOfPossibleStatesX){numberOfPossibleStatesX =m_setNumberOfPossibleStatesX;}
+
+
+    double *getP(){return P;}
+
+    void setP(double * m_P) {P = m_P;}
+
+
+    double **getTransitonMatrix(){return transitionProbs};
+
+    void setTransitionMatrix(double **m_transitionProbs){transitionProbs = m_transitionProbs};
+
+
+    double **getEmissionMatrix(){return emissionProbs};
+
+    void setEmissionMatrix (double **m_emissionProbs){emissionProbs = m_emissionProbs};
+
+
+    double *getArrayX(){return X};
+
+    void *setArrayX(int *m_X){X = m_X};
+
 void Model::initializeAlpha()
 {
     alpha = new double*[numberOfObservedVars];
@@ -208,25 +215,12 @@ void Model::computeE()
 
 //PUBLIC FUNCTIONS
 
-void Model::setArrayX(vector<int> &values)
-{
-    X = new int[values.size()];
-    for(int i = 0; i < values.size(); i++)
-    {
-        X[i] = values.at(i);
-    }
-}
-void Model::printGamma()
-{
-    for (int j = 0; j < numberOfPossibleStatesZ; j++)
-        cout << gamma[j] << " ";
-    cout << endl;
-}
+
 
 
 void Model::train()
 {
-    int currentObservedState = 0;
+    int currentObservedState = 0;//OVO OVDE SE PROSLEDJUJE u train()
     initializeT();
     initializeE();
     initializeP();
