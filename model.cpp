@@ -67,17 +67,17 @@ void Model::computeAlpha()
     {
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
         {
-            alpha[k][i] = 0;
+            double zbir = 0;
 
                 for(int j = 0; j < numberOfPossibleStatesZ; j++)
-                    alpha[k][i] += alpha[k-1][j] * emissionProbs[X[k]][i] * transitionProbs[j][i];
+                    zbir += alpha[k-1][j] * transitionProbs[j][i];
+            alpha[k][i] =  zbir * emissionProbs[X[k]][i];
         }
     }
 }
 
 void Model::computeBeta()
 {
-    cout << "usao u computBeta" << endl;
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
         beta[numberOfObservedVars-1][i] = 1;
 
@@ -111,19 +111,24 @@ void Model::computeGamma()
 {
     for(int k = 0; k < numberOfObservedVars; k++)
     {
+        cout << k+1 << " prolaz" << endl;
         double zbir = 0;
-
 
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
         {
             zbir += alpha[k][i] * beta[k][i];
-           // cout << "usao u drugi for: zbir += alpha[k][i] * beta[k][i];";
         }
 
         double normCoef = 1 / zbir;
+
+        cout << "normCoef je: " << normCoef;
+
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
         {
+            cout << alpha[k][i] << endl;
+            cout << beta[k][i] << endl;
             gamma[k][i] = alpha[k][i] * beta[k][i] * normCoef;
+            //cout << gamma[k][i] << " ";
         }
     }
 }
@@ -283,7 +288,15 @@ void Model::printBeta()
         cout << endl;
     }
 }
-
+void Model::printGamma()
+{
+    for(int i = 0; i < numberOfObservedVars; i++)
+    {
+        for(int j = 0; j < numberOfPossibleStatesZ; j++)
+            cout << gamma[i][j] << " ";
+        cout << endl;
+    }
+}
 
 int Model::getNumberOfObservedVars(){return numberOfObservedVars;}
 void Model::setNumberOfObservedVars(int m_setNumberOfObservedVars){numberOfObservedVars = m_setNumberOfObservedVars;}
@@ -341,12 +354,11 @@ void Model::testPi()
     initializeAlpha();
     cout << "initializeAlpha();" << endl;
     initializeBeta();
-    cout << " initializeBeta();" << endl;
+    cout << "initializeBeta();" << endl;
     initializeGamma();
     cout << "initializeGamma();" << endl;
 
     computeAlpha();
-
     cout <<"computeAlpha" <<endl;
     computeBeta();
     cout << "computeBeta()" << endl;

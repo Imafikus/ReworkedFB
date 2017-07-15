@@ -66,7 +66,7 @@ int main()
 
     Model model(observedVars, statesZ, statesX, X, Pi, T, E, k);
 
-    /*model.printNumberOfVars();
+   /* model.printNumberOfVars();
     cout << endl;
     model.printNumberOfPossibleStatesZ();
     cout << endl;
@@ -83,6 +83,7 @@ int main()
     model.printNumberOfIterations();
     cout << endl;*/
 
+
     //model.printX();
 
 
@@ -92,14 +93,15 @@ int main()
     cout << endl;
 
     model.printBeta();
+    cout << endl;
 
-
-    double* testedPi = model.getP();
+    model.printGamma();
+    /*double* testedPi = model.getP();
 
     for (int i = 0; i < statesZ; i++)
     {
         cout << testedPi[i] << endl;
-    }
+    }*/
 
     //UnitTest tester;
 
