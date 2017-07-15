@@ -104,11 +104,11 @@ int main()
     model.printTrans();
     cout << endl;
 
-    model.printMi();
+    /*model.printMi();
     cout << endl;
 
     model.printEmission();
-    cout << endl;
+    cout << endl;*/
 
 
 }

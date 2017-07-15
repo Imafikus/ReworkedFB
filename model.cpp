@@ -56,8 +56,9 @@ void Model::initializeMi()
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
         mi[i] = new double[numberOfPossibleStatesZ];
 
-
-
+    for(int i = 0; i < numberOfObservedVars; i++)
+        for(int j = 0; j < numberOfPossibleStatesZ; j++)
+            mi[i][j] = 0;
 }
 void Model::computeAlpha()
 {
@@ -82,22 +83,6 @@ void Model::computeBeta()
 {
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
         beta[numberOfObservedVars-1][i] = 1;
-
-     /*for(int i = 0; i < numberOfObservedVars; i++)
-            {
-                 for(int j = 0; j < numberOfPossibleStatesZ; j++)
-                    cout << transitionProbs[i][j] << " ";
-                cout<<endl;
-            }
-    cout << endl;
-    cout <<"========================"<<endl;
-    cout << endl;
-     for(int i = 0; i < numberOfObservedVars; i++)
-        {
-             for(int j = 0; j < numberOfPossibleStatesZ; j++)
-                cout << emissionProbs[i][j] << " ";
-            cout<<endl;
-        }*/
 
     for(int k = numberOfObservedVars-2; k >= 0; k--)
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
@@ -137,24 +122,21 @@ void Model::computeNextP()
 }
 void Model::computeKsi(int currentObservedState)
 {
-    for(int i = 0; i < numberOfPossibleStatesZ; i++)
+    for(int i = 0; i < numberOfObservedVars; i++)
     {
         double zbir = 0;
 
         for(int j = 0; j < numberOfPossibleStatesZ; j++)
             zbir += alpha[currentObservedState][j] * beta[currentObservedState][j] *
                     emissionProbs[X[currentObservedState]][j] * transitionProbs[i][j];
-
+        cout << "PROSAO FOR PRVI" << endl;
         double normCoef = 1 / zbir;
 
         for(int j = 0; j < numberOfPossibleStatesZ; j++)
         {
             ksi[i][j] = alpha[currentObservedState][i] * beta[currentObservedState][j] *
                     emissionProbs[X[currentObservedState]][j] * transitionProbs[i][j] * normCoef;
-         //   cout<<ksi[i][j] <<" ";
         }
-       // cout <<endl;
-
     }
 }
 void Model::computeCurrentT(int currentObservedState)
@@ -391,10 +373,10 @@ void Model::testPi()
     cout << "computeNextP" << endl;
     computeKsi(0);
     cout << "computeKsi" << endl;
-    computeCurrentT(0);
-    cout << "computeCurrentT" << endl;
+   // computeCurrentT(0);
+   /* cout << "computeCurrentT" << endl;
     computeMi();
     cout << "computeMi" << endl;
     computeE();
-    cout << "computeE" << endl;
+    cout << "computeE" << endl;*/
 }
