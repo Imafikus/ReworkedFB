@@ -65,7 +65,7 @@ void Model::computeAlpha()
 
     for(int k = 1; k < numberOfObservedVars; k++)
     {
-        for(int i = 1; i < numberOfPossibleStatesZ; i++)
+        for(int i = 0; i < numberOfPossibleStatesZ; i++)
         {
             alpha[k][i] = 0;
 
@@ -121,11 +121,9 @@ void Model::computeGamma()
         }
 
         double normCoef = 1 / zbir;
-        //cout << "nasao koeficijent" << endl;
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
         {
             gamma[k][i] = alpha[k][i] * beta[k][i] * normCoef;
-          //  cout << "racuna gama zapravo";
         }
     }
 }

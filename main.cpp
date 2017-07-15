@@ -94,12 +94,12 @@ int main()
     model.printBeta();
 
 
-    /*double* testedPi = model.getP();
+    double* testedPi = model.getP();
 
     for (int i = 0; i < statesZ; i++)
     {
         cout << testedPi[i] << endl;
-    }*/
+    }
 
     //UnitTest tester;
 
