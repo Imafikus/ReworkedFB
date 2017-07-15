@@ -104,8 +104,8 @@ int main()
     model.printKsi();
     cout << endl;
 
-    /*model.printTrans();
-    cout << endl;*/
+    model.printTrans();
+    cout << endl;
 
     /*model.printMi();
     cout << endl;
