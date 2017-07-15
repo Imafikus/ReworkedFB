@@ -56,6 +56,8 @@ void Model::initializeMi()
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
         mi[i] = new double[numberOfPossibleStatesZ];
 
+
+
 }
 void Model::computeAlpha()
 {
@@ -111,7 +113,6 @@ void Model::computeGamma()
 {
     for(int k = 0; k < numberOfObservedVars; k++)
     {
-        cout << k+1 << " prolaz" << endl;
         double zbir = 0;
 
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
@@ -121,14 +122,10 @@ void Model::computeGamma()
 
         double normCoef = 1 / zbir;
 
-        cout << "normCoef je: " << normCoef;
 
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
         {
-            cout << alpha[k][i] << endl;
-            cout << beta[k][i] << endl;
             gamma[k][i] = alpha[k][i] * beta[k][i] * normCoef;
-            //cout << gamma[k][i] << " ";
         }
     }
 }
@@ -154,9 +151,9 @@ void Model::computeKsi(int currentObservedState)
         {
             ksi[i][j] = alpha[currentObservedState][i] * beta[currentObservedState][j] *
                     emissionProbs[X[currentObservedState]][j] * transitionProbs[i][j] * normCoef;
-            cout<<ksi[i][j] <<" ";
+         //   cout<<ksi[i][j] <<" ";
         }
-        cout <<endl;
+       // cout <<endl;
 
     }
 }
@@ -297,7 +294,24 @@ void Model::printGamma()
         cout << endl;
     }
 }
-
+void Model::printKsi()
+{
+   for(int i = 0; i < numberOfObservedVars; i++)
+   {
+        for(int j = 0; j < numberOfPossibleStatesZ; j++)
+            cout << ksi[i][j] << " ";
+        cout << endl;
+   }
+}
+void Model::printMi()
+{
+    for(int i = 0; i < numberOfPossibleStatesX; i++)
+    {
+        for(int j = 0; j < numberOfPossibleStatesZ; j++)
+            cout << mi[i][j] << " ";
+        cout << endl;
+    }
+}
 int Model::getNumberOfObservedVars(){return numberOfObservedVars;}
 void Model::setNumberOfObservedVars(int m_setNumberOfObservedVars){numberOfObservedVars = m_setNumberOfObservedVars;}
 
@@ -337,6 +351,7 @@ void Model::train()
     initializeAlpha();
     initializeBeta();
     initializeKsi();
+    initializeMi();
 
 
     //for(int currentObservedState = 0; currentObservedState < numberOfPossibleStatesX; currentObservedState++)
@@ -345,6 +360,10 @@ void Model::train()
             computeBeta();
             computeGamma();
             computeKsi(currentObservedState);
+
+            computeCurrentT(0);
+            computeMi();
+            computeE();
        // }
 
 
@@ -357,6 +376,10 @@ void Model::testPi()
     cout << "initializeBeta();" << endl;
     initializeGamma();
     cout << "initializeGamma();" << endl;
+    initializeKsi();
+    cout << "initializeKsi();" << endl;
+    initializeMi();
+    cout << "initializeMi();" << endl;
 
     computeAlpha();
     cout <<"computeAlpha" <<endl;
@@ -365,6 +388,13 @@ void Model::testPi()
     computeGamma();
     cout << "computeGamma" << endl;
     computeNextP();
-    cout << "computeNextP" <<endl;
-
+    cout << "computeNextP" << endl;
+    computeKsi(0);
+    cout << "computeKsi" << endl;
+    computeCurrentT(0);
+    cout << "computeCurrentT" << endl;
+    computeMi();
+    cout << "computeMi" << endl;
+    computeE();
+    cout << "computeE" << endl;
 }

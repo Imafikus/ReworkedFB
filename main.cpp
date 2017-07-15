@@ -96,15 +96,20 @@ int main()
     cout << endl;
 
     model.printGamma();
-    /*double* testedPi = model.getP();
+    cout << endl;
 
-    for (int i = 0; i < statesZ; i++)
-    {
-        cout << testedPi[i] << endl;
-    }*/
+    model.printKsi();
+    cout << endl;
 
-    //UnitTest tester;
+    model.printTrans();
+    cout << endl;
 
-    //tester.testP(testedPi, statesZ);
+    model.printMi();
+    cout << endl;
+
+    model.printEmission();
+    cout << endl;
+
+
 }
 

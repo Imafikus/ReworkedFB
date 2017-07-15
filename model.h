@@ -78,6 +78,8 @@ public:
     void printAlpha();
     void printBeta();
     void printGamma();
+    void printKsi();
+    void printMi();
 
 
     int getNumberOfObservedVars();
