@@ -11,57 +11,98 @@ using namespace std;
 void Model::initializeAlpha()
 {
     alpha = new double*[numberOfObservedVars];
-    for(int i = 0; i < numberOfPossibleStatesZ; i++)
-            alpha[i] = new double[numberOfPossibleStatesZ];
+    for(int i = 0; i < numberOfObservedVars; i++)
+        alpha[i] = new double[numberOfPossibleStatesZ];
+
+    for(int i = 0; i < numberOfObservedVars; i++)
+        for(int j = 0; j < numberOfPossibleStatesZ; j++)
+            alpha[i][j] = 0;
+
 }
 void Model::initializeBeta()
 {
     beta = new double*[numberOfObservedVars];
-    for(int i = 0; i < numberOfPossibleStatesZ; i++)
+    for(int i = 0; i < numberOfObservedVars; i++)
             beta[i] = new double[numberOfPossibleStatesZ];
+
+    for(int i = 0; i < numberOfObservedVars; i++)
+        for(int j = 0; j < numberOfPossibleStatesZ; j++)
+            beta[i][j] = 0;
 }
 void Model::initializeGamma()
 {
     gamma = new double *[numberOfObservedVars];
-    for(int i = 0; i < numberOfPossibleStatesZ; i++)
+    for(int i = 0; i < numberOfObservedVars; i++)
         gamma[i] = new double [numberOfPossibleStatesZ];
+
+    for(int i = 0; i < numberOfObservedVars; i++)
+        for(int j = 0; j < numberOfPossibleStatesZ; j++)
+            gamma[i][j] = 0;
 }
 void Model::initializeKsi()
 {
     ksi = new double*[numberOfPossibleStatesZ];
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
             ksi[i] = new double[numberOfPossibleStatesZ];
+
+    for(int i = 0; i < numberOfObservedVars; i++)
+        for(int j = 0; j < numberOfPossibleStatesZ; j++)
+            ksi[i][j] = 0;
 }
 void Model::initializeMi()
 {
     mi = new double*[numberOfObservedVars];
 
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
-        mi[i] = new double[numberOfPossibleStatesZ] ;
+        mi[i] = new double[numberOfPossibleStatesZ];
+
 }
 void Model::computeAlpha()
 {
-    for(int k = 0; k < numberOfObservedVars; k++)
+    for (int i = 0; i < numberOfPossibleStatesZ; i++)
+        alpha[0][i] = P[i] * emissionProbs[X[0]][i];
+
+    for(int k = 1; k < numberOfObservedVars; k++)
     {
-        for(int i = 0; i < numberOfPossibleStatesZ; i++)
-            alpha[k][0] += P[i] * emissionProbs[X[k]][i];
-
-
         for(int i = 1; i < numberOfPossibleStatesZ; i++)
+        {
+            alpha[k][i] = 0;
+
                 for(int j = 0; j < numberOfPossibleStatesZ; j++)
-                    alpha[k][i] += alpha[k][i-1] * emissionProbs[X[k]][i] * transitionProbs[i][j];
+                    alpha[k][i] += alpha[k-1][j] * emissionProbs[X[k]][i] * transitionProbs[j][i];
+        }
     }
 }
+
 void Model::computeBeta()
 {
-    for(int k = 0; k < numberOfObservedVars; k++)
-    {
-        beta[k][numberOfPossibleStatesZ-1] = 1;
+    for(int i = 0; i < numberOfPossibleStatesZ; i++)
+        beta[numberOfObservedVars-1][i] = 1;
 
-        for(int i = numberOfPossibleStatesZ-2; i >=0; i--)
-            for(int j = 0; j < numberOfPossibleStatesZ; j++)
-                beta[k][i] += beta[k][i+1] * emissionProbs[X[k]][i] * transitionProbs[i][j];
-    }
+     for(int i = 0; i < numberOfObservedVars; i++)
+            {
+                 for(int j = 0; j < numberOfPossibleStatesZ; j++)
+                    cout << transitionProbs[i][j] << " ";
+                cout<<endl;
+            }
+    cout << endl;
+    cout <<"========================"<<endl;
+    cout << endl;
+     for(int i = 0; i < numberOfObservedVars; i++)
+        {
+             for(int j = 0; j < numberOfPossibleStatesZ; j++)
+                cout << emissionProbs[i][j] << " ";
+            cout<<endl;
+        }
+
+    for(int k = numberOfObservedVars-2; k >= 0; k--)
+        for(int i = 0; i < numberOfPossibleStatesZ; i++)
+            {
+                beta[k][i] = 0;
+
+                for(int j = 0; j < numberOfPossibleStatesZ; j++)
+                    beta[k][i] += beta[k+1][j] * emissionProbs[X[k+1]][j] * transitionProbs[i][j];
+            }
 }
 
 void Model::computeGamma()
@@ -70,18 +111,31 @@ void Model::computeGamma()
     {
         double zbir = 0;
 
-        for(int i = 0; i < numberOfPossibleStatesZ; i++)
-            zbir += alpha[k][i] * beta[k][i];
-
-        double normCoef = 1 / zbir;
 
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
         {
+            zbir += alpha[k][i] * beta[k][i];
+           // cout << "usao u drugi for: zbir += alpha[k][i] * beta[k][i];";
+        }
+
+        double normCoef = 1 / zbir;
+        //cout << "nasao koeficijent" << endl;
+        for(int i = 0; i < numberOfPossibleStatesZ; i++)
+        {
             gamma[k][i] = alpha[k][i] * beta[k][i] * normCoef;
+          //  cout << "racuna gama zapravo";
         }
     }
 }
-
+void Model::printTrans()
+{
+    for(int i = 0; i < numberOfPossibleStatesZ; i++)
+    {
+         for(int j = 0; j < numberOfPossibleStatesZ; j++)
+            cout << transitionProbs[i][j] << " ";
+        cout<<endl;
+    }
+}
 void Model::computeNextP()
 {
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
@@ -210,6 +264,12 @@ void Model::setEmissionMatrix (double **m_emissionProbs){emissionProbs = m_emiss
 
 int *Model::getArrayX(){return X;}
 void *Model::setArrayX(int *m_X){X = m_X;}
+
+void Model::printX()
+{
+    for(int i = 0; i < numberOfObservedVars; i++)
+        cout << X[i] << endl;
+}
 
 void Model::train()
 {

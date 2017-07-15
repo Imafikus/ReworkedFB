@@ -64,16 +64,23 @@ int main()
 
     Model model(observedVars, statesZ, statesX, X, Pi, E, T, k);
 
-    model.testPi();
+    model.printX();
 
-    double* testedPi = model.getP();
+   // model.testPi();
+
+    model.printTrans();
+    //getInitialValues(observedVars,statesZ, statesX, X, Pi, E, T, k);
+    //cout << observedVars << endl;
+
+   /* double* testedPi = model.getP();
 
     for (int i = 0; i < statesZ; i++)
     {
-        cout << testedPi[i];
+        cout << testedPi[i] << endl;
     }
-    UnitTest tester;
+    */
+    //UnitTest tester;
 
-    tester.testP(testedPi, statesZ);
+    //tester.testP(testedPi, statesZ);
 }
 

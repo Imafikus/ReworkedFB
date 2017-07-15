@@ -63,7 +63,7 @@ private:
 public:
 
     Model(int m_observedVars, int m_statesZ, int m_statesX, int *m_X, double *m_P, double **m_T, double ** m_E, int m_Iter):
-        numberOfObservedVars(m_observedVars), numberOfPossibleStatesZ(m_statesZ), numberOfPossibleStatesX(m_statesX),
+        numberOfObservedVars(m_observedVars), numberOfPossibleStatesZ(m_statesZ), numberOfPossibleStatesX(m_statesX), X(m_X),
         P(m_P), transitionProbs(m_T), emissionProbs(m_E), numberOfIterations(m_Iter){}
 
     int getNumberOfObservedVars();
@@ -93,6 +93,9 @@ public:
     int *getArrayX();
     void *setArrayX(int *m_X);
 
+    void printX();
+
+    void printTrans();
 
     void train();
     void testPi();
