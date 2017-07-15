@@ -228,16 +228,17 @@ void Model::computeE()
 
 //PUBLIC FUNCTIONS
 
-void Model::printNumberOfVars(){cout <<numberOfObservedVars;}
+void Model::printNumberOfVars(){cout <<numberOfObservedVars << endl;}
 
-void Model::printNumberOfPossibleStatesZ(){cout << numberOfPossibleStatesZ;}
+void Model::printNumberOfPossibleStatesZ(){cout << numberOfPossibleStatesZ << endl;}
 
-void Model::printNumberOfPossibleStatesX(){cout << numberOfPossibleStatesX;}
+void Model::printNumberOfPossibleStatesX(){cout << numberOfPossibleStatesX << endl;}
 
 void Model::printX()
 {
     for(int i = 0; i < numberOfObservedVars; i++)
-        cout << X[i] << endl;
+        cout << X[i] << " ";
+    cout << endl;
 }
 void Model::printP()
 {
@@ -263,7 +264,7 @@ void Model::printEmission()
         cout << endl;
     }
 }
-void Model::printNumberOfIterations(){cout << numberOfIterations;}
+void Model::printNumberOfIterations(){cout << numberOfIterations << endl;}
 
 
 int Model::getNumberOfObservedVars(){return numberOfObservedVars;}

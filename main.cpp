@@ -63,7 +63,8 @@ int main()
     getInitialValues(observedVars,statesZ, statesX, X, Pi, E, T, k);
 
 
-    Model model(observedVars, statesZ, statesX, X, Pi, E, T, k);
+
+    Model model(observedVars, statesZ, statesX, X, Pi, T, E, k);
 
     model.printNumberOfVars();
     cout << endl;
