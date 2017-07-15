@@ -45,7 +45,7 @@ void Model::initializeKsi()
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
             ksi[i] = new double[numberOfPossibleStatesZ];
 
-    for(int i = 0; i < numberOfObservedVars; i++)
+    for(int i = 0; i < numberOfPossibleStatesZ; i++)
         for(int j = 0; j < numberOfPossibleStatesZ; j++)
             ksi[i][j] = 0;
 }
@@ -122,7 +122,7 @@ void Model::computeNextP()
 }
 void Model::computeKsi(int currentObservedState)
 {
-    for(int i = 0; i < numberOfObservedVars; i++)
+    for(int i = 0; i < numberOfPossibleStatesZ; i++)
     {
         double zbir = 0;
 
@@ -147,8 +147,10 @@ void Model::computeCurrentT(int currentObservedState)
 
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
     {
+        cout << "usao u petlju";
         for(int j = 0; j <= currentObservedState; i++)
             im1 += ksi[i][j];
+        cout << "prosao prvi for" << endl;
 
         for(int l = 0; l < currentObservedState; l++)
             for(int j = 0; j <numberOfPossibleStatesZ; j++)
@@ -278,7 +280,7 @@ void Model::printGamma()
 }
 void Model::printKsi()
 {
-   for(int i = 0; i < numberOfObservedVars; i++)
+   for(int i = 0; i < numberOfPossibleStatesZ; i++)
    {
         for(int j = 0; j < numberOfPossibleStatesZ; j++)
             cout << ksi[i][j] << " ";
@@ -360,8 +362,8 @@ void Model::testPi()
     cout << "initializeGamma();" << endl;
     initializeKsi();
     cout << "initializeKsi();" << endl;
-    initializeMi();
-    cout << "initializeMi();" << endl;
+    /*initializeMi();
+    cout << "initializeMi();" << endl;*/
 
     computeAlpha();
     cout <<"computeAlpha" <<endl;
@@ -373,9 +375,9 @@ void Model::testPi()
     cout << "computeNextP" << endl;
     computeKsi(0);
     cout << "computeKsi" << endl;
-   // computeCurrentT(0);
-   /* cout << "computeCurrentT" << endl;
-    computeMi();
+   /* computeCurrentT(0);
+    cout << "computeCurrentT" << endl;
+   /* computeMi();
     cout << "computeMi" << endl;
     computeE();
     cout << "computeE" << endl;*/

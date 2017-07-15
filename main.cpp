@@ -98,11 +98,14 @@ int main()
     model.printGamma();
     cout << endl;
 
+    model.printP();
+    cout << endl;
+
     model.printKsi();
     cout << endl;
 
-    model.printTrans();
-    cout << endl;
+    /*model.printTrans();
+    cout << endl;*/
 
     /*model.printMi();
     cout << endl;
