@@ -62,13 +62,32 @@ int main()
 
     getInitialValues(observedVars,statesZ, statesX, X, Pi, E, T, k);
 
+
     Model model(observedVars, statesZ, statesX, X, Pi, E, T, k);
 
+    model.printNumberOfVars();
+    cout << endl;
+    model.printNumberOfPossibleStatesZ();
+    cout << endl;
+    model.printNumberOfPossibleStatesX();
+    cout << endl;
     model.printX();
+    cout << endl;
+    model.printP();
+    cout << endl;
+    model.printEmission();
+    cout << endl;
+    model.printTrans();
+    cout << endl;
+    model.printNumberOfIterations();
+    cout << endl;
+
+    //model.printX();
+
 
    // model.testPi();
 
-    model.printTrans();
+    //model.printTrans();
     //getInitialValues(observedVars,statesZ, statesX, X, Pi, E, T, k);
     //cout << observedVars << endl;
 

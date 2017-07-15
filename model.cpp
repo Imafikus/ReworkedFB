@@ -127,15 +127,6 @@ void Model::computeGamma()
         }
     }
 }
-void Model::printTrans()
-{
-    for(int i = 0; i < numberOfPossibleStatesZ; i++)
-    {
-         for(int j = 0; j < numberOfPossibleStatesZ; j++)
-            cout << transitionProbs[i][j] << " ";
-        cout<<endl;
-    }
-}
 void Model::computeNextP()
 {
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
@@ -237,6 +228,43 @@ void Model::computeE()
 
 //PUBLIC FUNCTIONS
 
+void Model::printNumberOfVars(){cout <<numberOfObservedVars;}
+
+void Model::printNumberOfPossibleStatesZ(){cout << numberOfPossibleStatesZ;}
+
+void Model::printNumberOfPossibleStatesX(){cout << numberOfPossibleStatesX;}
+
+void Model::printX()
+{
+    for(int i = 0; i < numberOfObservedVars; i++)
+        cout << X[i] << endl;
+}
+void Model::printP()
+{
+    for(int i = 0; i < numberOfPossibleStatesZ; i++)
+        cout << P[i] << " ";
+    cout << endl;
+}
+void Model::printTrans()
+{
+    for(int i = 0; i < numberOfPossibleStatesZ; i++)
+    {
+         for(int j = 0; j < numberOfPossibleStatesZ; j++)
+            cout << transitionProbs[i][j] << " ";
+        cout<<endl;
+    }
+}
+void Model::printEmission()
+{
+    for(int i = 0 ; i < numberOfPossibleStatesX; i++)
+    {
+        for(int j = 0; j < numberOfPossibleStatesZ; j++)
+            cout << emissionProbs[i][j] << " ";
+        cout << endl;
+    }
+}
+void Model::printNumberOfIterations(){cout << numberOfIterations;}
+
 
 int Model::getNumberOfObservedVars(){return numberOfObservedVars;}
 void Model::setNumberOfObservedVars(int m_setNumberOfObservedVars){numberOfObservedVars = m_setNumberOfObservedVars;}
@@ -265,11 +293,7 @@ void Model::setEmissionMatrix (double **m_emissionProbs){emissionProbs = m_emiss
 int *Model::getArrayX(){return X;}
 void *Model::setArrayX(int *m_X){X = m_X;}
 
-void Model::printX()
-{
-    for(int i = 0; i < numberOfObservedVars; i++)
-        cout << X[i] << endl;
-}
+
 
 void Model::train()
 {

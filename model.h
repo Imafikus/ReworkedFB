@@ -66,6 +66,17 @@ public:
         numberOfObservedVars(m_observedVars), numberOfPossibleStatesZ(m_statesZ), numberOfPossibleStatesX(m_statesX), X(m_X),
         P(m_P), transitionProbs(m_T), emissionProbs(m_E), numberOfIterations(m_Iter){}
 
+
+    void printNumberOfVars();
+    void printNumberOfPossibleStatesZ();
+    void printNumberOfPossibleStatesX();
+    void printX();
+    void printP();
+    void printTrans();
+    void printEmission();
+    void printNumberOfIterations();
+
+
     int getNumberOfObservedVars();
     void setNumberOfObservedVars(int m_setNumberOfObservedVars);
 
@@ -93,9 +104,6 @@ public:
     int *getArrayX();
     void *setArrayX(int *m_X);
 
-    void printX();
-
-    void printTrans();
 
     void train();
     void testPi();
