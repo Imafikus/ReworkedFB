@@ -62,6 +62,7 @@ void Model::computeAlpha()
     for (int i = 0; i < numberOfPossibleStatesZ; i++)
         alpha[0][i] = P[i] * emissionProbs[X[0]][i];
 
+
     for(int k = 1; k < numberOfObservedVars; k++)
     {
         for(int i = 1; i < numberOfPossibleStatesZ; i++)
@@ -76,10 +77,11 @@ void Model::computeAlpha()
 
 void Model::computeBeta()
 {
+    cout << "usao u computBeta" << endl;
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
         beta[numberOfObservedVars-1][i] = 1;
 
-     for(int i = 0; i < numberOfObservedVars; i++)
+     /*for(int i = 0; i < numberOfObservedVars; i++)
             {
                  for(int j = 0; j < numberOfPossibleStatesZ; j++)
                     cout << transitionProbs[i][j] << " ";
@@ -93,7 +95,7 @@ void Model::computeBeta()
              for(int j = 0; j < numberOfPossibleStatesZ; j++)
                 cout << emissionProbs[i][j] << " ";
             cout<<endl;
-        }
+        }*/
 
     for(int k = numberOfObservedVars-2; k >= 0; k--)
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
@@ -265,6 +267,24 @@ void Model::printEmission()
     }
 }
 void Model::printNumberOfIterations(){cout << numberOfIterations << endl;}
+void Model::printAlpha()
+{
+    for(int i = 0; i < numberOfObservedVars; i++)
+    {
+        for(int j = 0; j < numberOfPossibleStatesZ; j++)
+            cout << alpha[i][j] << " ";
+        cout << endl;
+    }
+}
+void Model::printBeta()
+{
+    for(int i = 0; i < numberOfObservedVars; i++)
+    {
+        for(int j = 0; j < numberOfPossibleStatesZ; j++)
+            cout << beta[i][j];
+        cout << endl;
+    }
+}
 
 
 int Model::getNumberOfObservedVars(){return numberOfObservedVars;}

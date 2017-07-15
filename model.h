@@ -75,6 +75,8 @@ public:
     void printTrans();
     void printEmission();
     void printNumberOfIterations();
+    void printAlpha();
+    void printBeta();
 
 
     int getNumberOfObservedVars();
