@@ -11,14 +11,16 @@ void initialization(int &observedVars, int &statesZ, int &statesX, int * &X, dou
     X = new int[observedVars];
     Pi = new double[statesZ];
 
+    cout << "Making array E of size " << statesX << " x " << statesZ << endl;  
     E = new double*[statesX];
     T = new double*[statesZ];
 
     for(int i = 0; i < statesZ; i++)
         {
-            E[i] = new double[statesZ];
+
             T[i] = new double[statesZ];
         }
+    for (int i = 0; i<statesX; i++) E[i] = new double[statesZ];
 }
 
 void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, double * &Pi, double ** &E, double ** &T, int &k)
@@ -28,22 +30,33 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
     inf >> observedVars;
     inf >> statesZ;
     inf >> statesX;
+    cout << "States Z = " << statesZ << " states X = " << statesX << endl;
 
     initialization(observedVars,statesZ, statesX, X, Pi, E, T);
-
-    for(int i = 0; i < observedVars; i++)
+    
+    cout << "Loading X\n";
+    for(int i = 0; i < observedVars; i++) {
         inf >> X[i];
-
-    for(int i = 0; i < statesZ; i++)
+	cout << X[i] << endl;
+	}
+    cout << "Loading P\n";
+    for(int i = 0; i < statesZ; i++){
         inf >> Pi[i];
-
+	cout << Pi[i] << endl;
+    }
+    cout << "Loading T\n";
     for(int i = 0; i < statesZ; i++)
-        for(int j = 0; j < statesZ; j++)
+        for(int j = 0; j < statesZ; j++) {
             inf >> T[i][j];
-
+	    cout << T[i][j] << endl;
+	}
+    cout << "Loading E\n";
     for(int i = 0; i < statesX; i++)
-        for(int j = 0; j < statesZ; j++)
+        for(int j = 0; j < statesZ; j++) {
+	    cout << i << " " << j << endl;
             inf >> E[i][j];
+	    cout << E[i][j] << endl;
+	}
 
     inf >> k;
 }
@@ -61,6 +74,7 @@ int main()
 
 
     getInitialValues(observedVars,statesZ, statesX, X, Pi, E, T, k);
+    cout << "aaa\n";
 
 
 
@@ -88,7 +102,7 @@ int main()
 
 
     model.testPi();
-
+/*
     model.printAlpha();
     cout << endl;
 
@@ -116,6 +130,6 @@ int main()
     model.printNumberOfIterations();
     cout << endl;
 
-
+*/
 }
 
