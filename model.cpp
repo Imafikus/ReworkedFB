@@ -140,26 +140,44 @@ void Model::computeKsi(int currentObservedState)
 }
 void Model::computeCurrentT(int currentObservedState)
 {
-    double br = 0;
-    double im1 = 0;
-    double im2 = 0;
+    static double** ksiSum = nullptr;
+
+    if(ksiSum == nullptr)
+    {
+        ksiSum = new double*[numberOfPossibleStatesZ];
+        for(int i = 0; i < numberOfPossibleStatesZ; i++)
+            ksiSum[i] = new double[numberOfPossibleStatesZ];
+
+        for(int i = 0; i < numberOfPossibleStatesZ; i++)
+            for(int j = 0; j < numberOfPossibleStatesZ; j++)
+                ksiSum[i][j] = 0;
+    }
+
+    for(int i = 0; i < numberOfPossibleStatesZ; i++)
+        for(int j = 0; j < numberOfPossibleStatesZ; j++)
+            ksiSum[i][j] += ksi[i][j];
+
+
 
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
     {
-        for(int j = 0; j < numberOfPossibleStatesZ; j++)
-            im1 += ksi[i][j];
-        cout <<"JEBEM TI SE S KEVOM BRE1: " << im1 << endl;
+        double sumGamma = 0;
+        double sumaReda = 0;
+        for(int j = 0; j < numberOfObservedVars; j++)
+            sumGamma += gamma[j][i];
 
-        for(int l = 0; l < numberOfPossibleStatesZ; l++)
-            for(int j = 0; j < numberOfPossibleStatesZ; j++)
-                im2 += ksi[l][j];
-        cout <<"JEBEM TI SE S KEVOM BRE1: " << im2 << endl;
-
-        for(int j = 0; j < numberOfPossibleStatesZ; j++)
+        for(int j = 0; j < numberOfPossibleStatesZ ; j++)
         {
-            br = ksi[i][j];
-            transitionProbs[i][j] = br / (im1 + im2);
+
+            transitionProbs[i][j] = ksi[i][j] / sumGamma;
+            sumaReda += transitionProbs[i][j];
+
         }
+        double normCoef = 1 /sumaReda;
+
+        for(int j = 0; j < numberOfPossibleStatesZ ; j++)
+            transitionProbs[i][j] *= normCoef;
+
     }
 }
 void Model::computeMi()
