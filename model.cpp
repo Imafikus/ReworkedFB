@@ -5,8 +5,17 @@
 
 using namespace std;
 
-
-
+void printMat(double** a, int n, int m) 
+{
+	for (int i =0; i<n; i++) 
+	{
+		for (int j=0; j<m; j++) 
+		{
+			cout << a[i][j] << " ";
+		}
+		cout << endl;
+	}
+}
 
 void Model::initializeAlpha()
 {
@@ -125,22 +134,32 @@ void Model::computeKsi(int t)
 {
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
     {
-    	for (int j = 0; j<numberOfPossibleStatesZ; j++) 
+    	int j;
+    	double s = 0; 
+    	for (j = 0; j<numberOfPossibleStatesZ; j++) 
 	{
 		double sum = 0; 
 		for (int k = 0; k<numberOfPossibleStatesZ; k++) 
 		{
 			for (int l = 0; l<numberOfPossibleStatesZ; l++) 
 			{
-				sum += alpha[t][k] * transitionProbs[k][l] * beta[t+1][l] * emissionProbs[X[t+1]][l];
+				sum += alpha[t][k] * beta[t+1][l] * emissionProbs[X[t+1]][l];
 			}
 		}
-		ksi[i][j] = alpha[t][i] * transitionProbs[i][j] * beta[t+1][j] * emissionProbs[X[t+1]][j] / sum;
+		
+		s += ksi[i][j] = alpha[t][i] * transitionProbs[i][j] * beta[t+1][j] * emissionProbs[X[t+1]][j] / sum;
 	}
+	for (j = 0; j<numberOfPossibleStatesZ; j++) 
+	{
+		ksi[i][j] /= s;
+	}
+	
     }
 }
 void Model::computeCurrentT()
 {
+
+	double newT[5][5];
     static double** ksiSum = nullptr;
 
         ksiSum = new double*[numberOfPossibleStatesZ];
@@ -156,6 +175,8 @@ void Model::computeCurrentT()
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
         for(int j = 0; j < numberOfPossibleStatesZ; j++)
             ksiSum[i][j] += ksi[i][j];
+    //cout << "for t = " << t << endl; 
+    //printMat(ksiSum, numberOfPossibleStatesZ, numberOfPossibleStatesZ);
     }
 
 
@@ -169,14 +190,14 @@ void Model::computeCurrentT()
         for(int j = 0; j < numberOfPossibleStatesZ ; j++)
         {
 
-            transitionProbs[i][j] = ksi[i][j] / sumGamma;
-            sumaReda += transitionProbs[i][j];
+            newT[i][j] = ksi[i][j] / sumGamma;
+            sumaReda += newT[i][j];
 
         }
         double normCoef = 1 /sumaReda;
 
-        for(int j = 0; j < numberOfPossibleStatesZ ; j++)
-            transitionProbs[i][j] *= normCoef;
+       for(int j = 0; j < numberOfPossibleStatesZ ; j++)
+            transitionProbs[i][j] = newT[i][j] * normCoef;
 
     }
 }
@@ -387,20 +408,26 @@ void Model::testPi()
     {
         computeAlpha();
         cout <<"computeAlpha" <<endl;
+	printAlpha();
         computeBeta();
         cout << "computeBeta()" << endl;
+	printBeta();
         computeGamma();
         cout << "computeGamma" << endl;
+	printGamma();
         computeNextP();
         cout << "computeNextP" << endl;
-        //computeKsi(i);
+	printP();
+        computeKsi(0);
         //cout << "computeKsi" << endl;
+	//printKsi();
         computeCurrentT();
         cout << "computeCurrentT" << endl;
+	printTrans();
         computeMi();
-        cout << "computeMi" << endl;
+        //cout << "computeMi" << endl;
         computeE();
-        cout << "computeE" << endl;
+        //cout << "computeE" << endl;
     }
 
    /* computeMi();
