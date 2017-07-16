@@ -121,30 +121,28 @@ void Model::computeNextP()
 
     P[i] = gamma[0][i];
 }
-void Model::computeKsi(int currentObservedState)
+void Model::computeKsi(int t)
 {
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
     {
-        double zbir = 0;
-
-        for(int j = 0; j < numberOfPossibleStatesZ; j++)
-            zbir += alpha[currentObservedState][j] * beta[currentObservedState][j] *
-                    emissionProbs[X[currentObservedState]][j] * transitionProbs[i][j];
-        double normCoef = 1 / zbir;
-
-        for(int j = 0; j < numberOfPossibleStatesZ; j++)
-        {
-            ksi[i][j] = alpha[currentObservedState][i] * beta[currentObservedState][j] *
-                    emissionProbs[X[currentObservedState]][j] * transitionProbs[i][j] * normCoef;
-        }
+    	for (int j = 0; j<numberOfPossibleStatesZ; j++) 
+	{
+		double sum = 0; 
+		for (int k = 0; k<numberOfPossibleStatesZ; k++) 
+		{
+			for (int l = 0; l<numberOfPossibleStatesZ; l++) 
+			{
+				sum += alpha[t][k] * transitionProbs[k][l] * beta[t+1][l] * emissionProbs[X[t+1]][l];
+			}
+		}
+		ksi[i][j] = alpha[t][i] * transitionProbs[i][j] * beta[t+1][j] * emissionProbs[X[t+1]][j] / sum;
+	}
     }
 }
 void Model::computeCurrentT()
 {
     static double** ksiSum = nullptr;
 
-    if(ksiSum == nullptr)
-    {
         ksiSum = new double*[numberOfPossibleStatesZ];
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
             ksiSum[i] = new double[numberOfPossibleStatesZ];
@@ -152,12 +150,13 @@ void Model::computeCurrentT()
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
             for(int j = 0; j < numberOfPossibleStatesZ; j++)
                 ksiSum[i][j] = 0;
-    }
 
+    for (int t = 0; t<numberOfObservedVars-1; t++) {
+    computeKsi(t);
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
         for(int j = 0; j < numberOfPossibleStatesZ; j++)
             ksiSum[i][j] += ksi[i][j];
-
+    }
 
 
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
@@ -394,8 +393,8 @@ void Model::testPi()
         cout << "computeGamma" << endl;
         computeNextP();
         cout << "computeNextP" << endl;
-        computeKsi(i);
-        cout << "computeKsi" << endl;
+        //computeKsi(i);
+        //cout << "computeKsi" << endl;
         computeCurrentT();
         cout << "computeCurrentT" << endl;
         computeMi();
