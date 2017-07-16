@@ -89,12 +89,24 @@ int main()
 
     model.testPi();
 
+    /*model.printP();
+    cout << endl;
+
+    model.printTrans();
+    cout << endl;
+
+    model.printEmission();
+    cout << endl;
+
+    model.printNumberOfIterations();
+    cout << endl;*/
+
     model.printAlpha();
     cout << endl;
 
     model.printBeta();
     cout << endl;
-
+/*
     model.printGamma();
     cout << endl;
 
@@ -114,7 +126,7 @@ int main()
     cout << endl;
 
     model.printNumberOfIterations();
-    cout << endl;
+    cout << endl;*/
 
 
 }
