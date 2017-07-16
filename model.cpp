@@ -400,6 +400,8 @@ void Model::testPi()
         cout << "computeCurrentT" << endl;
         computeMi();
         cout << "computeMi" << endl;
+        computeE();
+        cout << "computeE" << endl;
     }
 
    /* computeMi();

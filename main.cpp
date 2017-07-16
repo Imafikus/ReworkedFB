@@ -110,8 +110,11 @@ int main()
     model.printMi();
     cout << endl;
 
-    /*model.printEmission();
-    cout << endl;*/
+    model.printEmission();
+    cout << endl;
+
+    model.printNumberOfIterations();
+    cout << endl;
 
 
 }
