@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include "model.h"
 #include "unittest.h"
@@ -11,7 +12,7 @@ void initialization(int &observedVars, int &statesZ, int &statesX, int * &X, dou
     X = new int[observedVars];
     Pi = new double[statesZ];
 
-    cout << "Making array E of size " << statesX << " x " << statesZ << endl;  
+    cout << "Making array E of size " << statesX << " x " << statesZ << endl;
     E = new double*[statesX];
     T = new double*[statesZ];
 
@@ -33,7 +34,7 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
     cout << "States Z = " << statesZ << " states X = " << statesX << endl;
 
     initialization(observedVars,statesZ, statesX, X, Pi, E, T);
-    
+
     cout << "Loading X\n";
     for(int i = 0; i < observedVars; i++) {
         inf >> X[i];
@@ -102,50 +103,26 @@ int main()
 
 
     model.testPi();
-<<<<<<< HEAD
-
-    /*model.printP();
-    cout << endl;
-
-    model.printTrans();
-    cout << endl;
-
-    model.printEmission();
-    cout << endl;
-
-    model.printNumberOfIterations();
-    cout << endl;*/
-
-=======
 /*
->>>>>>> bb21280e2a628ee1657c5a83a2c45e2f2acf0a11
     model.printAlpha();
     cout << endl;
-
     model.printBeta();
     cout << endl;
-/*
     model.printGamma();
     cout << endl;
-
     model.printP();
     cout << endl;
-
     model.printKsi();
     cout << endl;
-
     model.printTrans();
     cout << endl;
-
     model.printMi();
     cout << endl;
-
     model.printEmission();
     cout << endl;
-
     model.printNumberOfIterations();
-    cout << endl;*/
-
+    cout << endl;
 */
 }
+
 

@@ -5,18 +5,21 @@
 
 using namespace std;
 
-void printMat(double** a, int n, int m) 
+void printMat(double** a, int n, int m)
 {
-	for (int i =0; i<n; i++) 
+	for (int i =0; i<n; i++)
 	{
-		for (int j=0; j<m; j++) 
+		for (int j=0; j<m; j++)
 		{
 			cout << a[i][j] << " ";
 		}
 		cout << endl;
 	}
 }
-
+void Model::initializeC()
+{
+    C = new double[numberOfObservedVars];
+}
 void Model::initializeAlpha()
 {
     alpha = new double*[numberOfObservedVars];
@@ -72,12 +75,24 @@ void Model::initializeMi()
 }
 void Model::computeAlpha()
 {
+    double sumC = 0;
     for (int i = 0; i < numberOfPossibleStatesZ; i++)
+    {
         alpha[0][i] = P[i] * emissionProbs[X[0]][i];
+        sumC += alpha[0][i];
+    }
 
+    C[0] = 1.0 /sumC;
+
+    for (int i = 0; i < numberOfPossibleStatesZ; i++)
+    {
+        alpha[0][i] *= C[0];
+    }
 
     for(int k = 1; k < numberOfObservedVars; k++)
     {
+        sumC = 0;
+
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
         {
             double zbir = 0;
@@ -85,14 +100,19 @@ void Model::computeAlpha()
                 for(int j = 0; j < numberOfPossibleStatesZ; j++)
                     zbir += alpha[k-1][j] * transitionProbs[j][i];
             alpha[k][i] =  zbir * emissionProbs[X[k]][i];
+            sumC += alpha[k][i];
         }
+        C[k] = 1.0 / sumC;
+
+        for(int i = 0; i < numberOfPossibleStatesZ; i++)
+            alpha[k][i] *= C[k];
     }
 }
 
 void Model::computeBeta()
 {
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
-        beta[numberOfObservedVars-1][i] = 1;
+        beta[numberOfObservedVars-1][i] = 1.0;
 
     for(int k = numberOfObservedVars-2; k >= 0; k--)
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
@@ -102,6 +122,7 @@ void Model::computeBeta()
                 for(int j = 0; j < numberOfPossibleStatesZ; j++)
                     beta[k][i] += beta[k+1][j] * emissionProbs[X[k+1]][j] * transitionProbs[i][j];
             }
+            beta[k][i] *= C[k+1];
 }
 
 void Model::computeGamma()
@@ -135,25 +156,25 @@ void Model::computeKsi(int t)
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
     {
     	int j;
-    	double s = 0; 
-    	for (j = 0; j<numberOfPossibleStatesZ; j++) 
+    	double s = 0;
+    	for (j = 0; j<numberOfPossibleStatesZ; j++)
 	{
-		double sum = 0; 
-		for (int k = 0; k<numberOfPossibleStatesZ; k++) 
+		double sum = 0;
+		for (int k = 0; k<numberOfPossibleStatesZ; k++)
 		{
-			for (int l = 0; l<numberOfPossibleStatesZ; l++) 
+			for (int l = 0; l<numberOfPossibleStatesZ; l++)
 			{
 				sum += alpha[t][k] * beta[t+1][l] * emissionProbs[X[t+1]][l];
 			}
 		}
-		
+
 		s += ksi[i][j] = alpha[t][i] * transitionProbs[i][j] * beta[t+1][j] * emissionProbs[X[t+1]][j] / sum;
 	}
-	for (j = 0; j<numberOfPossibleStatesZ; j++) 
+	for (j = 0; j<numberOfPossibleStatesZ; j++)
 	{
 		ksi[i][j] /= s;
 	}
-	
+
     }
 }
 void Model::computeCurrentT()
@@ -175,7 +196,7 @@ void Model::computeCurrentT()
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
         for(int j = 0; j < numberOfPossibleStatesZ; j++)
             ksiSum[i][j] += ksi[i][j];
-    //cout << "for t = " << t << endl; 
+    //cout << "for t = " << t << endl;
     //printMat(ksiSum, numberOfPossibleStatesZ, numberOfPossibleStatesZ);
     }
 
@@ -209,10 +230,10 @@ void Model::computeMi()
             double br = 0;
             double im = 0;
 	    for (int n = 0; n < numberOfObservedVars; n++)
-        {
-            if (X[n] == i) br += gamma[n][l];
-            im += gamma[n][l];
-        }
+            {
+                if (X[n] == i) br += gamma[n][l];
+                im += gamma[n][l];
+            }
 
             mi[i][l] = br / im;
         }

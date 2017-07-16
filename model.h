@@ -16,7 +16,7 @@ private:
     double **transitionProbs; // Transitiom probs
     double *P; //probs for Z1 to take some of the possible states
     int *X; // array of inputs
-
+    double *C;
     int *helpX;
     int *helpZ;
 
@@ -30,6 +30,7 @@ private:
 
     double **normalizedProbs;
 
+    void initializeC();
 
     void initializeAlpha();
 
