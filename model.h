@@ -51,9 +51,9 @@ private:
 
     void computeNextP();
 
-    void computeKsi(int currentObservedState);
+    void computeKsi(int currentObserved);
 
-    void computeCurrentT(int currentObservedState);
+    void computeCurrentT();
 
     void computeMi();
 

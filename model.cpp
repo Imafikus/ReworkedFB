@@ -51,9 +51,10 @@ void Model::initializeKsi()
 }
 void Model::initializeMi()
 {
+    //cout << "usao u initializeMi" << endl;
     mi = new double*[numberOfObservedVars];
 
-    for(int i = 0; i < numberOfPossibleStatesZ; i++)
+    for(int i = 0; i < numberOfObservedVars; i++)
         mi[i] = new double[numberOfPossibleStatesZ];
 
     for(int i = 0; i < numberOfObservedVars; i++)
@@ -138,7 +139,7 @@ void Model::computeKsi(int currentObservedState)
         }
     }
 }
-void Model::computeCurrentT(int currentObservedState)
+void Model::computeCurrentT()
 {
     static double** ksiSum = nullptr;
 
@@ -187,11 +188,11 @@ void Model::computeMi()
         {
             double br = 0;
             double im = 0;
-	    for (int n=0; n<numberOfObservedVars; n++)
-	    {
-	    	if (X[n] == i) br += gamma[n][l];
-		im += gamma[n][l];
-	    }
+	    for (int n = 0; n < numberOfObservedVars; n++)
+        {
+            if (X[n] == i) br += gamma[n][l];
+            im += gamma[n][l];
+        }
 
             mi[i][l] = br / im;
         }
@@ -362,7 +363,7 @@ void Model::train()
             computeGamma();
             computeKsi(currentObservedState);
 
-            computeCurrentT(0);
+            computeCurrentT();
             computeMi();
             computeE();
        // }
@@ -380,8 +381,8 @@ void Model::testPi()
     cout << "initializeGamma();" << endl;
     initializeKsi();
     cout << "initializeKsi();" << endl;
-    /*initializeMi();
-    cout << "initializeMi();" << endl;*/
+    initializeMi();
+    cout << "initializeMi();" << endl;
 
     for(int i = 0; i < numberOfIterations; i++)
     {
@@ -395,8 +396,10 @@ void Model::testPi()
         cout << "computeNextP" << endl;
         computeKsi(i);
         cout << "computeKsi" << endl;
-        computeCurrentT(i);
+        computeCurrentT();
         cout << "computeCurrentT" << endl;
+        computeMi();
+        cout << "computeMi" << endl;
     }
 
    /* computeMi();
