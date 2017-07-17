@@ -181,29 +181,54 @@ void Model::computeCurrentT()
 {
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
     {
+        cout << "usao u  i petlju" << endl;
         double DD = 0.0;
 
         for(int j = 0; j < numberOfObservedVars-1; j++)
            DD += alpha[j][i] * beta[j][i];
 
+        double** newT = new double*[numberOfPossibleStatesZ];
+
+        for(int j = 0; j < numberOfPossibleStatesZ; j++)
+            newT[j] = new double[numberOfPossibleStatesZ];
+
+        for(int j = 0; j < numberOfPossibleStatesZ; j++)
+            for(int l = 0; l < numberOfPossibleStatesZ; l++)
+                newT[j][l] = 0;
+
+
+        cout << "odradio DD prvi" << endl;
         for(int j = 0; j < numberOfPossibleStatesZ ; j++)
         {
             double NN = 0;
             for(int t = 0; t < numberOfObservedVars-1; t++)
                 NN += C[t+1] * alpha[i][t] * emissionProbs[j][X[t+1]] * beta[j][t + 1];
 
-             transitionProbs[i][j] *= DD / NN;
+             newT[i][j] *= DD / NN;
         }
 
+        cout << " odradio newT" << endl;
+
+        for(int j = 0; j < numberOfPossibleStatesZ ; j++)
+        {
+            transitionProbs[i][j] = newT[i][j];
+        }
+
+        cout << "odradio NN" << endl;
+
         DD += alpha[i][numberOfObservedVars - 1] * beta[i][numberOfObservedVars];
+
+        cout << "novo DD" << endl;
 
         for(int t = 0; t < numberOfObservedVars; t++)
         {
             emissionProbs[i][X[t]] += alpha[i][t] * beta[i][t];
         }
+        cout << "emissionProbs[i][X[t]] += alpha[i][t] * beta[i][t];" << endl;
 
         for(int j = 0; j < numberOfPossibleStatesX; j++)
             emissionProbs[i][j] /DD;
+        cout << "kraj petlje" << endl;
     }
 }
 
