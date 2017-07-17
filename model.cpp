@@ -179,49 +179,24 @@ void Model::computeKsi(int t)
 }
 void Model::computeCurrentT()
 {
-
-	double newT[5][5];
-    static double** ksiSum = nullptr;
-
-        ksiSum = new double*[numberOfPossibleStatesZ];
-        for(int i = 0; i < numberOfPossibleStatesZ; i++)
-            ksiSum[i] = new double[numberOfPossibleStatesZ];
-
-        for(int i = 0; i < numberOfPossibleStatesZ; i++)
-            for(int j = 0; j < numberOfPossibleStatesZ; j++)
-                ksiSum[i][j] = 0;
-
-    for (int t = 0; t<numberOfObservedVars-1; t++) {
-    computeKsi(t);
-    for(int i = 0; i < numberOfPossibleStatesZ; i++)
-        for(int j = 0; j < numberOfPossibleStatesZ; j++)
-            ksiSum[i][j] += ksi[i][j];
-    //cout << "for t = " << t << endl;
-    //printMat(ksiSum, numberOfPossibleStatesZ, numberOfPossibleStatesZ);
-    }
-
-
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
     {
-        double sumGamma = 0;
-        double sumaReda = 0;
-        for(int j = 0; j < numberOfObservedVars; j++)
-            sumGamma += gamma[j][i];
+        double DD = 0.0;
+
+        for(int j = 0; j < numberOfObservedVars-1; j++)
+           DD += alpha[j][i] * beta[j][i];
 
         for(int j = 0; j < numberOfPossibleStatesZ ; j++)
         {
+            double NN = 0;
+            for(int t = 0; t < numberOfObservedVars-1; t++)
+                NN += C[t+1] * alpha[i][t] * emissionProbs[j][X[t+1]] * beta[j][t + 1];
 
-            newT[i][j] = ksi[i][j] / sumGamma;
-            sumaReda += newT[i][j];
-
+             transitionProbs[i][j] *= DD / NN;
         }
-        double normCoef = 1 /sumaReda;
-
-       for(int j = 0; j < numberOfPossibleStatesZ ; j++)
-            transitionProbs[i][j] = newT[i][j] * normCoef;
-
     }
 }
+
 void Model::computeMi()
 {
     for(int i = 0; i < numberOfPossibleStatesX; i++)
