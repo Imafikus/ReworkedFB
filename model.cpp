@@ -87,7 +87,7 @@ void Model::fit()
     double** newT = new double*[numberOfPossibleStatesZ];
     double** newE = new double*[numberOfPossibleStatesX];
 
-    for (int i = 0; i<numberOfObservedVars; i++)
+    for (int i = 0; i<numberOfPossibleStatesX; i++)
         newE[i] = new double[numberOfPossibleStatesZ];
 
     for(int j = 0; j < numberOfPossibleStatesZ; j++)
@@ -164,11 +164,11 @@ void Model::fit()
         delete[] newT[i];
     }
     delete[] newT;
-
     for(int i = 0; i < numberOfPossibleStatesX; i++)
     {
         delete[] newE[i];
     }
+
     delete[] newE;
 }
 
