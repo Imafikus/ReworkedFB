@@ -7,7 +7,7 @@
 	<algorithm>
 	<fstream>
 
-1500300651 e:\petnica2k17\reworkedfb\reworkedfb\model.h
+1500308256 e:\petnica2k17\reworkedfb\reworkedfb\model.h
 
 1500068688 e:\petnica2k17\reworkedfb\reworkedfb\unittest.h
 
@@ -17,9 +17,10 @@
 	<fstream>
 	<cmath>
 
-1500307580 source:e:\petnica2k17\reworkedfb\reworkedfb\model.cpp
+1500312778 source:e:\petnica2k17\reworkedfb\reworkedfb\model.cpp
 	"model.h"
 	"unittest.h"
 	<algorithm>
 	<iostream>
+	<vector>
 

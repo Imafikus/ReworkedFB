@@ -86,6 +86,7 @@ public:
 
 
     void testPi();
+    void predict();
 };
 
 

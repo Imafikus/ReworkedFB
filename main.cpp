@@ -82,6 +82,18 @@ int main()
 
     model.testPi();
 
+    model.printP();
+    cout << "stampam pi" << endl;
+
+    model.printTrans();
+    cout << "stampam trrans" << endl;
+
+    model.printEmission();
+    cout << "stampam  E" << endl;
+
+
+
+
 }
 
 

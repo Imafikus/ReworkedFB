@@ -2,6 +2,7 @@
 #include "unittest.h"
 #include <algorithm>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -85,27 +86,31 @@ void Model::fit()
 {
     double** newT = new double*[numberOfPossibleStatesZ];
     double** newE = new double*[numberOfPossibleStatesX];
-    for (int i = 0; i<numberOfObservedVars; i++) newE[i] = new double[numberOfPossibleStatesZ];
 
-        for(int j = 0; j < numberOfPossibleStatesZ; j++)
-            newT[j] = new double[numberOfPossibleStatesZ];
+    for (int i = 0; i<numberOfObservedVars; i++)
+        newE[i] = new double[numberOfPossibleStatesZ];
 
-        for(int j = 0; j < numberOfPossibleStatesZ; j++)
-            for(int l = 0; l < numberOfPossibleStatesZ; l++)
-                newT[j][l] = 0;
+    for(int j = 0; j < numberOfPossibleStatesZ; j++)
+        newT[j] = new double[numberOfPossibleStatesZ];
+
+    for(int j = 0; j < numberOfPossibleStatesZ; j++)
+        for(int l = 0; l < numberOfPossibleStatesZ; l++)
+            newT[j][l] = 0;
+
     //making new Pi
+
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
         P[i] = alpha[0][i] * beta[0][i];
 
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
     {
-        cout << "usao u  i petlju" << endl;
+        //cout << "usao u  i petlju" << endl;
         double DD = 0.0;
 
         for(int j = 0; j < numberOfObservedVars-1; j++)
            DD += alpha[j][i] * beta[j][i];
 
-        cout << "odradio DD prvi" << endl;
+        //cout << "odradio DD prvi" << endl;
 
         //computes new T
 
@@ -114,14 +119,14 @@ void Model::fit()
             double NN = 0.0;
             for(int t = 0; t < numberOfObservedVars-1; t++)
             {
-                cout << "For t = " << t << " " << emissionProbs[X[t+1]][j] << endl;
+            //    cout << "For t = " << t << " " << emissionProbs[X[t+1]][j] << endl;
                 NN += C[t+1] * alpha[t][i] * emissionProbs[X[t+1]][j] * beta[t + 1][j];
             }
              newT[i][j] = transitionProbs[i][j] *(NN / DD);
-             cout << NN << endl;
+          //   cout << NN << endl;
         }
 
-        cout << " odradio newT" << endl;
+        //cout << " odradio newT" << endl;
 
 
 
@@ -135,21 +140,22 @@ void Model::fit()
 
         DD += alpha[numberOfObservedVars - 1][i] * beta[numberOfObservedVars - 1][i];
 
-        cout << "novo DD" << endl;
+        //cout << "novo DD" << endl;
 
         for(int t = 0; t < numberOfObservedVars; t++)
         {
             newE[X[t]][i] += alpha[t][i] * beta[t][i];
         }
 
-        cout << "emissionProbs[X[t]][i] += alpha[i][t] * beta[i][t];" << endl;
+        //cout << "emissionProbs[X[t]][i] += alpha[i][t] * beta[i][t];" << endl;
 
         for(int j = 0; j < numberOfPossibleStatesX; j++)
             newE[j][i] /= DD;
-        cout << "kraj petlje" << endl;
-        cout << DD << endl;
+        //cout << "kraj petlje" << endl;
+        //cout << DD << endl;
     }
-    for (int i = 0; i<numberOfPossibleStatesX; i++) {
+    for (int i = 0; i<numberOfPossibleStatesX; i++)
+    {
     	for (int j = 0; j<numberOfPossibleStatesZ; j++) emissionProbs[i][j] = newE[i][j];
     }
     //cleaning up
@@ -280,7 +286,11 @@ void Model::testPi()
         fit();
         cout << "computeCurrentT" << endl;
 
-        printP();
+        cout << endl;
+
+        cout <<"Trentuna iteracija: " << i+1 <<endl;
+
+        /*printP();
         cout << "printP" << endl;
         cout << endl;
 
@@ -294,7 +304,39 @@ void Model::testPi()
 
         printEmission();
 
-        cout << "printEmission" << endl;
-
+        cout << "printEmission" << endl;*/
     }
+}
+void Model::predict()
+{
+    vector<int> help;
+    vector<double> predictions;
+    for(int i = 0; i < numberOfPossibleStatesX; i++)
+            predictions.push_back(0);
+
+    for(int k = 0; k < numberOfPossibleStatesX; k++)
+    {
+        for(int i = 1; i < numberOfObservedVars; i++)
+            help.push_back(X[i]);
+        help.push_back(k);
+
+        for(int i = 0; i < numberOfObservedVars; i++)
+            X[i] = help.at(i);
+
+        computeAlpha();
+        computeBeta();
+
+        for(int j = 0; j < numberOfPossibleStatesZ; j++)
+                predictions.at(k) += alpha[numberOfObservedVars-1][j];
+    }
+    double state1 = predictions.at(0);
+    double state2 = predictions.at(1);
+    double state3 = predictions.at(2);
+    double state4 = predictions.at(3);
+
+    cout << "Possiblity for state 1 = " << state1 << endl;
+    cout << "Possiblity for state 2 = " << state2 << endl;
+    cout << "Possiblity for state 3 = " << state3 << endl;
+    cout << "Possiblity for state 4 = " << state4 << endl;
+
 }
