@@ -152,6 +152,18 @@ void Model::fit()
     for (int i = 0; i<numberOfPossibleStatesX; i++) {
     	for (int j = 0; j<numberOfPossibleStatesZ; j++) emissionProbs[i][j] = newE[i][j];
     }
+    //cleaning up
+    for(int i = 0; i < numberOfPossibleStatesZ; i++)
+    {
+        delete[] newT[i];
+    }
+    delete[] newT;
+
+    for(int i = 0; i < numberOfPossibleStatesX; i++)
+    {
+        delete[] newE[i];
+    }
+    delete[] newE;
 }
 
 
