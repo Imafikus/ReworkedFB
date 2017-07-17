@@ -78,9 +78,7 @@ public:
     void printNumberOfIterations();
     void printAlpha();
     void printBeta();
-    void printGamma();
-    void printKsi();
-    void printMi();
+    void printC();
 
 
     int getNumberOfObservedVars();

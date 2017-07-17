@@ -164,8 +164,10 @@ void Model::computeCurrentT()
                 newT[j][l] = 0;
 
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
-    {
         P[i] = alpha[0][i] * beta[0][i];
+
+    for(int i = 0; i < numberOfPossibleStatesZ; i++)
+    {
         cout << "usao u  i petlju" << endl;
         double DD = 0.0;
 
@@ -176,35 +178,41 @@ void Model::computeCurrentT()
         cout << "odradio DD prvi" << endl;
         for(int j = 0; j < numberOfPossibleStatesZ; j++)
         {
-            double NN = 0;
+            double NN = 0.0;
             for(int t = 0; t < numberOfObservedVars-1; t++)
-                NN += C[t+1] * alpha[i][t] * emissionProbs[X[t+1]][j] * beta[t + 1][j];
+                NN += C[t+1] * alpha[t][i] * emissionProbs[X[t+1]][j] * beta[t + 1][j];
 
-             newT[i][j] *= DD / NN;
+             newT[i][j] = transitionProbs[i][j] *(NN / DD);
+             cout << NN << endl;
         }
 
         cout << " odradio newT" << endl;
+
+
 
         for(int j = 0; j < numberOfPossibleStatesZ ; j++)
         {
             transitionProbs[i][j] = newT[i][j];
         }
 
-        cout << "odradio NN" << endl;
+        for(int j = 0; j < numberOfPossibleStatesX; j++)
+            emissionProbs[j][i] = 0;
 
-        DD += alpha[i][numberOfObservedVars - 1] * beta[i][numberOfObservedVars];
+        DD += alpha[numberOfObservedVars - 1][i] * beta[numberOfObservedVars - 1][i];
 
         cout << "novo DD" << endl;
 
         for(int t = 0; t < numberOfObservedVars; t++)
         {
-            emissionProbs[X[t]][i] += alpha[i][t] * beta[i][t];
+            emissionProbs[X[t]][i] += alpha[t][i] * beta[t][i];
         }
+
         cout << "emissionProbs[X[t]][i] += alpha[i][t] * beta[i][t];" << endl;
 
         for(int j = 0; j < numberOfPossibleStatesX; j++)
-            emissionProbs[i][j] /DD;
+            emissionProbs[j][i] /= DD;
         cout << "kraj petlje" << endl;
+        cout << DD << endl;
     }
 }
 
@@ -266,7 +274,11 @@ void Model::printBeta()
         cout << endl;
     }
 }
-
+void Model::printC()
+{
+    for(int i = 0; i < numberOfObservedVars; i++)
+        cout << C[i] << " ";
+}
 
 int Model::getNumberOfObservedVars(){return numberOfObservedVars;}
 void Model::setNumberOfObservedVars(int m_setNumberOfObservedVars){numberOfObservedVars = m_setNumberOfObservedVars;}
@@ -319,6 +331,10 @@ void Model::testPi()
 
         printP();
         cout << "printP" << endl;
+        cout << endl;
+
+        printC();
+        cout << " printC" << endl;
         cout << endl;
 
         printTrans();
