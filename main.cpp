@@ -17,16 +17,15 @@ void initialization(int &observedVars, int &statesZ, int &statesX, int * &X, dou
     T = new double*[statesZ];
 
     for(int i = 0; i < statesZ; i++)
-        {
-
-            T[i] = new double[statesZ];
-        }
-    for (int i = 0; i<statesX; i++) E[i] = new double[statesZ];
+    {
+        T[i] = new double[statesZ];
+    }
+    for (int i = 0; i<statesX; i++)
+        E[i] = new double[statesZ];
 }
 
 void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, double * &Pi, double ** &E, double ** &T, int &k)
 {
-
     ifstream inf("input.txt");
     inf >> observedVars;
     inf >> statesZ;
@@ -38,28 +37,33 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
     cout << "Loading X\n";
     for(int i = 0; i < observedVars; i++) {
         inf >> X[i];
-	cout << X[i] << endl;
+        cout << "X[i] " << X[i] << endl;
 	}
     cout << "Loading P\n";
     for(int i = 0; i < statesZ; i++){
         inf >> Pi[i];
-	cout << Pi[i] << endl;
+        cout << "Pi[i] " << Pi[i] << endl;
     }
-    cout << "Loading T\n";
-    for(int i = 0; i < statesZ; i++)
+    cout << "Loading T" << endl;
+    for(int i = 0; i < statesZ; i++) {
         for(int j = 0; j < statesZ; j++) {
             inf >> T[i][j];
-	    cout << T[i][j] << endl;
-	}
+            cout << "T[i][j] " << T[i][j] << endl;
+        }
+    }
+
     cout << "Loading E\n";
     for(int i = 0; i < statesX; i++)
         for(int j = 0; j < statesZ; j++) {
-	    cout << i << " " << j << endl;
+            cout << i << " " << j << endl;
             inf >> E[i][j];
-	    cout << E[i][j] << endl;
+            cout << "E[i][j] " << E[i][j] << endl;
 	}
 
     inf >> k;
+    cout << "k " << k << endl;
+
+    // TODO: Proveriti sta je tacno unos za T, Pi
 }
 
 int main()
@@ -79,7 +83,7 @@ int main()
 
     Model model(observedVars, statesZ, statesX, X, Pi, T, E, k);
 
-   /* model.printNumberOfVars();
+    model.printNumberOfVars();
     cout << endl;
     model.printNumberOfPossibleStatesZ();
     cout << endl;
@@ -94,7 +98,7 @@ int main()
     model.printTrans();
     cout << endl;
     model.printNumberOfIterations();
-    cout << endl;*/
+    cout << endl;
 
 
     //model.printX();

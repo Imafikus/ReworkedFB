@@ -104,8 +104,8 @@ void Model::computeAlpha()
         }
         C[k] = 1.0 / sumC;
 
-        for(int i = 0; i < numberOfPossibleStatesZ; i++)
-            alpha[k][i] *= C[k];
+        //for(int i = 0; i < numberOfPossibleStatesZ; i++)
+            //alpha[k][i] *= C[k];
     }
 }
 
@@ -155,8 +155,8 @@ void Model::computeNextP()
 void Model::computeCurrentT()
 {
     double** newT = new double*[numberOfPossibleStatesZ];
-    double** newE = new double*[numberOfPossibleStatesX]; 
-    for (int i = 0; i<numberOfObservedVars; i++) newE[i] = new double[numberOfPossibleStatesZ]; 
+    double** newE = new double*[numberOfPossibleStatesX];
+    for (int i = 0; i<numberOfObservedVars; i++) newE[i] = new double[numberOfPossibleStatesZ];
 
         for(int j = 0; j < numberOfPossibleStatesZ; j++)
             newT[j] = new double[numberOfPossibleStatesZ];
@@ -322,33 +322,34 @@ void Model::testPi()
     cout << "initializeAlpha();" << endl;
     initializeBeta();
     cout << "initializeBeta();" << endl;
+    initializeC();
 
     for(int i = 0; i < numberOfIterations; i++)
     {
         computeAlpha();
         cout <<"computeAlpha" <<endl;
-        printAlpha();
+        //printAlpha();
 
-        computeBeta();
+        //computeBeta();
         cout << "computeBeta()" << endl;
-        printBeta();
+        //printBeta();
 
-        computeCurrentT();
+      //  computeCurrentT();
         cout << "computeCurrentT" << endl;
 
-        printP();
+    //    printP();
         cout << "printP" << endl;
         cout << endl;
 
-        printC();
+  //      printC();
         cout << " printC" << endl;
         cout << endl;
-
-        printTrans();
+//
+ //       printTrans();
         cout << "printTrans" << endl;
         cout << endl;
 
-        printEmission();
+//        printEmission();
 
         cout << "printEmission" << endl;
 
