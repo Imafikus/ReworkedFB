@@ -180,8 +180,10 @@ void Model::computeCurrentT()
         {
             double NN = 0.0;
             for(int t = 0; t < numberOfObservedVars-1; t++)
+            {
+                cout << "For t = " << t << " " << emissionProbs[X[t+1]][j] << endl;
                 NN += C[t+1] * alpha[t][i] * emissionProbs[X[t+1]][j] * beta[t + 1][j];
-
+            }
              newT[i][j] = transitionProbs[i][j] *(NN / DD);
              cout << NN << endl;
         }
