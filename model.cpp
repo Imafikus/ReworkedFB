@@ -104,8 +104,8 @@ void Model::computeAlpha()
         }
         C[k] = 1.0 / sumC;
 
-        //for(int i = 0; i < numberOfPossibleStatesZ; i++)
-            //alpha[k][i] *= C[k];
+        for(int i = 0; i < numberOfPossibleStatesZ; i++)
+            alpha[k][i] *= C[k];
     }
 }
 
@@ -328,28 +328,28 @@ void Model::testPi()
     {
         computeAlpha();
         cout <<"computeAlpha" <<endl;
-        //printAlpha();
+        printAlpha();
 
-        //computeBeta();
+        computeBeta();
         cout << "computeBeta()" << endl;
-        //printBeta();
+        printBeta();
 
-      //  computeCurrentT();
+        computeCurrentT();
         cout << "computeCurrentT" << endl;
 
-    //    printP();
+        printP();
         cout << "printP" << endl;
         cout << endl;
 
-  //      printC();
+        printC();
         cout << " printC" << endl;
         cout << endl;
-//
- //       printTrans();
+
+        printTrans();
         cout << "printTrans" << endl;
         cout << endl;
 
-//        printEmission();
+        printEmission();
 
         cout << "printEmission" << endl;
 
