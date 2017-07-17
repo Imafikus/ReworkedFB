@@ -151,32 +151,7 @@ void Model::computeNextP()
 
     P[i] = gamma[0][i];
 }
-void Model::computeKsi(int t)
-{
-    for(int i = 0; i < numberOfPossibleStatesZ; i++)
-    {
-    	int j;
-    	double s = 0;
-    	for (j = 0; j<numberOfPossibleStatesZ; j++)
-	{
-		double sum = 0;
-		for (int k = 0; k<numberOfPossibleStatesZ; k++)
-		{
-			for (int l = 0; l<numberOfPossibleStatesZ; l++)
-			{
-				sum += alpha[t][k] * beta[t+1][l] * emissionProbs[X[t+1]][l];
-			}
-		}
 
-		s += ksi[i][j] = alpha[t][i] * transitionProbs[i][j] * beta[t+1][j] * emissionProbs[X[t+1]][j] / sum;
-	}
-	for (j = 0; j<numberOfPossibleStatesZ; j++)
-	{
-		ksi[i][j] /= s;
-	}
-
-    }
-}
 void Model::computeCurrentT()
 {
     double** newT = new double*[numberOfPossibleStatesZ];
@@ -195,7 +170,6 @@ void Model::computeCurrentT()
 
         for(int j = 0; j < numberOfObservedVars-1; j++)
            DD += alpha[j][i] * beta[j][i];
-
 
 
         cout << "odradio DD prvi" << endl;
@@ -231,54 +205,6 @@ void Model::computeCurrentT()
             emissionProbs[i][j] /DD;
         cout << "kraj petlje" << endl;
     }
-}
-
-void Model::computeMi()
-{
-    for(int i = 0; i < numberOfPossibleStatesX; i++)
-        for(int l = 0; l < numberOfPossibleStatesZ; l++)
-        {
-            double br = 0;
-            double im = 0;
-	    for (int n = 0; n < numberOfObservedVars; n++)
-            {
-                if (X[n] == i) br += gamma[n][l];
-                im += gamma[n][l];
-            }
-
-            mi[i][l] = br / im;
-        }
-}
-void Model::computeE()
-{
-    for(int a = 0; a < numberOfPossibleStatesX; a++)
-        for(int b = 0; b < numberOfPossibleStatesZ; b++)
-            {
-                 emissionProbs[a][b] = 1;
-
-                 helpX = new int[numberOfPossibleStatesX];
-                 helpZ = new int[numberOfPossibleStatesZ];
-
-                for(int i = 0; i < numberOfPossibleStatesX; i++)
-                    {
-                        if(i == a) helpX[i] = 1;
-                        else helpX[i] = 0;
-                    }
-                for(int i = 0; i < numberOfPossibleStatesZ; i++)
-                    {
-                        if(i == b) helpZ[i] = 1;
-                        else helpZ[i] = 0;
-                    }
-
-                for(int i = 0; i < numberOfPossibleStatesX; i++)
-                    for(int j = 0; j < numberOfPossibleStatesZ; j++)
-                        {
-                            if( (helpX[i] * helpZ[j]) == 1) emissionProbs[a][b] *= mi[i][j];
-                            else emissionProbs[a][b] *= 1;
-                        }
-                delete[] helpX;
-                delete[] helpZ;
-            }
 }
 
 
