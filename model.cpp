@@ -121,8 +121,8 @@ void Model::computeBeta()
 
                 for(int j = 0; j < numberOfPossibleStatesZ; j++)
                     beta[k][i] += beta[k+1][j] * emissionProbs[X[k+1]][j] * transitionProbs[i][j];
+                beta[k][i] *= C[k+1];
             }
-            beta[k][i] *= C[k+1];
 }
 
 void Model::computeGamma()
@@ -194,6 +194,16 @@ void Model::computeCurrentT()
 
              transitionProbs[i][j] *= DD / NN;
         }
+
+        DD += alpha[i][numberOfObservedVars - 1] * beta[i][numberOfObservedVars];
+
+        for(int t = 0; t < numberOfObservedVars; t++)
+        {
+            emissionProbs[i][X[t]] += alpha[i][t] * beta[i][t];
+        }
+
+        for(int j = 0; j < numberOfPossibleStatesX; j++)
+            emissionProbs[i][j] /DD;
     }
 }
 
@@ -358,34 +368,6 @@ int *Model::getArrayX(){return X;}
 void *Model::setArrayX(int *m_X){X = m_X;}
 
 
-
-void Model::train()
-{
-    int currentObservedState = 0;//OVO OVDE SE PROSLEDJUJE u train()
-    /*initializeT();
-    initializeE();
-    initializeP();*/
-
-    initializeAlpha();
-    initializeBeta();
-    initializeKsi();
-    initializeMi();
-
-
-    //for(int currentObservedState = 0; currentObservedState < numberOfPossibleStatesX; currentObservedState++)
-      //  {
-            computeAlpha();
-            computeBeta();
-            computeGamma();
-            computeKsi(currentObservedState);
-
-            computeCurrentT();
-            computeMi();
-            computeE();
-       // }
-
-
-}
 void Model::testPi()
 {
 
@@ -395,39 +377,37 @@ void Model::testPi()
     cout << "initializeBeta();" << endl;
     initializeGamma();
     cout << "initializeGamma();" << endl;
-    initializeKsi();
+    /*initializeKsi();
     cout << "initializeKsi();" << endl;
     initializeMi();
-    cout << "initializeMi();" << endl;
+    cout << "initializeMi();" << endl;*/
 
     for(int i = 0; i < numberOfIterations; i++)
     {
         computeAlpha();
         cout <<"computeAlpha" <<endl;
-	printAlpha();
+        printAlpha();
+
         computeBeta();
         cout << "computeBeta()" << endl;
-	printBeta();
-        computeGamma();
+        printBeta();
+
+        /*computeGamma();
         cout << "computeGamma" << endl;
-	printGamma();
+        printGamma();*/
+
         computeNextP();
         cout << "computeNextP" << endl;
-	printP();
-        computeKsi(0);
+        printP();
+
+        //computeKsi(0);
         //cout << "computeKsi" << endl;
-	//printKsi();
+        //printKsi();
         computeCurrentT();
         cout << "computeCurrentT" << endl;
-	printTrans();
-        computeMi();
-        //cout << "computeMi" << endl;
-        computeE();
-        //cout << "computeE" << endl;
-    }
+        printTrans();
+        cout << endl;
 
-   /* computeMi();
-    cout << "computeMi" << endl;
-    computeE();
-    cout << "computeE" << endl;*/
+        printEmission();
+    }
 }

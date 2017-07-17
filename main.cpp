@@ -75,9 +75,7 @@ int main()
 
 
     getInitialValues(observedVars,statesZ, statesX, X, Pi, E, T, k);
-    cout << "aaa\n";
-
-
+    //cout << "aaa\n";
 
     Model model(observedVars, statesZ, statesX, X, Pi, T, E, k);
 
