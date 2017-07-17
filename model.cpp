@@ -5,17 +5,6 @@
 
 using namespace std;
 
-void printMat(double** a, int n, int m)
-{
-	for (int i =0; i<n; i++)
-	{
-		for (int j=0; j<m; j++)
-		{
-			cout << a[i][j] << " ";
-		}
-		cout << endl;
-	}
-}
 void Model::initializeC()
 {
     C = new double[numberOfObservedVars];
@@ -40,38 +29,6 @@ void Model::initializeBeta()
     for(int i = 0; i < numberOfObservedVars; i++)
         for(int j = 0; j < numberOfPossibleStatesZ; j++)
             beta[i][j] = 0;
-}
-void Model::initializeGamma()
-{
-    gamma = new double *[numberOfObservedVars];
-    for(int i = 0; i < numberOfObservedVars; i++)
-        gamma[i] = new double [numberOfPossibleStatesZ];
-
-    for(int i = 0; i < numberOfObservedVars; i++)
-        for(int j = 0; j < numberOfPossibleStatesZ; j++)
-            gamma[i][j] = 0;
-}
-void Model::initializeKsi()
-{
-    ksi = new double*[numberOfPossibleStatesZ];
-    for(int i = 0; i < numberOfPossibleStatesZ; i++)
-            ksi[i] = new double[numberOfPossibleStatesZ];
-
-    for(int i = 0; i < numberOfPossibleStatesZ; i++)
-        for(int j = 0; j < numberOfPossibleStatesZ; j++)
-            ksi[i][j] = 0;
-}
-void Model::initializeMi()
-{
-    //cout << "usao u initializeMi" << endl;
-    mi = new double*[numberOfObservedVars];
-
-    for(int i = 0; i < numberOfObservedVars; i++)
-        mi[i] = new double[numberOfPossibleStatesZ];
-
-    for(int i = 0; i < numberOfObservedVars; i++)
-        for(int j = 0; j < numberOfPossibleStatesZ; j++)
-            mi[i][j] = 0;
 }
 void Model::computeAlpha()
 {
@@ -108,7 +65,6 @@ void Model::computeAlpha()
             alpha[k][i] *= C[k];
     }
 }
-
 void Model::computeBeta()
 {
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
@@ -125,34 +81,7 @@ void Model::computeBeta()
             }
 }
 
-void Model::computeGamma()
-{
-    for(int k = 0; k < numberOfObservedVars; k++)
-    {
-        double zbir = 0;
-
-        for(int i = 0; i < numberOfPossibleStatesZ; i++)
-        {
-            zbir += alpha[k][i] * beta[k][i];
-        }
-
-        double normCoef = 1 / zbir;
-
-
-        for(int i = 0; i < numberOfPossibleStatesZ; i++)
-        {
-            gamma[k][i] = alpha[k][i] * beta[k][i] * normCoef;
-        }
-    }
-}
-void Model::computeNextP()
-{
-    for(int i = 0; i < numberOfPossibleStatesZ; i++)
-
-    P[i] = gamma[0][i];
-}
-
-void Model::computeCurrentT()
+void Model::fit()
 {
     double** newT = new double*[numberOfPossibleStatesZ];
     double** newE = new double*[numberOfPossibleStatesX];
@@ -164,7 +93,7 @@ void Model::computeCurrentT()
         for(int j = 0; j < numberOfPossibleStatesZ; j++)
             for(int l = 0; l < numberOfPossibleStatesZ; l++)
                 newT[j][l] = 0;
-
+    //making new Pi
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
         P[i] = alpha[0][i] * beta[0][i];
 
@@ -176,8 +105,10 @@ void Model::computeCurrentT()
         for(int j = 0; j < numberOfObservedVars-1; j++)
            DD += alpha[j][i] * beta[j][i];
 
-
         cout << "odradio DD prvi" << endl;
+
+        //computes new T
+
         for(int j = 0; j < numberOfPossibleStatesZ; j++)
         {
             double NN = 0.0;
@@ -334,7 +265,7 @@ void Model::testPi()
         cout << "computeBeta()" << endl;
         printBeta();
 
-        computeCurrentT();
+        fit();
         cout << "computeCurrentT" << endl;
 
         printP();

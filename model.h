@@ -16,50 +16,25 @@ private:
     double **transitionProbs; // Transitiom probs
     double *P; //probs for Z1 to take some of the possible states
     int *X; // array of inputs
-    double *C;
-    int *helpX;
-    int *helpZ;
+    double *C; //array for normalization
+
 
     double **alpha; //forward part
     double **beta; // backward part
 
-    double **ksi;
-    double **gamma;
-    double **mi;
+    void initializeC();// allocates space for C
+
+    void initializeAlpha();// allocates space for Alpha and sets all values in alpha to 0
+
+    void initializeBeta();// allocates space for Beta and sets all values in beta to 0
 
 
-    double **normalizedProbs;
+    void computeAlpha();// forward part
 
-    void initializeC();
-
-    void initializeAlpha();
-
-    void initializeBeta();
-
-    void initializeGamma();
-
-    void initializeKsi();
-
-    void initializeMi();
+    void computeBeta();// backward part
 
 
-    void computeAlpha();
-
-    void computeBeta();
-
-    void computeGamma();
-
-
-    void computeNextP();
-
-    void computeKsi(int currentObserved);
-
-    void computeCurrentT();
-
-    void computeMi();
-
-    void computeE();
-
+    void fit();//computes new Pi, new T, new E
 
 public:
 
@@ -109,7 +84,7 @@ public:
     void *setArrayX(int *m_X);
 
 
-    void train();
+
     void testPi();
 };
 

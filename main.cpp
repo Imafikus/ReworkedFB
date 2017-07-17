@@ -51,7 +51,6 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
             cout << "T[i][j] " << T[i][j] << endl;
         }
     }
-
     cout << "Loading E\n";
     for(int i = 0; i < statesX; i++)
         for(int j = 0; j < statesZ; j++) {
@@ -63,7 +62,6 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
     inf >> k;
     cout << "k " << k << endl;
 
-    // TODO: Proveriti sta je tacno unos za T, Pi
 }
 
 int main()
@@ -79,52 +77,11 @@ int main()
 
 
     getInitialValues(observedVars,statesZ, statesX, X, Pi, E, T, k);
-    //cout << "aaa\n";
 
     Model model(observedVars, statesZ, statesX, X, Pi, T, E, k);
 
-    model.printNumberOfVars();
-    cout << endl;
-    model.printNumberOfPossibleStatesZ();
-    cout << endl;
-    model.printNumberOfPossibleStatesX();
-    cout << endl;
-    model.printX();
-    cout << endl;
-    model.printP();
-    cout << endl;
-    model.printEmission();
-    cout << endl;
-    model.printTrans();
-    cout << endl;
-    model.printNumberOfIterations();
-    cout << endl;
-
-
-    //model.printX();
-
-
     model.testPi();
-/*
-    model.printAlpha();
-    cout << endl;
-    model.printBeta();
-    cout << endl;
-    model.printGamma();
-    cout << endl;
-    model.printP();
-    cout << endl;
-    model.printKsi();
-    cout << endl;
-    model.printTrans();
-    cout << endl;
-    model.printMi();
-    cout << endl;
-    model.printEmission();
-    cout << endl;
-    model.printNumberOfIterations();
-    cout << endl;
-*/
+
 }
 
 
