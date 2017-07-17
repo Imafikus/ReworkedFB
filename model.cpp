@@ -174,11 +174,11 @@ void Model::computeCurrentT()
 
 
         cout << "odradio DD prvi" << endl;
-        for(int j = 0; j < numberOfPossibleStatesZ ; j++)
+        for(int j = 0; j < numberOfPossibleStatesZ; j++)
         {
             double NN = 0;
             for(int t = 0; t < numberOfObservedVars-1; t++)
-                NN += C[t+1] * alpha[i][t] * emissionProbs[j][X[t+1]] * beta[j][t + 1];
+                NN += C[t+1] * alpha[i][t] * emissionProbs[X[t+1]][j] * beta[t + 1][j];
 
              newT[i][j] *= DD / NN;
         }
@@ -303,8 +303,6 @@ void Model::testPi()
     cout << "initializeAlpha();" << endl;
     initializeBeta();
     cout << "initializeBeta();" << endl;
-    initializeGamma();
-    cout << "initializeGamma();" << endl;
 
     for(int i = 0; i < numberOfIterations; i++)
     {
@@ -315,10 +313,6 @@ void Model::testPi()
         computeBeta();
         cout << "computeBeta()" << endl;
         printBeta();
-
-        /*computeNextP();
-        cout << "computeNextP" << endl;
-        printP();*/
 
         computeCurrentT();
         cout << "computeCurrentT" << endl;
