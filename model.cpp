@@ -155,6 +155,8 @@ void Model::computeNextP()
 void Model::computeCurrentT()
 {
     double** newT = new double*[numberOfPossibleStatesZ];
+    double** newE = new double*[numberOfPossibleStatesX]; 
+    for (int i = 0; i<numberOfObservedVars; i++) newE[i] = new double[numberOfPossibleStatesZ]; 
 
         for(int j = 0; j < numberOfPossibleStatesZ; j++)
             newT[j] = new double[numberOfPossibleStatesZ];
@@ -198,7 +200,7 @@ void Model::computeCurrentT()
         }
 
         for(int j = 0; j < numberOfPossibleStatesX; j++)
-            emissionProbs[j][i] = 0;
+            newE[j][i] = 0;
 
         DD += alpha[numberOfObservedVars - 1][i] * beta[numberOfObservedVars - 1][i];
 
@@ -206,15 +208,18 @@ void Model::computeCurrentT()
 
         for(int t = 0; t < numberOfObservedVars; t++)
         {
-            emissionProbs[X[t]][i] += alpha[t][i] * beta[t][i];
+            newE[X[t]][i] += alpha[t][i] * beta[t][i];
         }
 
         cout << "emissionProbs[X[t]][i] += alpha[i][t] * beta[i][t];" << endl;
 
         for(int j = 0; j < numberOfPossibleStatesX; j++)
-            emissionProbs[j][i] /= DD;
+            newE[j][i] /= DD;
         cout << "kraj petlje" << endl;
         cout << DD << endl;
+    }
+    for (int i = 0; i<numberOfPossibleStatesX; i++) {
+    	for (int j = 0; j<numberOfPossibleStatesZ; j++) emissionProbs[i][j] = newE[i][j];
     }
 }
 
