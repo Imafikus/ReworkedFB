@@ -40,11 +40,11 @@ void Model::computeAlpha()
         sumC += alpha[0][i];
     }
 
-    C[0] = 1.0 /sumC;
+    C[0] = 1 / sumC;
 
     for (int i = 0; i < numberOfPossibleStatesZ; i++)
     {
-        alpha[0][i] *= C[0];
+        alpha[0][i] /= sumC;
     }
 
     for(int k = 1; k < numberOfObservedVars; k++)
@@ -63,7 +63,7 @@ void Model::computeAlpha()
         C[k] = 1.0 / sumC;
 
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
-            alpha[k][i] *= C[k];
+            alpha[k][i] /= sumC;
     }
 }
 void Model::computeBeta()
@@ -164,11 +164,11 @@ void Model::fit()
         delete[] newT[i];
     }
     delete[] newT;
+
     for(int i = 0; i < numberOfPossibleStatesX; i++)
     {
         delete[] newE[i];
     }
-
     delete[] newE;
 }
 
@@ -314,6 +314,7 @@ void Model::predict()
     for(int i = 0; i < numberOfPossibleStatesX; i++)
             predictions.push_back(0);
 
+    cout << "Napravio vektore, inicijalizovao predictions" << endl;
     for(int k = 0; k < numberOfPossibleStatesX; k++)
     {
         for(int i = 1; i < numberOfObservedVars; i++)
@@ -326,17 +327,20 @@ void Model::predict()
         computeAlpha();
         computeBeta();
 
+        cout << "izracunao alfa i beta" << endl;
+
         for(int j = 0; j < numberOfPossibleStatesZ; j++)
+        {
+                cout << "prvo alfa:" << alpha[numberOfObservedVars-1][j];
                 predictions.at(k) += alpha[numberOfObservedVars-1][j];
+                cout << predictions.at(k);
+        }
     }
     double state1 = predictions.at(0);
     double state2 = predictions.at(1);
     double state3 = predictions.at(2);
-    double state4 = predictions.at(3);
 
     cout << "Possiblity for state 1 = " << state1 << endl;
     cout << "Possiblity for state 2 = " << state2 << endl;
     cout << "Possiblity for state 3 = " << state3 << endl;
-    cout << "Possiblity for state 4 = " << state4 << endl;
-
 }

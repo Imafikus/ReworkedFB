@@ -91,9 +91,13 @@ int main()
     model.printEmission();
     cout << "stampam  E" << endl;
 
+    /*model.printAlpha();
+    cout << "stampam A" << endl;
 
+    model.printBeta();
+    cout << "stampam B" << endl;
 
-
+    model.predict();*/
 }
 
 
