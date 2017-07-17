@@ -40,7 +40,7 @@ void Model::computeAlpha()
         sumC += alpha[0][i];
     }
 
-    C[0] = 1 / sumC;
+    C[0] = 1.0 / sumC;
 
     for (int i = 0; i < numberOfPossibleStatesZ; i++)
     {
