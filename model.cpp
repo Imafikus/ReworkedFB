@@ -165,6 +165,7 @@ void Model::computeCurrentT()
 
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
     {
+        P[i] = alpha[0][i] * beta[0][i];
         cout << "usao u  i petlju" << endl;
         double DD = 0.0;
 
@@ -265,33 +266,8 @@ void Model::printBeta()
         cout << endl;
     }
 }
-void Model::printGamma()
-{
-    for(int i = 0; i < numberOfObservedVars; i++)
-    {
-        for(int j = 0; j < numberOfPossibleStatesZ; j++)
-            cout << gamma[i][j] << " ";
-        cout << endl;
-    }
-}
-void Model::printKsi()
-{
-   for(int i = 0; i < numberOfPossibleStatesZ; i++)
-   {
-        for(int j = 0; j < numberOfPossibleStatesZ; j++)
-            cout << ksi[i][j] << " ";
-        cout << endl;
-   }
-}
-void Model::printMi()
-{
-    for(int i = 0; i < numberOfPossibleStatesX; i++)
-    {
-        for(int j = 0; j < numberOfPossibleStatesZ; j++)
-            cout << mi[i][j] << " ";
-        cout << endl;
-    }
-}
+
+
 int Model::getNumberOfObservedVars(){return numberOfObservedVars;}
 void Model::setNumberOfObservedVars(int m_setNumberOfObservedVars){numberOfObservedVars = m_setNumberOfObservedVars;}
 
@@ -329,10 +305,6 @@ void Model::testPi()
     cout << "initializeBeta();" << endl;
     initializeGamma();
     cout << "initializeGamma();" << endl;
-    /*initializeKsi();
-    cout << "initializeKsi();" << endl;
-    initializeMi();
-    cout << "initializeMi();" << endl;*/
 
     for(int i = 0; i < numberOfIterations; i++)
     {
@@ -344,22 +316,24 @@ void Model::testPi()
         cout << "computeBeta()" << endl;
         printBeta();
 
-        /*computeGamma();
-        cout << "computeGamma" << endl;
-        printGamma();*/
-
-        computeNextP();
+        /*computeNextP();
         cout << "computeNextP" << endl;
-        printP();
+        printP();*/
 
-        //computeKsi(0);
-        //cout << "computeKsi" << endl;
-        //printKsi();
         computeCurrentT();
         cout << "computeCurrentT" << endl;
+
+        printP();
+        cout << "printP" << endl;
+        cout << endl;
+
         printTrans();
+        cout << "printTrans" << endl;
         cout << endl;
 
         printEmission();
+
+        cout << "printEmission" << endl;
+
     }
 }
