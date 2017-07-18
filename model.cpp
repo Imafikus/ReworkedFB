@@ -20,7 +20,7 @@ void Model:: eraseAlpha()
 }
 void Model::initializeAlpha()
 {
-    alpha = new double*[MAX_SIZE];
+    alpha = new double*[MAX_SIZE_ALPHA];
     for(int i = 0; i < numberOfObservedVars; i++)
         alpha[i] = new double[numberOfPossibleStatesZ];
 
@@ -300,4 +300,29 @@ void Model::testPi()
         cout <<"Trentuna iteracija: " << i+1 <<endl;
     }
 }
+void Model::predict()
+{
+    int *states = new int[numberOfPossibleStatesX];
+    for(int i = 0; i < numberOfPossibleStatesX; i++)
+    {
+        double suma = 0;
+        for(int j = 0; j < numberOfPossibleStatesZ; j++)
+            suma += emissionProbs[i][j] * P[j];
+        states[i] = suma;
+    }
 
+    double maxElem;
+    int maxIndex;
+
+    maxElem = states[0];
+    maxIndex = 0;
+    for(int i = 1; i < numberOfPossibleStatesX; i++)
+    {
+        if(states[i] > maxElem)
+        {
+            maxElem = states[i];
+            maxIndex = i;
+        }
+    }
+    cout << "najverovatnije stanje je: " << maxIndex << endl;
+}

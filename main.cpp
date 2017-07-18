@@ -5,11 +5,12 @@
 #include <vector>
 #include <algorithm>
 #include<fstream>
+const int MAX_SIZE_X = 1000;
 
 using namespace std;
 void initialization(int &observedVars, int &statesZ, int &statesX, int * &X, double * &Pi, double ** &E, double ** &T)
 {
-    X = new int[observedVars];
+    X = new int[MAX_SIZE_X];
     Pi = new double[statesZ];
 
     cout << "Making array E of size " << statesX << " x " << statesZ << endl;
@@ -91,9 +92,9 @@ int main()
     model.printEmission();
     cout << "stampam  E" << endl;
 
-    //cout << observedVars << endl;
-    //int state0 = model.predict(0);
-    //int state1 = model.predict(1);
+    model.predict();
+
+
 
     /*state0 /= (state0 + state1);
     state1 /= (state0 + state1);*/

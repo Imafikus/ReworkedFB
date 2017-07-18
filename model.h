@@ -5,7 +5,8 @@ class Model
 {
 private:
 
-    const int MAX_SIZE = 1000;
+    const int MAX_SIZE_ALPHA = 1000;
+
 
     int numberOfObservedVars;
     int numberOfPossibleStatesZ;
@@ -26,7 +27,7 @@ private:
 
     void initializeAlpha();// allocates space for Alpha and sets all values in alpha to 0
 
-    void eraseAlpha();
+    void eraseAlpha();// deallocates space for alpha
 
     void initializeBeta();// allocates space for Beta and sets all values in beta to 0
 
@@ -86,7 +87,7 @@ public:
 
 
     void testPi();
-    int predict(int n);
+    void predict();
 };
 
 
