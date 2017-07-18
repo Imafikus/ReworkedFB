@@ -92,14 +92,14 @@ int main()
     cout << "stampam  E" << endl;
 
     //cout << observedVars << endl;
-    int state0 = model.predict(0);
-    int state1 = model.predict(1);
+    //int state0 = model.predict(0);
+    //int state1 = model.predict(1);
 
     /*state0 /= (state0 + state1);
     state1 /= (state0 + state1);*/
 
-    cout << "verovatnoca za stanje 0 :" << state0 << endl;
-    cout << "verovatnoca za stanje 1 :" << state1 << endl;
+    //cout << "verovatnoca za stanje 0 :" << state0 << endl;
+    //cout << "verovatnoca za stanje 1 :" << state1 << endl;
     /*for(int i = 0; i < statesX; i++)
         model.predict(i);*/
 }

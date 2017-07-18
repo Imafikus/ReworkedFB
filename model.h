@@ -5,6 +5,8 @@ class Model
 {
 private:
 
+    const int MAX_SIZE = 1000;
+
     int numberOfObservedVars;
     int numberOfPossibleStatesZ;
     int numberOfPossibleStatesX;
@@ -31,8 +33,6 @@ private:
     void computeAlpha();// forward part
 
     void computeBeta();// backward part
-
-    void computeAlphaForPredict();
 
     void fit();//computes new Pi, new T, new E
 

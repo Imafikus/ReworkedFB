@@ -20,7 +20,7 @@ void Model:: eraseAlpha()
 }
 void Model::initializeAlpha()
 {
-    alpha = new double*[numberOfObservedVars];
+    alpha = new double*[MAX_SIZE];
     for(int i = 0; i < numberOfObservedVars; i++)
         alpha[i] = new double[numberOfPossibleStatesZ];
 
@@ -39,23 +39,7 @@ void Model::initializeBeta()
         for(int j = 0; j < numberOfPossibleStatesZ; j++)
             beta[i][j] = 0;
 }
-void Model::computeAlphaForPredict()
-{
-    for (int i = 0; i < numberOfPossibleStatesZ; i++)
-        alpha[0][i] = P[i] * emissionProbs[X[0]][i];
 
-    for(int k = 1; k < numberOfObservedVars; k++)
-    {
-        for(int i = 0; i < numberOfPossibleStatesZ; i++)
-        {
-            double zbir = 0;
-
-                for(int j = 0; j < numberOfPossibleStatesZ; j++)
-                    zbir += alpha[k-1][j] * transitionProbs[j][i];
-            alpha[k][i] =  zbir * emissionProbs[X[k]][i];
-        }
-    }
-}
 void Model::computeAlpha()
 {
     double sumC = 0;
@@ -314,59 +298,6 @@ void Model::testPi()
         cout << endl;
 
         cout <<"Trentuna iteracija: " << i+1 <<endl;
-
-        /*printP();
-        cout << "printP" << endl;
-        cout << endl;
-
-        printC();
-        cout << " printC" << endl;
-        cout << endl;
-
-        printTrans();
-        cout << "printTrans" << endl;
-        cout << endl;
-
-        printEmission();
-
-        cout << "printEmission" << endl;*/
     }
 }
-int Model::predict(int x)
-{
-    eraseAlpha();
 
-    int *help = new int[numberOfObservedVars];
-
-    for(int i = 0; i < numberOfObservedVars-1; i++)
-        help[i] = X[i+1];
-
-    help[numberOfObservedVars-1] = x;
-    for(int i = 0; i < numberOfObservedVars; i++)
-        X[i] = help[i];
-
-    delete [] help;
-
-    alpha = new double *[numberOfObservedVars];
-    for(int i = 0; i < numberOfObservedVars; i++)
-        alpha[i] = new double[numberOfPossibleStatesZ];
-
-    for (int i = 0; i < numberOfObservedVars; i++)
-        for(int j = 0; j < numberOfPossibleStatesZ; j++)
-            alpha[i][j] = 0;
-
-    cout << "napravio alfa" << endl;
-
-    computeAlphaForPredict();
-
-    cout << "prosao computeAlpfa" << endl;
-
-    double suma = 0;
-    for(int i = 0; i < numberOfPossibleStatesZ; i++)
-        suma += alpha[numberOfObservedVars-1][i];
-
-    //cout << "Ocekivana verovatnoca za " << x << " stanje je: " << suma <<endl;
-    return suma;
-
-
-}
