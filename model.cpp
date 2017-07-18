@@ -2,13 +2,21 @@
 #include "unittest.h"
 #include <algorithm>
 #include <iostream>
-#include <vector>
+
 
 using namespace std;
 
 void Model::initializeC()
 {
     C = new double[numberOfObservedVars];
+}
+void Model:: eraseAlpha()
+{
+    for(int i = 0; i < numberOfObservedVars; i++)
+    {
+        delete[] alpha[i];
+    }
+    delete[] alpha;
 }
 void Model::initializeAlpha()
 {
@@ -30,6 +38,23 @@ void Model::initializeBeta()
     for(int i = 0; i < numberOfObservedVars; i++)
         for(int j = 0; j < numberOfPossibleStatesZ; j++)
             beta[i][j] = 0;
+}
+void Model::computeAlphaForPredict()
+{
+    for (int i = 0; i < numberOfPossibleStatesZ; i++)
+        alpha[0][i] = P[i] * emissionProbs[X[0]][i];
+
+    for(int k = 1; k < numberOfObservedVars; k++)
+    {
+        for(int i = 0; i < numberOfPossibleStatesZ; i++)
+        {
+            double zbir = 0;
+
+                for(int j = 0; j < numberOfPossibleStatesZ; j++)
+                    zbir += alpha[k-1][j] * transitionProbs[j][i];
+            alpha[k][i] =  zbir * emissionProbs[X[k]][i];
+        }
+    }
 }
 void Model::computeAlpha()
 {
@@ -307,40 +332,41 @@ void Model::testPi()
         cout << "printEmission" << endl;*/
     }
 }
-void Model::predict()
+int Model::predict(int x)
 {
-    vector<int> help;
-    vector<double> predictions;
-    for(int i = 0; i < numberOfPossibleStatesX; i++)
-            predictions.push_back(0);
+    eraseAlpha();
 
-    cout << "Napravio vektore, inicijalizovao predictions" << endl;
-    for(int k = 0; k < numberOfPossibleStatesX; k++)
-    {
-        for(int i = 1; i < numberOfObservedVars; i++)
-            help.push_back(X[i]);
-        help.push_back(k);
+    int *help = new int[numberOfObservedVars];
 
-        for(int i = 0; i < numberOfObservedVars; i++)
-            X[i] = help.at(i);
+    for(int i = 0; i < numberOfObservedVars-1; i++)
+        help[i] = X[i+1];
 
-        computeAlpha();
-        computeBeta();
+    help[numberOfObservedVars-1] = x;
+    for(int i = 0; i < numberOfObservedVars; i++)
+        X[i] = help[i];
 
-        cout << "izracunao alfa i beta" << endl;
+    delete [] help;
 
+    alpha = new double *[numberOfObservedVars];
+    for(int i = 0; i < numberOfObservedVars; i++)
+        alpha[i] = new double[numberOfPossibleStatesZ];
+
+    for (int i = 0; i < numberOfObservedVars; i++)
         for(int j = 0; j < numberOfPossibleStatesZ; j++)
-        {
-                cout << "prvo alfa:" << alpha[numberOfObservedVars-1][j];
-                predictions.at(k) += alpha[numberOfObservedVars-1][j];
-                cout << predictions.at(k);
-        }
-    }
-    double state1 = predictions.at(0);
-    double state2 = predictions.at(1);
-    double state3 = predictions.at(2);
+            alpha[i][j] = 0;
 
-    cout << "Possiblity for state 1 = " << state1 << endl;
-    cout << "Possiblity for state 2 = " << state2 << endl;
-    cout << "Possiblity for state 3 = " << state3 << endl;
+    cout << "napravio alfa" << endl;
+
+    computeAlphaForPredict();
+
+    cout << "prosao computeAlpfa" << endl;
+
+    double suma = 0;
+    for(int i = 0; i < numberOfPossibleStatesZ; i++)
+        suma += alpha[numberOfObservedVars-1][i];
+
+    //cout << "Ocekivana verovatnoca za " << x << " stanje je: " << suma <<endl;
+    return suma;
+
+
 }

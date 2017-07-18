@@ -91,13 +91,17 @@ int main()
     model.printEmission();
     cout << "stampam  E" << endl;
 
-    /*model.printAlpha();
-    cout << "stampam A" << endl;
+    //cout << observedVars << endl;
+    int state0 = model.predict(0);
+    int state1 = model.predict(1);
 
-    model.printBeta();
-    cout << "stampam B" << endl;
+    /*state0 /= (state0 + state1);
+    state1 /= (state0 + state1);*/
 
-    model.predict();*/
+    cout << "verovatnoca za stanje 0 :" << state0 << endl;
+    cout << "verovatnoca za stanje 1 :" << state1 << endl;
+    /*for(int i = 0; i < statesX; i++)
+        model.predict(i);*/
 }
 
 

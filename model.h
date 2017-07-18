@@ -1,8 +1,6 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-
-
 class Model
 {
 private:
@@ -26,13 +24,15 @@ private:
 
     void initializeAlpha();// allocates space for Alpha and sets all values in alpha to 0
 
-    void initializeBeta();// allocates space for Beta and sets all values in beta to 0
+    void eraseAlpha();
 
+    void initializeBeta();// allocates space for Beta and sets all values in beta to 0
 
     void computeAlpha();// forward part
 
     void computeBeta();// backward part
 
+    void computeAlphaForPredict();
 
     void fit();//computes new Pi, new T, new E
 
@@ -86,7 +86,7 @@ public:
 
 
     void testPi();
-    void predict();
+    int predict(int n);
 };
 
 
