@@ -285,42 +285,86 @@ void Model::testPi()
     for(int i = 0; i < numberOfIterations; i++)
     {
         computeAlpha();
-        cout <<"computeAlpha" <<endl;
-        printAlpha();
+        //cout <<"computeAlpha" <<endl;
+        //printAlpha();
 
         computeBeta();
-        cout << "computeBeta()" << endl;
-        printBeta();
+        //cout << "computeBeta()" << endl;
+        //printBeta();
 
         fit();
-        cout << "computeCurrentT" << endl;
+        //cout << "computeCurrentT" << endl;
 
-        cout << endl;
+        //cout << endl;
 
         cout <<"Trentuna iteracija: " << i+1 <<endl;
     }
 }
-void Model::predict()
+void Model::predict(int sequence, int state)
 {
-    int *states = new int[numberOfPossibleStatesX];
-    for(int i = 0; i < numberOfPossibleStatesX; i++)
+    eraseAlpha();
+    alpha = new double*[numberOfObservedVars+sequence];
+    for(int i = 0; i < numberOfObservedVars+sequence; i++)
+        alpha[i] = new double[numberOfPossibleStatesZ];
+
+    X[numberOfObservedVars+sequence-1] = state;
+
+    double sumC = 0;
+    for (int i = 0; i < numberOfPossibleStatesZ; i++)
     {
-        double suma = 0;
-        for(int j = 0; j < numberOfPossibleStatesZ; j++)
-            suma += emissionProbs[i][j] * P[j];
-        states[i] = suma;
+        alpha[0][i] = P[i] * emissionProbs[X[0]][i];
+        sumC += alpha[0][i];
     }
 
-    double maxElem;
-    int maxIndex;
+    C[0] = 1.0 / sumC;
 
-    maxElem = states[0];
-    maxIndex = 0;
-    for(int i = 1; i < numberOfPossibleStatesX; i++)
+    for (int i = 0; i < numberOfPossibleStatesZ; i++)
     {
-        if(states[i] > maxElem)
+        alpha[0][i] /= sumC;
+    }
+
+    for(int k = 1; k < numberOfObservedVars+sequence; k++)
+    {
+        sumC = 0;
+
+        for(int i = 0; i < numberOfPossibleStatesZ; i++)
         {
-            maxElem = states[i];
+            double zbir = 0;
+
+                for(int j = 0; j < numberOfPossibleStatesZ; j++)
+                    zbir += alpha[k-1][j] * transitionProbs[j][i];
+            alpha[k][i] =  zbir * emissionProbs[X[k]][i];
+            sumC += alpha[k][i];
+        }
+        C[k] = 1.0 / sumC;
+
+        for(int i = 0; i < numberOfPossibleStatesZ; i++)
+            alpha[k][i] /= sumC;
+    }
+
+    double* probs = new double[numberOfObservedVars+sequence];
+
+    for(int k = 0; k < numberOfPossibleStatesX; k++)
+    {
+        for(int i = 0; i < numberOfPossibleStatesZ; i++)
+        {
+            double suma = 0;
+            for(int j = 0; j < numberOfPossibleStatesZ; j++)
+            {
+                suma += emissionProbs[state][j] * transitionProbs [i][j] * alpha[numberOfObservedVars+sequence-1][j];
+            }
+            probs[i] = suma;
+        }
+    }
+
+    int maxElem = probs[0];
+    int maxIndex = 0;
+
+    for(int i = 0; i < numberOfObservedVars+sequence-1; i++)
+    {
+        if(maxElem < probs[i])
+        {
+            maxElem = probs[i];
             maxIndex = i;
         }
     }

@@ -87,7 +87,7 @@ public:
 
 
     void testPi();
-    void predict();
+    void predict(int sequence, int state);
 };
 
 

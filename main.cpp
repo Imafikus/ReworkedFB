@@ -92,17 +92,11 @@ int main()
     model.printEmission();
     cout << "stampam  E" << endl;
 
-    model.predict();
-
-
-
-    /*state0 /= (state0 + state1);
-    state1 /= (state0 + state1);*/
-
-    //cout << "verovatnoca za stanje 0 :" << state0 << endl;
-    //cout << "verovatnoca za stanje 1 :" << state1 << endl;
-    /*for(int i = 0; i < statesX; i++)
-        model.predict(i);*/
+    for(int i = 0; i < model.getNumberOfPossibleStatesX(); i++)
+    {
+        model.predict(0, i);
+        cout << endl;
+    }
 }
 
 
