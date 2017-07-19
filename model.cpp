@@ -116,14 +116,21 @@ void Model::computeAlphaForPredict()
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
         {
             double zbir = 0;
-
+                cout << "prosao " << i+1 << " / 4" << endl;
                 for(int j = 0; j < numberOfPossibleStatesZ; j++)
+                {
+                    cout << " prolazi " << j+1 << " put" << endl;
+                    cout << endl;
                     zbir += alpha[k-1][j] * transitionProbs[j][i];
-            alpha[k][i] =  zbir * emissionProbs[X[k]][i];
+                    cout << "prosao " << j+1 << "/ 4 puta j" << endl;
+                }
+            cout << "Da ne pucas ovde jebem ti mater?" << endl;
+            alpha[k][i] = 0;// zbir * emissionProbs[X[k]][i];
+            cout << "A ovde mozda?" << endl;
+            return;
             sumC += alpha[k][i];
         }
         C[k] = 1.0 / sumC;
-
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
             alpha[k][i] /= sumC;
     }
