@@ -8,7 +8,7 @@ using namespace std;
 
 void Model::initializeC()
 {
-    C = new double[numberOfObservedVars];
+    C = new double[MAX_SIZE_FOR_ARRAYS];
 }
 void Model:: eraseAlpha()
 {
@@ -17,6 +17,10 @@ void Model:: eraseAlpha()
         delete[] alpha[i];
     }
     delete[] alpha;
+}
+void Model::eraseC()
+{
+    delete [] C;
 }
 void Model::initializeAlpha()
 {
@@ -57,6 +61,46 @@ void Model::computeAlpha()
     }
 
     for(int k = 1; k < numberOfObservedVars; k++)
+    {
+        sumC = 0;
+
+        for(int i = 0; i < numberOfPossibleStatesZ; i++)
+        {
+            double zbir = 0;
+
+                for(int j = 0; j < numberOfPossibleStatesZ; j++)
+                    zbir += alpha[k-1][j] * transitionProbs[j][i];
+            alpha[k][i] =  zbir * emissionProbs[X[k]][i];
+            sumC += alpha[k][i];
+        }
+        C[k] = 1.0 / sumC;
+
+        for(int i = 0; i < numberOfPossibleStatesZ; i++)
+            alpha[k][i] /= sumC;
+    }
+}
+void Model::computeAlphaForPredict()
+{
+    eraseAlpha();
+    eraseC();
+    initializeAlpha();
+    initializeC();
+
+    double sumC = 0;
+    for (int i = 0; i < numberOfPossibleStatesZ; i++)
+    {
+        alpha[0][i] = P[i] * emissionProbs[X[0]][i];
+        sumC += alpha[0][i];
+    }
+
+    C[0] = 1.0 / sumC;
+
+    for (int i = 0; i < numberOfPossibleStatesZ; i++)
+    {
+        alpha[0][i] /= sumC;
+    }
+
+    for(int k = 1; k < numberOfObservedVars+1; k++)
     {
         sumC = 0;
 
@@ -297,76 +341,24 @@ void Model::testPi()
 
         //cout << endl;
 
-        cout <<"Trentuna iteracija: " << i+1 <<endl;
+        cout <<"Trenutna iteracija: " << i+1 <<endl;
     }
 }
-void Model::predict(int sequence, int state)
+void Model::predict()
 {
-    eraseAlpha();
-    alpha = new double*[numberOfObservedVars+sequence];
-    for(int i = 0; i < numberOfObservedVars+sequence; i++)
-        alpha[i] = new double[numberOfPossibleStatesZ];
-
-    X[numberOfObservedVars+sequence-1] = state;
-
-    double sumC = 0;
-    for (int i = 0; i < numberOfPossibleStatesZ; i++)
+    for(int i = 0; i < numberOfObservedVars; i++)
     {
-        alpha[0][i] = P[i] * emissionProbs[X[0]][i];
-        sumC += alpha[0][i];
+        cout << i << " clan" << endl;
+        cout << X[i] << endl;
     }
 
-    C[0] = 1.0 / sumC;
+    cout <<  "isprobavam sranje" << endl;
+    X[numberOfObservedVars] = 3;
 
-    for (int i = 0; i < numberOfPossibleStatesZ; i++)
+    for(int i = 0; i < numberOfObservedVars+1; i++)
     {
-        alpha[0][i] /= sumC;
+        cout << i << " clan" << endl;
+        cout << X[i] << endl;
     }
 
-    for(int k = 1; k < numberOfObservedVars+sequence; k++)
-    {
-        sumC = 0;
-
-        for(int i = 0; i < numberOfPossibleStatesZ; i++)
-        {
-            double zbir = 0;
-
-                for(int j = 0; j < numberOfPossibleStatesZ; j++)
-                    zbir += alpha[k-1][j] * transitionProbs[j][i];
-            alpha[k][i] =  zbir * emissionProbs[X[k]][i];
-            sumC += alpha[k][i];
-        }
-        C[k] = 1.0 / sumC;
-
-        for(int i = 0; i < numberOfPossibleStatesZ; i++)
-            alpha[k][i] /= sumC;
-    }
-
-    double* probs = new double[numberOfObservedVars+sequence];
-
-    for(int k = 0; k < numberOfPossibleStatesX; k++)
-    {
-        for(int i = 0; i < numberOfPossibleStatesZ; i++)
-        {
-            double suma = 0;
-            for(int j = 0; j < numberOfPossibleStatesZ; j++)
-            {
-                suma += emissionProbs[state][j] * transitionProbs [i][j] * alpha[numberOfObservedVars+sequence-1][j];
-            }
-            probs[i] = suma;
-        }
-    }
-
-    int maxElem = probs[0];
-    int maxIndex = 0;
-
-    for(int i = 0; i < numberOfObservedVars+sequence-1; i++)
-    {
-        if(maxElem < probs[i])
-        {
-            maxElem = probs[i];
-            maxIndex = i;
-        }
-    }
-    cout << "najverovatnije stanje je: " << maxIndex << endl;
 }

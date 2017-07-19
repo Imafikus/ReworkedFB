@@ -81,7 +81,7 @@ int main()
 
     Model model(observedVars, statesZ, statesX, X, Pi, T, E, k);
 
-    model.testPi();
+   /* model.testPi();
 
     model.printP();
     cout << "stampam pi" << endl;
@@ -90,13 +90,10 @@ int main()
     cout << "stampam trrans" << endl;
 
     model.printEmission();
-    cout << "stampam  E" << endl;
+    cout << "stampam  E" << endl;*/
 
-    for(int i = 0; i < model.getNumberOfPossibleStatesX(); i++)
-    {
-        model.predict(0, i);
-        cout << endl;
-    }
+    model.predict();
+    cout << endl;
 }
 
 

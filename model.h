@@ -6,7 +6,7 @@ class Model
 private:
 
     const int MAX_SIZE_ALPHA = 1000;
-
+    const int MAX_SIZE_FOR_ARRAYS = 1000;
 
     int numberOfObservedVars;
     int numberOfPossibleStatesZ;
@@ -29,9 +29,13 @@ private:
 
     void eraseAlpha();// deallocates space for alpha
 
+    void eraseC(); //deallocates space for C
+
     void initializeBeta();// allocates space for Beta and sets all values in beta to 0
 
     void computeAlpha();// forward part
+
+    void computeAlphaForPredict(); //also forward
 
     void computeBeta();// backward part
 
@@ -87,7 +91,7 @@ public:
 
 
     void testPi();
-    void predict(int sequence, int state);
+    void predict();
 };
 
 
