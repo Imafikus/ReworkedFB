@@ -82,9 +82,15 @@ void Model::computeAlpha()
 void Model::computeAlphaForPredict()
 {
     eraseAlpha();
-    eraseC();
+    cout << "prosao Erase" << endl;
+    delete [] C;
+    cout << "prosa Erase C" << endl;
     initializeAlpha();
+    cout << "prosao initAlpha" << endl;
     initializeC();
+    cout << "prosao initC" << endl;
+
+    cout << "prosao inicijalizacije i dealokacije" << endl;
 
     double sumC = 0;
     for (int i = 0; i < numberOfPossibleStatesZ; i++)
@@ -92,6 +98,7 @@ void Model::computeAlphaForPredict()
         alpha[0][i] = P[i] * emissionProbs[X[0]][i];
         sumC += alpha[0][i];
     }
+    cout << "prosao prvo for" << endl;
 
     C[0] = 1.0 / sumC;
 
@@ -100,10 +107,12 @@ void Model::computeAlphaForPredict()
         alpha[0][i] /= sumC;
     }
 
+    cout << "prosao normalizaciju za prvi for";
+
     for(int k = 1; k < numberOfObservedVars+1; k++)
     {
         sumC = 0;
-
+        cout << "prosao " << k <<  " / 5 puta" << endl;
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
         {
             double zbir = 0;
@@ -118,6 +127,7 @@ void Model::computeAlphaForPredict()
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
             alpha[k][i] /= sumC;
     }
+    cout << "prosao big ass for" << endl;
 }
 void Model::computeBeta()
 {
@@ -346,13 +356,25 @@ void Model::testPi()
 }
 void Model::predict()
 {
-    for(int i = 0; i < numberOfObservedVars; i++)
+    initializeAlpha();
+    /*for(int i = 0; i < numberOfObservedVars; i++)
     {
         cout << i << " clan" << endl;
         cout << X[i] << endl;
     }
 
+    computeAlpha();
+    cout << endl;
+    printAlpha();
+
+    cout << "Prvo alfa" << endl;
+
+    printC();
+
+    cout << "Stampam C" << endl;
+
     cout <<  "isprobavam sranje" << endl;
+    */
     X[numberOfObservedVars] = 3;
 
     for(int i = 0; i < numberOfObservedVars+1; i++)
@@ -360,5 +382,11 @@ void Model::predict()
         cout << i << " clan" << endl;
         cout << X[i] << endl;
     }
+    cout << "sledeci je predictAlpha" << endl;
+    initializeC();
+    computeAlphaForPredict();
+    printAlpha();
+
+    cout << "Drugo alfa" << endl;
 
 }

@@ -81,9 +81,9 @@ int main()
 
     Model model(observedVars, statesZ, statesX, X, Pi, T, E, k);
 
-   /* model.testPi();
+/*model.testPi();
 
-    model.printP();
+    /*model.printP();
     cout << "stampam pi" << endl;
 
     model.printTrans();
