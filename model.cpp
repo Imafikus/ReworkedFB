@@ -87,9 +87,12 @@ void Model::computeAlphaForPredict()
     initializeC();
     cout << "prosao inicijalizacije i dealokacije" << endl;
 
-    bool iterK = false;
-    bool iterI = false;
-    bool iterJ = false;
+
+    for(int i = 0; i < numberOfObservedVars+1; i++)
+        cout << X[i] << " ";
+    cout << endl;
+
+    cout << "Odstampao x" << endl;
 
 
     double sumC = 0;
@@ -107,41 +110,35 @@ void Model::computeAlphaForPredict()
         alpha[0][i] /= sumC;
     }
 
-    cout << "prosao normalizaciju za prvi for";
+    printEmission();
+    cout << endl;
 
-    for(int k = 1; k < numberOfObservedVars; k++)
+    cout << "prosao normalizaciju za prvi for" << endl;
+
+    for(int k = 1; k < numberOfObservedVars+1; k++)
     {
         sumC = 0;
-        if(k == numberOfObservedVars)
-        {
-            cout << "poslednja iteracija k" << endl;
-            iterK = true;
-        }
-
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
         {
             double zbir = 0;
-            if((iterK == true)&&(i = numberOfPossibleStatesZ-1))
-            {
-                cout << "poslednja iteracija i" << endl;
-                iterI = true;
-            }
+
                 for(int j = 0; j < numberOfPossibleStatesZ; j++)
                 {
-                    if((j == numberOfPossibleStatesZ-1)&&(iterI == true))
-                        cout << "poslednja iteracija j" << endl;
-                    cout << endl;
+                    //cout << alpha[k-1][j] << " ovo je alfa" << endl;
+                    //cout <<
                     zbir += alpha[k-1][j] * transitionProbs[j][i];
                 }
-            cout << "Da ne pucas ovde jebem ti mater?" << endl;// NOTE TO MYSELF : for(int i = 0; i < 4; i++) stampa 0123, dakle, poslednji koji ce imati vrednost je jebena trojka
+            // NOTE TO MYSELF : for(int i = 0; i < 4; i++) stampa 0123, dakle, poslednji koji ce imati vrednost je jebena trojka
             alpha[k][i] = zbir * emissionProbs[X[k]][i];
-            cout << "A ovde mozda?" << endl;
-
+            //cout << i << "alpha[k][i] je : " << alpha[k][i] << endl;
             sumC += alpha[k][i];
         }
         C[k] = 1.0 / sumC;
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
-            alpha[k][i] /= sumC;
+        {
+            if(sumC == 0) alpha[k][i] = 0;
+            else alpha[k][i] /= sumC;
+        }
     }
     cout << "prosao big ass for" << endl;
 }
@@ -373,10 +370,35 @@ void Model::testPi()
 void Model::predict()
 {
 
-    X[numberOfObservedVars] = 3;
+    double *niz = new double[numberOfObservedVars+1];
+
+    int state = 2;
+    X[numberOfObservedVars] = state;
+
+    printAlpha();
+    cout << "NEPROMENJENO ALFA ^" << endl;
 
     computeAlphaForPredict();
-    printAlpha();
+    for(int i = 0; i < numberOfObservedVars+1; i++)
+    {
+        for(int j = 0; j < numberOfPossibleStatesZ; j++)
+            cout << alpha[i][j] << " ";
+        cout << endl;
+    }
+    cout << "PROMENJENO ALFA" << endl;
+    return;
+    cout << alpha[numberOfObservedVars][1] << " BLABLABABABABABB" << endl;
+    return;
+    for(int i = 0; i < numberOfPossibleStatesZ; i++)
+    {
+        double suma = 0;
+        for(int j = 0; j < numberOfPossibleStatesZ; j++)
+        {
+            suma += emissionProbs[state][j] * transitionProbs[i][j] * alpha[numberOfObservedVars][j];
+        }
+        cout << "suma :" << suma << endl;
+    }
+
 
     cout << "Drugo alfa" << endl;
 
