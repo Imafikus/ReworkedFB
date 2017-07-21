@@ -81,7 +81,10 @@ int main()
 
     Model model(observedVars, statesZ, statesX, X, Pi, T, E, k);
 
-/*model.testPi();
+    /*X[observedVars] = 100;
+    cout << X[observedVars] << endl;*/ //observedVars-1 je poslednji index niza X pre dodavanja
+
+    model.testPi();
 
     /*model.printP();
     cout << "stampam pi" << endl;

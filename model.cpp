@@ -83,7 +83,7 @@ void Model::computeAlphaForPredict()
 {
     eraseAlpha();
     cout << "prosao Erase" << endl;
-    delete [] C;
+    eraseC();
     cout << "prosa Erase C" << endl;
     initializeAlpha();
     cout << "prosao initAlpha" << endl;
@@ -91,7 +91,7 @@ void Model::computeAlphaForPredict()
     cout << "prosao initC" << endl;
 
     cout << "prosao inicijalizacije i dealokacije" << endl;
-
+    return;
     double sumC = 0;
     for (int i = 0; i < numberOfPossibleStatesZ; i++)
     {
@@ -112,22 +112,24 @@ void Model::computeAlphaForPredict()
     for(int k = 1; k < numberOfObservedVars+1; k++)
     {
         sumC = 0;
-        cout << "prosao " << k <<  " / 5 puta" << endl;
+        if(k == numberOfObservedVars+1) cout << "poslednja iteracija k" << endl;
+
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
         {
             double zbir = 0;
-                cout << "prosao " << i+1 << " / 4" << endl;
+            if((k == numberOfObservedVars)&&(i = 4)) cout << "poslednje i" << endl;
                 for(int j = 0; j < numberOfPossibleStatesZ; j++)
                 {
-                    cout << " prolazi " << j+1 << " put" << endl;
+                    if(j == 4)
+                        cout << "poslednja iteracija j" << endl;
                     cout << endl;
                     zbir += alpha[k-1][j] * transitionProbs[j][i];
-                    cout << "prosao " << j+1 << "/ 4 puta j" << endl;
                 }
-            cout << "Da ne pucas ovde jebem ti mater?" << endl;
-            alpha[k][i] = 0;// zbir * emissionProbs[X[k]][i];
+            cout << "Da ne pucas ovde jebem ti mater?" << endl;// NOTE TO MYSELF : for(int i = 0; i < 4; i++) stampa 0123, dakle, poslednji koji ce imati vrednost je jebena trojka
+            alpha[k][i] = 0;
+            cout << X[k] << " STA JE OVA VREDNOST? " << endl;//  zbir * emissionProbs[X[k]][i];
             cout << "A ovde mozda?" << endl;
-            return;
+
             sumC += alpha[k][i];
         }
         C[k] = 1.0 / sumC;
@@ -135,6 +137,7 @@ void Model::computeAlphaForPredict()
             alpha[k][i] /= sumC;
     }
     cout << "prosao big ass for" << endl;
+    cout << X[numberOfObservedVars+1] << "GLEDAJ OVO" << endl;
 }
 void Model::computeBeta()
 {
@@ -363,34 +366,9 @@ void Model::testPi()
 }
 void Model::predict()
 {
-    initializeAlpha();
-    /*for(int i = 0; i < numberOfObservedVars; i++)
-    {
-        cout << i << " clan" << endl;
-        cout << X[i] << endl;
-    }
 
-    computeAlpha();
-    cout << endl;
-    printAlpha();
-
-    cout << "Prvo alfa" << endl;
-
-    printC();
-
-    cout << "Stampam C" << endl;
-
-    cout <<  "isprobavam sranje" << endl;
-    */
     X[numberOfObservedVars] = 3;
 
-    for(int i = 0; i < numberOfObservedVars+1; i++)
-    {
-        cout << i << " clan" << endl;
-        cout << X[i] << endl;
-    }
-    cout << "sledeci je predictAlpha" << endl;
-    initializeC();
     computeAlphaForPredict();
     printAlpha();
 
