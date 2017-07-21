@@ -88,10 +88,26 @@ void Model::computeAlphaForPredict()
     initializeAlpha();
     cout << "prosao initAlpha" << endl;
     initializeC();
+    cout << "initialize c" << endl;
+    for(int i = 0; i < numberOfObservedVars+1; i++ )
+        for(int j = 0; j < numberOfPossibleStatesZ; j++)
+            alpha[i][j] = 0;
+
+     for(int i = 0; i < numberOfObservedVars+1; i++)
+     {
+        for(int j = 0; j < numberOfPossibleStatesZ; j++)
+            cout << alpha[i][j] << " " << endl;
+        cout << endl;
+     }
+     cout << "odstampao alfa" << endl;
+     return;
+
     cout << "prosao initC" << endl;
+    bool iterK = false;
+    bool iterI = false;
+    bool iterJ = false;
 
     cout << "prosao inicijalizacije i dealokacije" << endl;
-    return;
     double sumC = 0;
     for (int i = 0; i < numberOfPossibleStatesZ; i++)
     {
@@ -109,25 +125,32 @@ void Model::computeAlphaForPredict()
 
     cout << "prosao normalizaciju za prvi for";
 
-    for(int k = 1; k < numberOfObservedVars+1; k++)
+    for(int k = 1; k < numberOfObservedVars; k++)
     {
         sumC = 0;
-        if(k == numberOfObservedVars+1) cout << "poslednja iteracija k" << endl;
+        if(k == numberOfObservedVars)
+        {
+            cout << "poslednja iteracija k" << endl;
+            iterK = true;
+        }
 
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
         {
             double zbir = 0;
-            if((k == numberOfObservedVars)&&(i = 4)) cout << "poslednje i" << endl;
+            if((iterK == true)&&(i = numberOfPossibleStatesZ-1))
+            {
+                cout << "poslednja iteracija i" << endl;
+                iterI = true;
+            }
                 for(int j = 0; j < numberOfPossibleStatesZ; j++)
                 {
-                    if(j == 4)
+                    if((j == numberOfPossibleStatesZ-1)&&(iterI == true))
                         cout << "poslednja iteracija j" << endl;
                     cout << endl;
                     zbir += alpha[k-1][j] * transitionProbs[j][i];
                 }
             cout << "Da ne pucas ovde jebem ti mater?" << endl;// NOTE TO MYSELF : for(int i = 0; i < 4; i++) stampa 0123, dakle, poslednji koji ce imati vrednost je jebena trojka
-            alpha[k][i] = 0;
-            cout << X[k] << " STA JE OVA VREDNOST? " << endl;//  zbir * emissionProbs[X[k]][i];
+            cout << k << " <-vrednost k  " << i << " <-vrednost j" << endl; //alpha[k][i] << " VREDNOST ZBOG BLABLA" << endl;//alpha[k][i] = zbir * emissionProbs[X[k]][i];
             cout << "A ovde mozda?" << endl;
 
             sumC += alpha[k][i];

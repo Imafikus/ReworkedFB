@@ -83,7 +83,7 @@ int main()
 
     /*X[observedVars] = 100;
     cout << X[observedVars] << endl;*/ //observedVars-1 je poslednji index niza X pre dodavanja
-
+    //
     model.testPi();
 
     /*model.printP();
