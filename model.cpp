@@ -25,10 +25,10 @@ void Model::eraseC()
 void Model::initializeAlpha()
 {
     alpha = new double*[MAX_SIZE_ALPHA];
-    for(int i = 0; i < numberOfObservedVars; i++)
+    for(int i = 0; i < MAX_SIZE_ALPHA; i++)
         alpha[i] = new double[numberOfPossibleStatesZ];
 
-    for(int i = 0; i < numberOfObservedVars; i++)
+    for(int i = 0; i < MAX_SIZE_ALPHA; i++)
         for(int j = 0; j < numberOfPossibleStatesZ; j++)
             alpha[i][j] = 0;
 
@@ -82,13 +82,10 @@ void Model::computeAlpha()
 void Model::computeAlphaForPredict()
 {
     eraseAlpha();
-    cout << "prosao Erase" << endl;
     eraseC();
-    cout << "prosa Erase C" << endl;
     initializeAlpha();
-    cout << "prosao initAlpha" << endl;
     initializeC();
-    cout << "initialize c" << endl;
+    cout << "prosao inite" << endl;
     for(int i = 0; i < numberOfObservedVars+1; i++ )
         for(int j = 0; j < numberOfPossibleStatesZ; j++)
             alpha[i][j] = 0;
