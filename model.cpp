@@ -354,29 +354,31 @@ void Model::predict()
 
     double *niz = new double[numberOfObservedVars+1];
 
-    int state = 1;
-    X[numberOfObservedVars] = state;
+    //int state = ;
+    //X[numberOfObservedVars] = state;
 
-    computeAlphaForPredict();
+    //computeAlphaForPredict();
     /*for(int i = 0; i < numberOfObservedVars+1; i++)
     {
         for(int j = 0; j < numberOfPossibleStatesZ; j++)
             cout << alpha[i][j] << " ";
         cout << endl;
     }*/
-
+    for(int state = 0; state < numberOfPossibleStatesX; state++)
+    {
+        X[numberOfObservedVars] = state;
+        computeAlphaForPredict();
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
         {
             double suma = 0;
             for(int j = 0; j < numberOfPossibleStatesZ; j++)
             {
-                suma += emissionProbs[state][j] * transitionProbs[i][j] * alpha[numberOfObservedVars][j];
+                suma += emissionProbs[state][i] * transitionProbs[i][j] * alpha[numberOfObservedVars][j];
             }
-            niz[i] = suma * C[numberOfObservedVars];
+            niz[state] = suma ;//* C[numberOfObservedVars];
         }
     }
-
-    for(int i = 0; i < numberOfObservedVars; i++)
+    for(int i = 0; i < numberOfPossibleStatesX; i++)
         cout << "verovatnoca za stanje " << i << " je: " << niz[i] << endl;
 
 }
