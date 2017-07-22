@@ -368,15 +368,15 @@ void Model::predict()
     {
         X[numberOfObservedVars] = state;
         computeAlphaForPredict();
+        double suma = 0;
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
         {
-            double suma = 0;
             for(int j = 0; j < numberOfPossibleStatesZ; j++)
             {
                 suma += emissionProbs[state][i] * transitionProbs[i][j] * alpha[numberOfObservedVars][j];
             }
-            niz[state] = suma ;//* C[numberOfObservedVars];
         }
+        niz[state] = suma ;//* C[numberOfObservedVars];
     }
     for(int i = 0; i < numberOfPossibleStatesX; i++)
         cout << "verovatnoca za stanje " << i << " je: " << niz[i] << endl;
