@@ -1,11 +1,13 @@
 
 #include <iostream>
 #include "model.h"
-#include "unittest.h"
 #include <vector>
 #include <algorithm>
-#include<fstream>
-const int MAX_SIZE_X = 1000;
+#include <fstream>
+#include <time.h>
+#include <stdlib.h>
+
+const int MAX_SIZE_X = 10000;
 
 using namespace std;
 void initialization(int &observedVars, int &statesZ, int &statesX, int * &X, double * &Pi, double ** &E, double ** &T)
@@ -25,13 +27,20 @@ void initialization(int &observedVars, int &statesZ, int &statesX, int * &X, dou
         E[i] = new double[statesZ];
 }
 
-void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, double * &Pi, double ** &E, double ** &T, int &k)
+void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, double * &Pi, double ** &E, double ** &T, int &iter)
 {
+    cout << "Give states Z:" << endl;
+    cin >> statesZ;
+
+    cout << "Give number of iterations:" << endl;
+    cin >> iter;
+
     ifstream inf("input.txt");
     inf >> observedVars;
-    inf >> statesZ;
+    //inf >> statesZ;
     inf >> statesX;
-    cout << "States Z = " << statesZ << " states X = " << statesX << endl;
+    //cout << "States Z = " << statesZ
+    cout << " states X = " << statesX << endl;
 
     initialization(observedVars,statesZ, statesX, X, Pi, E, T);
 
@@ -42,26 +51,29 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
 	}
     cout << "Loading P\n";
     for(int i = 0; i < statesZ; i++){
-        inf >> Pi[i];
-        cout << "Pi[i] " << Pi[i] << endl;
+        Pi[i] = 1.0 / statesZ;
     }
+
+
     cout << "Loading T" << endl;
-    for(int i = 0; i < statesZ; i++) {
-        for(int j = 0; j < statesZ; j++) {
-            inf >> T[i][j];
-            cout << "T[i][j] " << T[i][j] << endl;
+    for(int i = 0; i < statesZ; i++)
+    {
+        for(int j = 0; j < statesZ; j++)
+        {
+           T[i][j] = rand() % 20;
         }
     }
     cout << "Loading E\n";
     for(int i = 0; i < statesX; i++)
-        for(int j = 0; j < statesZ; j++) {
-            cout << i << " " << j << endl;
-            inf >> E[i][j];
-            cout << "E[i][j] " << E[i][j] << endl;
-	}
+    {
+        for(int j = 0; j < statesZ; j++)
+        {
+            E[i][j] = rand() % 20;
+        }
+    }
 
-    inf >> k;
-    cout << "k " << k << endl;
+    //inf >> k;
+    //cout << "k " << k << endl;
 
 }
 
@@ -74,19 +86,45 @@ int main()
     double * Pi;
     double ** E;
     double ** T;
-    int k;
+    int iter;
 
 
-    getInitialValues(observedVars,statesZ, statesX, X, Pi, E, T, k);
+    getInitialValues(observedVars,statesZ, statesX, X, Pi, E, T, iter);
 
-    Model model(observedVars, statesZ, statesX, X, Pi, T, E, k);
+    Model model(observedVars, statesZ, statesX, X, Pi, T, E, iter);
 
     /*X[observedVars] = 100;
     cout << X[observedVars] << endl;*/ //observedVars-1 je poslednji index niza X pre dodavanja
     //
-    model.testPi();
+    cout << "Broj iteracija: " << endl;
+    model.printNumberOfIterations();
 
-    /*model.printP();
+    cout << "Broj stanja X: " << endl;
+    model.printNumberOfPossibleStatesX();
+
+    cout << "Broj stanja Z: " << endl;
+    model.printNumberOfPossibleStatesZ();
+
+    cout << "Emisiona matrica: " << endl;
+    model.printEmission();
+
+    cout << "Tranziciona matrica: " << endl;
+    model.printTrans();
+
+    cout << "Niz pi: " << endl;
+    model.printP();
+
+    cout << "Niz X" << endl;
+    model.printX();
+
+
+    /*model.testPi();
+
+
+    model.predict();
+    cout << endl;
+
+    model.printP();
     cout << "stampam pi" << endl;
 
     model.printTrans();
@@ -94,9 +132,6 @@ int main()
 
     model.printEmission();
     cout << "stampam  E" << endl;*/
-
-    model.predict();
-    cout << endl;
 }
 
 
