@@ -63,6 +63,23 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
            T[i][j] = rand() % 20;
         }
     }
+
+    //normalizing T
+    double *niz = new double[statesZ];
+    for(int i = 0; i < statesZ; i++)
+    {
+        double zbir = 0;
+        for(int j = 0; j < statesZ; j++)
+            zbir += T[i][j];
+        niz[i] = zbir;
+    }
+
+    for(int i = 0; i < statesZ; i++)
+    {
+        for(int j = 0; j < statesZ; j++)
+            T[i][j] /= niz[i];
+    }
+
     cout << "Loading E\n";
     for(int i = 0; i < statesX; i++)
     {
