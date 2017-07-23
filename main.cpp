@@ -93,22 +93,22 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
     delete [] niz;
 
     //normalizing E
-    niz = new double[statesZ];
-    for(int i = 0; i < statesZ; i++)
+    niz = new double[statesX];
+    for(int i = 0; i < statesX; i++)
     {
-        zbir = 0;
-        for(int j = 0; j < statesX; j++)
+        double zbir = 0;
+        for(int j = 0; j < statesZ; j++)
         {
-            zbir += E[i][j];
+            zbir += E[j][i];
         }
         niz[i] = zbir;
     }
 
-    for(int i = 0; i < statesZ; i++)
+    for(int i = 0; i < statesX; i++)
     {
-        for(int j = 0; j < statesX; j++)
+        for(int j = 0; j < statesZ; j++)
         {
-            E[i][j] /= niz[i];
+            E[j][i] /= niz[i];
         }
     }
 
