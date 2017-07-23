@@ -29,6 +29,7 @@ void initialization(int &observedVars, int &statesZ, int &statesX, int * &X, dou
 
 void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, double * &Pi, double ** &E, double ** &T, int &iter)
 {
+    srand(time(NULL));
     cout << "Give states Z:" << endl;
     cin >> statesZ;
 
@@ -37,20 +38,21 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
 
     ifstream inf("input.txt");
     inf >> observedVars;
-    //inf >> statesZ;
     inf >> statesX;
-    //cout << "States Z = " << statesZ
     cout << " states X = " << statesX << endl;
 
     initialization(observedVars,statesZ, statesX, X, Pi, E, T);
 
     cout << "Loading X\n";
-    for(int i = 0; i < observedVars; i++) {
+    for(int i = 0; i < observedVars; i++)
+    {
         inf >> X[i];
         cout << "X[i] " << X[i] << endl;
 	}
+
     cout << "Loading P\n";
-    for(int i = 0; i < statesZ; i++){
+    for(int i = 0; i < statesZ; i++)
+    {
         Pi[i] = 1.0 / statesZ;
     }
 
@@ -88,9 +90,30 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
             E[i][j] = rand() % 20;
         }
     }
+    delete [] niz;
 
-    //inf >> k;
-    //cout << "k " << k << endl;
+    //normalizing E
+    niz = new double[statesZ];
+    for(int i = 0; i < statesZ; i++)
+    {
+        zbir = 0;
+        for(int j = 0; j < statesX; j++)
+        {
+            zbir += E[i][j];
+        }
+        niz[i] = zbir;
+    }
+
+    for(int i = 0; i < statesZ; i++)
+    {
+        for(int j = 0; j < statesX; j++)
+        {
+            E[i][j] /= niz[i];
+        }
+    }
+
+
+
 
 }
 
