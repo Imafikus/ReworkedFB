@@ -344,7 +344,7 @@ void Model::testPi()
         cout <<"Trenutna iteracija: " << i+1 <<endl;
     }
 }
-void Model::predict()
+int Model::predict()
 {
 
     double *niz = new double[numberOfObservedVars+1];
@@ -362,7 +362,17 @@ void Model::predict()
             }
         }
         niz[state] = suma ;    }
-    for(int i = 0; i < numberOfPossibleStatesX; i++)
-        cout << "verovatnoca za stanje " << i << " je: " << niz[i] << endl;
+
+    int maxElem = niz[0];
+    int maxIndex = 0;
+    for(int i = 1; i < numberOfPossibleStatesX; i++)
+        {
+            if(niz[i] > maxElem)
+            {
+                maxElem = niz[i];
+                maxIndex = i;
+            }
+        }
+    return maxIndex;
 
 }

@@ -91,7 +91,7 @@ public:
 
 
     void testPi();
-    void predict();
+    int predict();
 };
 
 

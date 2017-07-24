@@ -122,6 +122,8 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
 
 int main()
 {
+    string input = "input.txt";
+    int limit = 5;
     int observedVars;
     int statesZ;
     int statesX;
@@ -130,17 +132,23 @@ int main()
     double ** E;
     double ** T;
     int iter;
-    string input = "input.txt";
+
 
 
     getInitialValues(observedVars,statesZ, statesX, X, Pi, E, T, iter, input);
 
     Model model(observedVars, statesZ, statesX, X, Pi, T, E, iter);
 
+    model.testPi();
+
+
+    int prediction = model.predict();
+    cout << "Najverovatnije stanje je: " << prediction << endl;
+
     /*X[observedVars] = 100;
     cout << X[observedVars] << endl;*/ //observedVars-1 je poslednji index niza X pre dodavanja
     //
-    cout << "Broj iteracija: " << endl;
+    /*cout << "Broj iteracija: " << endl;
     model.printNumberOfIterations();
 
     cout << "Broj stanja X: " << endl;
@@ -159,14 +167,10 @@ int main()
     model.printP();
 
     cout << "Niz X" << endl;
-    model.printX();
+    model.printX();*/
 
 
-    model.testPi();
 
-
-    model.predict();
-    cout << endl;
 
     /*model.printP();
     cout << "stampam pi" << endl;
