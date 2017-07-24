@@ -43,7 +43,7 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
     cout << "Give observedVars" << endl;
     cin >> observedVars;*/
     statesZ  = 5;
-    iter = 100;
+    iter = 10000;
     statesX = 5;
     observedVars = 300;
 
