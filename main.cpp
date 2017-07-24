@@ -43,7 +43,7 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
     cout << "Give observedVars" << endl;
     cin >> observedVars;*/
     statesZ  = 5;
-    iter = 10000;
+    iter = 100;
     statesX = 5;
     observedVars = 300;
 
@@ -131,7 +131,7 @@ int main()
 {
     vector<int> v;
 
-    for(int k = 0; k < 25; k++)
+    for(int k = 0; k < 400; k++)
     {
         string input = "kretanje";
         int expectedState;
@@ -173,9 +173,13 @@ int main()
             delete[] E[i];
         }
         delete[] E;
+
+        cout << k << ". iteracija zavrsena" << endl;
     }
+    int good = 0;
     for(int i = 0; i < v.size(); i++)
-        cout << v.at(i) << " ";
+        if(v.at(i) == 1) good++;
+    cout << "pogodjenih: " << good << ":" << v.size() << endl;
 
 }
 

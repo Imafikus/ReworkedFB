@@ -164,13 +164,10 @@ void Model::fit()
 
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
     {
-        //cout << "usao u  i petlju" << endl;
         double DD = 0.0;
 
         for(int j = 0; j < numberOfObservedVars-1; j++)
            DD += alpha[j][i] * beta[j][i];
-
-        //cout << "odradio DD prvi" << endl;
 
         //computes new T
 
@@ -179,16 +176,10 @@ void Model::fit()
             double NN = 0.0;
             for(int t = 0; t < numberOfObservedVars-1; t++)
             {
-            //    cout << "For t = " << t << " " << emissionProbs[X[t+1]][j] << endl;
                 NN += C[t+1] * alpha[t][i] * emissionProbs[X[t+1]][j] * beta[t + 1][j];
             }
              newT[i][j] = transitionProbs[i][j] *(NN / DD);
-          //   cout << NN << endl;
         }
-
-        //cout << " odradio newT" << endl;
-
-
 
         for(int j = 0; j < numberOfPossibleStatesZ ; j++)
         {
@@ -200,19 +191,13 @@ void Model::fit()
 
         DD += alpha[numberOfObservedVars - 1][i] * beta[numberOfObservedVars - 1][i];
 
-        //cout << "novo DD" << endl;
-
         for(int t = 0; t < numberOfObservedVars; t++)
         {
             newE[X[t]][i] += alpha[t][i] * beta[t][i];
         }
 
-        //cout << "emissionProbs[X[t]][i] += alpha[i][t] * beta[i][t];" << endl;
-
         for(int j = 0; j < numberOfPossibleStatesX; j++)
             newE[j][i] /= DD;
-        //cout << "kraj petlje" << endl;
-        //cout << DD << endl;
     }
     for (int i = 0; i<numberOfPossibleStatesX; i++)
     {
@@ -341,7 +326,7 @@ void Model::testPi()
 
         fit();
 
-        cout <<"Trenutna iteracija: " << i+1 <<endl;
+        //cout <<"Trenutna iteracija: " << i+1 <<endl;
     }
 }
 int Model::predict()
