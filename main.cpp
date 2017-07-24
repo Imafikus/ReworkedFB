@@ -2,6 +2,7 @@
 #include <iostream>
 #include "model.h"
 #include <vector>
+#include <sstream>
 #include <algorithm>
 #include <fstream>
 #include <time.h>
@@ -30,7 +31,7 @@ void initialization(int &observedVars, int &statesZ, int &statesX, int * &X, dou
 void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, double * &Pi, double ** &E, double ** &T, int &iter, string &input, int &expectedState)
 {
     srand(time(NULL));
-    cout << "Give states Z:" << endl;
+    /*cout << "Give states Z:" << endl;
     cin >> statesZ;
 
     cout << "Give number of iterations:" << endl;
@@ -40,7 +41,11 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
     cin >> statesX;
 
     cout << "Give observedVars" << endl;
-    cin >> observedVars;
+    cin >> observedVars;*/
+    statesZ  = 5;
+    iter = 10000;
+    statesX = 5;
+    observedVars = 300;
 
     ifstream inf(input);
     //inf >> observedVars;
@@ -124,66 +129,54 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
 
 int main()
 {
-    string input = "input.txt";
-    int expectedState;
-    int observedVars;
-    int statesZ;
-    int statesX;
-    int * X;
-    double * Pi;
-    double ** E;
-    double ** T;
-    int iter;
+    vector<int> v;
+
+    for(int k = 0; k < 25; k++)
+    {
+        string input = "kretanje";
+        int expectedState;
+        int observedVars;
+        int statesZ;
+        int statesX;
+        int * X;
+        double * Pi;
+        double ** E;
+        double ** T;
+        int iter;
+
+        stringstream ss;
+        ss << k;
+        input += ss.str() + ".txt";
+
+        getInitialValues(observedVars,statesZ, statesX, X, Pi, E, T, iter, input, expectedState);
+
+        Model model(observedVars, statesZ, statesX, X, Pi, T, E, iter);
+
+        model.testPi();
 
 
+        int prediction = model.predict();
+        if(prediction == expectedState) v.push_back(1);
+        else v.push_back(0);
 
-    getInitialValues(observedVars,statesZ, statesX, X, Pi, E, T, iter, input, expectedState);
+        delete[] X;
+        delete[] Pi;
 
-    Model model(observedVars, statesZ, statesX, X, Pi, T, E, iter);
+        for(int i = 0; i < statesZ; i++)
+        {
+            delete[] T[i];
+        }
+        delete[] T;
 
-    model.printX();
-    cout << expectedState << endl;
-    //model.testPi();
+        for(int i = 0; i < statesX; i++)
+        {
+            delete[] E[i];
+        }
+        delete[] E;
+    }
+    for(int i = 0; i < v.size(); i++)
+        cout << v.at(i) << " ";
 
-
-    /*int prediction = model.predict();
-    cout << "Najverovatnije stanje je: " << prediction << endl;
-
-    /*X[observedVars] = 100;
-    cout << X[observedVars] << endl;*/ //observedVars-1 je poslednji index niza X pre dodavanja
-    //
-    /*cout << "Broj iteracija: " << endl;
-    model.printNumberOfIterations();
-
-    cout << "Broj stanja X: " << endl;
-    model.printNumberOfPossibleStatesX();
-
-    cout << "Broj stanja Z: " << endl;
-    model.printNumberOfPossibleStatesZ();
-
-    cout << "Emisiona matrica: " << endl;
-    model.printEmission();
-
-    cout << "Tranziciona matrica: " << endl;
-    model.printTrans();
-
-    cout << "Niz pi: " << endl;
-    model.printP();
-
-    cout << "Niz X" << endl;
-    model.printX();*/
-
-
-
-
-    /*model.printP();
-    cout << "stampam pi" << endl;
-
-    model.printTrans();
-    cout << "stampam trrans" << endl;
-
-    model.printEmission();
-    cout << "stampam  E" << endl;*/
 }
 
 
