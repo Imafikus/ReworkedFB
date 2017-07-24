@@ -27,7 +27,7 @@ void initialization(int &observedVars, int &statesZ, int &statesX, int * &X, dou
         E[i] = new double[statesZ];
 }
 
-void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, double * &Pi, double ** &E, double ** &T, int &iter, string &input)
+void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, double * &Pi, double ** &E, double ** &T, int &iter, string &input, int &expectedState)
 {
     srand(time(NULL));
     cout << "Give states Z:" << endl;
@@ -39,8 +39,11 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
     cout << "Give states X:" << endl;
     cin >> statesX;
 
+    cout << "Give observedVars" << endl;
+    cin >> observedVars;
+
     ifstream inf(input);
-    inf >> observedVars;
+    //inf >> observedVars;
     //inf >> statesX;
     //cout << " states X = " << statesX << endl;
 
@@ -52,6 +55,9 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
         inf >> X[i];
         cout << "X[i] " << X[i] << endl;
 	}
+
+	cout << "Loading expectedState\n";
+	inf >> expectedState;
 
     cout << "Loading P\n";
     for(int i = 0; i < statesZ; i++)
@@ -114,16 +120,12 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
             E[j][i] /= niz[i];
         }
     }
-
-
-
-
 }
 
 int main()
 {
     string input = "input.txt";
-    int limit = 5;
+    int expectedState;
     int observedVars;
     int statesZ;
     int statesX;
@@ -135,14 +137,16 @@ int main()
 
 
 
-    getInitialValues(observedVars,statesZ, statesX, X, Pi, E, T, iter, input);
+    getInitialValues(observedVars,statesZ, statesX, X, Pi, E, T, iter, input, expectedState);
 
     Model model(observedVars, statesZ, statesX, X, Pi, T, E, iter);
 
-    model.testPi();
+    model.printX();
+    cout << expectedState << endl;
+    //model.testPi();
 
 
-    int prediction = model.predict();
+    /*int prediction = model.predict();
     cout << "Najverovatnije stanje je: " << prediction << endl;
 
     /*X[observedVars] = 100;
