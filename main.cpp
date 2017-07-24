@@ -27,7 +27,7 @@ void initialization(int &observedVars, int &statesZ, int &statesX, int * &X, dou
         E[i] = new double[statesZ];
 }
 
-void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, double * &Pi, double ** &E, double ** &T, int &iter)
+void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, double * &Pi, double ** &E, double ** &T, int &iter, string &input)
 {
     srand(time(NULL));
     cout << "Give states Z:" << endl;
@@ -36,10 +36,13 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
     cout << "Give number of iterations:" << endl;
     cin >> iter;
 
-    ifstream inf("input.txt");
+    cout << "Give states X:" << endl;
+    cin >> statesX;
+
+    ifstream inf(input);
     inf >> observedVars;
-    inf >> statesX;
-    cout << " states X = " << statesX << endl;
+    //inf >> statesX;
+    //cout << " states X = " << statesX << endl;
 
     initialization(observedVars,statesZ, statesX, X, Pi, E, T);
 
@@ -127,9 +130,10 @@ int main()
     double ** E;
     double ** T;
     int iter;
+    string input = "input.txt";
 
 
-    getInitialValues(observedVars,statesZ, statesX, X, Pi, E, T, iter);
+    getInitialValues(observedVars,statesZ, statesX, X, Pi, E, T, iter, input);
 
     Model model(observedVars, statesZ, statesX, X, Pi, T, E, iter);
 
@@ -158,13 +162,13 @@ int main()
     model.printX();
 
 
-    /*model.testPi();
+    model.testPi();
 
 
     model.predict();
     cout << endl;
 
-    model.printP();
+    /*model.printP();
     cout << "stampam pi" << endl;
 
     model.printTrans();

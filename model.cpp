@@ -130,6 +130,7 @@ void Model::computeBeta()
         beta[numberOfObservedVars-1][i] = 1.0;
 
     for(int k = numberOfObservedVars-2; k >= 0; k--)
+    {
         for(int i = 0; i < numberOfPossibleStatesZ; i++)
             {
                 beta[k][i] = 0;
@@ -138,6 +139,7 @@ void Model::computeBeta()
                     beta[k][i] += beta[k+1][j] * emissionProbs[X[k+1]][j] * transitionProbs[i][j];
                 beta[k][i] *= C[k+1];
             }
+    }
 }
 
 void Model::fit()
@@ -334,17 +336,10 @@ void Model::testPi()
     for(int i = 0; i < numberOfIterations; i++)
     {
         computeAlpha();
-        //cout <<"computeAlpha" <<endl;
-        //printAlpha();
 
         computeBeta();
-        //cout << "computeBeta()" << endl;
-        //printBeta();
 
         fit();
-        //cout << "computeCurrentT" << endl;
-
-        //cout << endl;
 
         cout <<"Trenutna iteracija: " << i+1 <<endl;
     }
@@ -354,16 +349,6 @@ void Model::predict()
 
     double *niz = new double[numberOfObservedVars+1];
 
-    //int state = ;
-    //X[numberOfObservedVars] = state;
-
-    //computeAlphaForPredict();
-    /*for(int i = 0; i < numberOfObservedVars+1; i++)
-    {
-        for(int j = 0; j < numberOfPossibleStatesZ; j++)
-            cout << alpha[i][j] << " ";
-        cout << endl;
-    }*/
     for(int state = 0; state < numberOfPossibleStatesX; state++)
     {
         X[numberOfObservedVars] = state;
@@ -376,8 +361,7 @@ void Model::predict()
                 suma += emissionProbs[state][i] * transitionProbs[i][j] * alpha[numberOfObservedVars][j];
             }
         }
-        niz[state] = suma ;//* C[numberOfObservedVars];
-    }
+        niz[state] = suma ;    }
     for(int i = 0; i < numberOfPossibleStatesX; i++)
         cout << "verovatnoca za stanje " << i << " je: " << niz[i] << endl;
 
