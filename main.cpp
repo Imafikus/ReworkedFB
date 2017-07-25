@@ -120,7 +120,8 @@ int main()
 {
     vector<int> v;
 
-    //for(int k = 0; k < 400; k++){
+    for(int k = 0; k < 400; k++)
+    {
         string input = "kretanje";
         int expectedState;
         int observedVars;
@@ -132,17 +133,16 @@ int main()
         double ** T;
         int iter;
 
-        /*stringstream ss;
+        stringstream ss;
         ss << k;
-        input += ss.str() + ".txt";*/
-        input = "input.txt";
+        input += ss.str() + ".txt";
 
         getInitialValues(observedVars,statesZ, statesX, X, Pi, E, T, iter, input, expectedState);
 
         Model model(observedVars, statesZ, statesX, X, Pi, T, E, iter);
-        model.printEmission();
-    }
-        /*model.testPi();
+        //model.printEmission();
+
+        model.testPi();
 
 
         int prediction = model.predict();
@@ -171,6 +171,6 @@ int main()
         if(v.at(i) == 1) good++;
     cout << "pogodjenih: " << good << ":" << v.size() << endl;
 
-}*/
+}
 
 
