@@ -32,8 +32,8 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
 {
     srand(time(NULL));
 
-    statesZ  = 4;
-    iter = 1000;
+    statesZ  = 2;
+    iter = 5000;
     statesX = 5;
     observedVars = 300;
 
