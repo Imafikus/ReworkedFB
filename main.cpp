@@ -31,19 +31,9 @@ void initialization(int &observedVars, int &statesZ, int &statesX, int * &X, dou
 void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, double * &Pi, double ** &E, double ** &T, int &iter, string &input, int &expectedState)
 {
     srand(time(NULL));
-    /*cout << "Give states Z:" << endl;
-    cin >> statesZ;
 
-    cout << "Give number of iterations:" << endl;
-    cin >> iter;
-
-    cout << "Give states X:" << endl;
-    cin >> statesX;
-
-    cout << "Give observedVars" << endl;
-    cin >> observedVars;*/
-    statesZ  = 5;
-    iter = 10000;
+    statesZ  = 4;
+    iter = 1000;
     statesX = 5;
     observedVars = 300;
 
@@ -106,21 +96,20 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
     }
     delete [] niz;
 
-    //normalizing E
-    niz = new double[statesX];
-    for(int i = 0; i < statesX; i++)
+    cout << "normalizing E\n";
+    niz = new double[statesZ];
+    for(int i = 0; i < statesZ; i++)
     {
         double zbir = 0;
-        for(int j = 0; j < statesZ; j++)
+        for(int j = 0; j < statesX; j++)
         {
             zbir += E[j][i];
         }
         niz[i] = zbir;
     }
-
-    for(int i = 0; i < statesX; i++)
+    for(int i = 0; i < statesZ; i++)
     {
-        for(int j = 0; j < statesZ; j++)
+        for(int j = 0; j < statesX; j++)
         {
             E[j][i] /= niz[i];
         }
@@ -131,8 +120,7 @@ int main()
 {
     vector<int> v;
 
-    for(int k = 0; k < 400; k++)
-    {
+    //for(int k = 0; k < 400; k++){
         string input = "kretanje";
         int expectedState;
         int observedVars;
@@ -144,15 +132,17 @@ int main()
         double ** T;
         int iter;
 
-        stringstream ss;
+        /*stringstream ss;
         ss << k;
-        input += ss.str() + ".txt";
+        input += ss.str() + ".txt";*/
+        input = "input.txt";
 
         getInitialValues(observedVars,statesZ, statesX, X, Pi, E, T, iter, input, expectedState);
 
         Model model(observedVars, statesZ, statesX, X, Pi, T, E, iter);
-
-        model.testPi();
+        model.printEmission();
+    }
+        /*model.testPi();
 
 
         int prediction = model.predict();
@@ -181,6 +171,6 @@ int main()
         if(v.at(i) == 1) good++;
     cout << "pogodjenih: " << good << ":" << v.size() << endl;
 
-}
+}*/
 
 
