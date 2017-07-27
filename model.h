@@ -86,9 +86,10 @@ public:
 
 
     int *getArrayX();
-    void *setArrayX(int *m_X);
+    void setArrayX(int *m_X);
 
 
+    void getArrayForMethodTwo(double *niz);
 
     void testPi();
     int predict();

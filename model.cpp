@@ -306,8 +306,23 @@ void Model::setEmissionMatrix (double **m_emissionProbs){emissionProbs = m_emiss
 
 
 int *Model::getArrayX(){return X;}
-void *Model::setArrayX(int *m_X){X = m_X;}
+void Model::setArrayX(int *m_X){X = m_X;}
 
+void Model::getArrayForMethodTwo(double *niz)
+{
+    printP();
+    cout << "stampam Pi" << endl;
+    double suma = P[0];
+    niz[0] = suma;
+    int i = 1;
+    while((i < numberOfPossibleStatesZ) && (suma < 1.0))
+    {
+        suma += P[i];
+        niz[i] = suma;
+        if(1 - suma <= 0.0000000001) break;
+        i++;
+    }
+}
 
 void Model::testPi()
 {
