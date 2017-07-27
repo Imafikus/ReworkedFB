@@ -198,14 +198,17 @@ int main()
             cout << "ovaj random shit je: " << r << endl;
         }
         */
-        //model.testPi();
+        model.testPi();
        // model.printP();
         cout << endl;
         int limit = model.getNumberOfPossibleStatesZ();
         double *pomoc_meh = new double[limit];
-        model.getArrayForMethodTwo(pomoc_meh);
-        for(int i = 0; i < limit; i++)
-            cout << pomoc_meh[i] << endl;
+
+        int index = model.getFirstZForMethodTwo(pomoc_meh);
+        /*for(int i = 0; i < limit; i++)
+            cout << pomoc_meh[i] << endl;*/
+
+        cout << "index na kom je trazeno z je: " << index << endl;
 
 
 

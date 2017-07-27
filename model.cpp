@@ -2,6 +2,8 @@
 #include "unittest.h"
 #include <algorithm>
 #include <iostream>
+#include <time.h>
+#include <stdlib.h>
 
 
 using namespace std;
@@ -308,10 +310,11 @@ void Model::setEmissionMatrix (double **m_emissionProbs){emissionProbs = m_emiss
 int *Model::getArrayX(){return X;}
 void Model::setArrayX(int *m_X){X = m_X;}
 
-void Model::getArrayForMethodTwo(double *niz)
+int Model::getFirstZForMethodTwo(double *niz)
 {
     printP();
     cout << "stampam Pi" << endl;
+
     double suma = P[0];
     niz[0] = suma;
     int i = 1;
@@ -322,6 +325,25 @@ void Model::getArrayForMethodTwo(double *niz)
         if(1 - suma <= 0.0000000001) break;
         i++;
     }
+    srand(time(NULL));
+
+    double r = ((double)rand() / RAND_MAX); // generating radnom value between 0 and 1
+
+    int index;
+
+    cout << "radnom vrednost: " << r << endl;
+    i = 0;
+    bool foundIt = false;
+    while((i < numberOfPossibleStatesZ) && (foundIt == false))
+    {
+        if(r - niz[i] <= 0)
+        {
+            index = i;
+            foundIt = true;
+        }
+        i++;
+    }
+    return index;
 }
 
 void Model::testPi()
