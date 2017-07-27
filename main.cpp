@@ -32,8 +32,8 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
 {
     srand(time(NULL));
 
-    statesZ  = 2;
-    iter = 5000;
+    statesZ  = 3;
+    iter = 100;
     statesX = 5;
     observedVars = 300;
 
@@ -115,10 +115,9 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
         }
     }
 }
-
-int main()
+void runMethodOne()
 {
-    vector<int> v;
+vector<int> v;
 
     for(int k = 0; k < 400; k++)
     {
@@ -170,6 +169,11 @@ int main()
     for(int i = 0; i < v.size(); i++)
         if(v.at(i) == 1) good++;
     cout << "pogodjenih: " << good << ":" << v.size() << endl;
+}
+int main()
+{
+    runMethodOne();
+
 
 }
 
