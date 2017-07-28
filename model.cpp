@@ -45,7 +45,10 @@ void Model::initializeBeta()
         for(int j = 0; j < numberOfPossibleStatesZ; j++)
             beta[i][j] = 0;
 }
-
+void Model::initializeRandomSeed()
+{
+    randomSeed = new double[3];
+}
 void Model::computeAlpha()
 {
     double sumC = 0;
@@ -221,8 +224,13 @@ void Model::fit()
 void Model::getRandom()
 {
     srand(time(NULL));
-    randomSeed = ((double)rand() / RAND_MAX);
-    cout << "radnom vrednost je: " << randomSeed << endl;
+    initializeRandomSeed();
+
+    for(int i = 0; i < 3; i++)
+    {
+        double random = ((double)rand() / RAND_MAX);
+        randomSeed[i] = random;
+    }
 }
 
 
@@ -283,6 +291,11 @@ void Model::printBeta()
         cout << endl;
     }
 }
+void Model::printRandomSeed()
+{
+    for(int i = 0; i < 3; i++)
+        cout << randomSeed[i] << " ";
+}
 void Model::printC()
 {
     for(int i = 0; i < numberOfObservedVars; i++)
@@ -334,9 +347,9 @@ int Model::getIndexForZ()
         if(1 - suma <= 0.0000000001) break;
         i++;
     }
-    srand(time(NULL));
+    //srand(time(NULL));
 
-    double r = ((double)rand() / RAND_MAX); // generating radnom value between 0 and 1
+    double r = randomSeed[0];//((double)rand() / RAND_MAX); // generating radnom value between 0 and 1
 
     int index;
 
@@ -382,9 +395,9 @@ int Model::getXFromE()//picks X from col which is determined by Z,
     cout << endl;
     cout << "Odstampao novi niz " << endl;
 
-    srand(time(NULL));
+    //srand(time(NULL));
 
-    double r = ((double)rand() / RAND_MAX); // generating radnom value between 0 and 1
+    double r = randomSeed[1];//((double)rand() / RAND_MAX); // generating radnom value between 0 and 1
 
     int index;
 
@@ -431,9 +444,9 @@ int Model::getZFromT()//picks Z from col which is determined by Z,
     cout << endl;
     cout << "Odstampao novi niz " << endl;
 
-    srand(time(NULL));
-
-    double r = ((double)rand() / RAND_MAX); // generating radnom value between 0 and 1
+    //srand(time(NULL));
+    cout << "STAMPAM RANDOM SEED" << randomSeed[2] << endl;
+    double r = randomSeed[2];//((double)rand() / RAND_MAX); // generating radnom value between 0 and 1
 
     int index;
 
