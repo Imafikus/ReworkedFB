@@ -186,27 +186,11 @@ int main()
         getInitialValues(observedVars,statesZ, statesX, X, Pi, E, T, iter, input, expectedState);
 
         Model model(observedVars, statesZ, statesX, X, Pi, T, E, iter);
-        //model.printEmission();
-
-        //model.testPi();
-        //model.printP();
-
-        /*srand(time(NULL));
-        for(int i = 0; i < 10; i++)
-        {
-            double r = ((double)rand() / RAND_MAX);
-            cout << "ovaj random shit je: " << r << endl;
-        }
-        */
         model.testPi();
-       // model.printP();
         cout << endl;
-        int limit = model.getNumberOfPossibleStatesZ();
-        double *pomoc_meh = new double[limit];
 
-        int index = model.getFirstZForMethodTwo(pomoc_meh);
-        /*for(int i = 0; i < limit; i++)
-            cout << pomoc_meh[i] << endl;*/
+
+        int index = model.getIndexForZ();
 
         cout << "index na kom je trazeno z je: " << index << endl;
 

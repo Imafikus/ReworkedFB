@@ -310,10 +310,13 @@ void Model::setEmissionMatrix (double **m_emissionProbs){emissionProbs = m_emiss
 int *Model::getArrayX(){return X;}
 void Model::setArrayX(int *m_X){X = m_X;}
 
-int Model::getFirstZForMethodTwo(double *niz)
+int Model::getIndexForZ()
 {
     printP();
     cout << "stampam Pi" << endl;
+
+    int limit = getNumberOfPossibleStatesZ();
+    double *niz = new double[limit];
 
     double suma = P[0];
     niz[0] = suma;
@@ -343,6 +346,7 @@ int Model::getFirstZForMethodTwo(double *niz)
         }
         i++;
     }
+    delete[] niz;
     return index;
 }
 
@@ -362,8 +366,6 @@ void Model::testPi()
         computeBeta();
 
         fit();
-
-        //cout <<"Trenutna iteracija: " << i+1 <<endl;
     }
 }
 int Model::predict()
