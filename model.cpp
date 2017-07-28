@@ -218,6 +218,12 @@ void Model::fit()
     }
     delete[] newE;
 }
+void Model::getRandom()
+{
+    srand(time(NULL));
+    randomSeed = ((double)rand() / RAND_MAX);
+    cout << "radnom vrednost je: " << randomSeed << endl;
+}
 
 
 //PUBLIC FUNCTIONS
@@ -398,7 +404,55 @@ int Model::getXFromE()//picks X from col which is determined by Z,
     cout << "trazeni indeks za X je:" << index << endl;
     return index;
 }
+int Model::getZFromT()//picks Z from col which is determined by Z,
+{
+    int Z = getIndexForZ();
 
+    for(int i = 0; i < numberOfPossibleStatesZ; i++)
+        cout << transitionProbs[Z][i] << " ";
+    cout << "Stampam za dato Z gore" << endl;
+
+    int limit = getNumberOfPossibleStatesZ();
+    double *niz = new double[limit];
+
+    double suma = transitionProbs[Z][0];
+    niz[0] = suma;
+    int i = 1;
+
+    while((i < numberOfPossibleStatesZ) && (suma < 1.0))
+    {
+        suma += transitionProbs[Z][i];
+        niz[i] = suma;
+        if(1 - suma <= 0.0000000001) break;
+        i++;
+    }
+    for(int i = 0; i < numberOfPossibleStatesZ; i++)
+        cout << niz[i] << " ";
+    cout << endl;
+    cout << "Odstampao novi niz " << endl;
+
+    srand(time(NULL));
+
+    double r = ((double)rand() / RAND_MAX); // generating radnom value between 0 and 1
+
+    int index;
+
+    cout << "radnom vrednost: " << r << endl;
+    i = 0;
+    bool foundIt = false;
+    while((i < numberOfPossibleStatesZ) && (foundIt == false))
+    {
+        if(r - niz[i] <= 0)
+        {
+            index = i;
+            foundIt = true;
+        }
+        i++;
+    }
+    delete[] niz;
+    cout << "trazeni indeks za Z je:" << index << endl;
+    return index;
+}
 void Model::testPi()
 {
 

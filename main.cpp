@@ -190,12 +190,15 @@ int main()
         cout << endl;
 
 
-        int currentZ = model.getIndexForZ();
+        /*int currentZ = model.getIndexForZ();
         cout << "index na kom je trazeno z je: " << currentZ << endl;
 
         int currentX = model.getXFromE();
         cout << "index na kom je trazeno x je: " << currentX << endl;
 
+        int nextZ = model.getZFromT();
+        cout << "index na kom je sledece Z je: " << nextZ << endl;*/
+        model.getRandom();
 
 
 }
