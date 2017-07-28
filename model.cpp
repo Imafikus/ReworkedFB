@@ -349,6 +349,55 @@ int Model::getIndexForZ()
     delete[] niz;
     return index;
 }
+int Model::getXFromE()//picks X from col which is determined by Z,
+{
+    int Z = getIndexForZ();
+
+    for(int i = 0; i < numberOfPossibleStatesX; i++)
+        cout << emissionProbs[i][Z] << " ";
+    cout << "Stampam za dato Z gore" << endl;
+
+    int limit = getNumberOfPossibleStatesX();
+    double *niz = new double[limit];
+
+    double suma = emissionProbs[0][Z];
+    niz[0] = suma;
+    int i = 1;
+
+    while((i < numberOfPossibleStatesX) && (suma < 1.0))
+    {
+        suma += emissionProbs[i][Z];
+        niz[i] = suma;
+        if(1 - suma <= 0.0000000001) break;
+        i++;
+    }
+    for(int i = 0; i < numberOfPossibleStatesX; i++)
+        cout << niz[i] << " ";
+    cout << endl;
+    cout << "Odstampao novi niz " << endl;
+
+    srand(time(NULL));
+
+    double r = ((double)rand() / RAND_MAX); // generating radnom value between 0 and 1
+
+    int index;
+
+    cout << "radnom vrednost: " << r << endl;
+    i = 0;
+    bool foundIt = false;
+    while((i < numberOfPossibleStatesX) && (foundIt == false))
+    {
+        if(r - niz[i] <= 0)
+        {
+            index = i;
+            foundIt = true;
+        }
+        i++;
+    }
+    delete[] niz;
+    cout << "trazeni indeks za X je:" << index << endl;
+    return index;
+}
 
 void Model::testPi()
 {

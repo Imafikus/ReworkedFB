@@ -190,9 +190,11 @@ int main()
         cout << endl;
 
 
-        int index = model.getIndexForZ();
+        int currentZ = model.getIndexForZ();
+        cout << "index na kom je trazeno z je: " << currentZ << endl;
 
-        cout << "index na kom je trazeno z je: " << index << endl;
+        int currentX = model.getXFromE();
+        cout << "index na kom je trazeno x je: " << currentX << endl;
 
 
 
