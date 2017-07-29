@@ -32,16 +32,12 @@ void getInitialValues(int &observedVars, int &statesZ, int &statesX, int * &X, d
 {
     srand(time(NULL));
 
-    statesZ  = 3;
-    iter = 100;
+    statesZ  = 5;
+    iter = 10000;
     statesX = 5;
     observedVars = 300;
 
     ifstream inf(input);
-    //inf >> observedVars;
-    //inf >> statesX;
-    //cout << " states X = " << statesX << endl;
-
     initialization(observedVars,statesZ, statesX, X, Pi, E, T);
 
     cout << "Loading X\n";
@@ -181,7 +177,7 @@ int main()
         double ** E;
         double ** T;
         int iter;
-        string input = "kretanje0.txt";
+        string input = "kretanje.txt";
 
         getInitialValues(observedVars,statesZ, statesX, X, Pi, E, T, iter, input, expectedState);
 
@@ -190,25 +186,23 @@ int main()
         cout << endl;
 
         model.getRandom();
-       // model.printRandomSeed();
-        //cout << "Odstampao randome" << endl;
+
         ofstream predictedMovements("predikcija.txt");
 
         int firstZ = model.getIndexForZ();
 
         int nextZ = model.getZFromT(firstZ);
-       // cout << "index na kom je trazeno z je: " << currentZ << endl;
+
         for(int i = 0; i < 100; i++)
         {
-            model.getRandom();
+           // model.getRandom();
 
             int currentX = model.getXFromE(nextZ);
-            //cout << "index na kom je trazeno x je: " << currentX << endl;
 
             predictedMovements << currentX << endl;
 
             nextZ = model.getZFromT(nextZ);
-            //cout << "index na kom je sledece Z je: " << nextZ << endl;
+
             cout << "iteracija: " << i << endl;
 
         }
