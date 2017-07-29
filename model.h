@@ -23,9 +23,13 @@ private:
     double **alpha; //forward part
     double **beta; // backward part
 
+    double *randomSeed;// array of random values for each method
+
     void initializeC();// allocates space for C
 
     void initializeAlpha();// allocates space for Alpha and sets all values in alpha to 0
+
+    void initializeRandomSeed();
 
     void eraseAlpha();// deallocates space for alpha
 
@@ -41,11 +45,15 @@ private:
 
     void fit();//computes new Pi, new T, new E
 
+
 public:
 
     Model(int m_observedVars, int m_statesZ, int m_statesX, int *m_X, double *m_P, double **m_T, double ** m_E, int m_Iter):
         numberOfObservedVars(m_observedVars), numberOfPossibleStatesZ(m_statesZ), numberOfPossibleStatesX(m_statesX), X(m_X),
         P(m_P), transitionProbs(m_T), emissionProbs(m_E), numberOfIterations(m_Iter){}
+
+
+    void getRandom();
 
 
     void printNumberOfVars();
@@ -58,6 +66,7 @@ public:
     void printNumberOfIterations();
     void printAlpha();
     void printBeta();
+    void printRandomSeed();
     void printC();
 
 
@@ -89,7 +98,9 @@ public:
     void setArrayX(int *m_X);
 
 
-    int getFirstZForMethodTwo(double *niz);
+    int getIndexForZ();
+    int getXFromE(int &currentZ);
+    int getZFromT(int &currentZ);
 
     void testPi();
     int predict();

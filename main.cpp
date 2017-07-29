@@ -190,20 +190,28 @@ int main()
         cout << endl;
 
         model.getRandom();
-        model.printRandomSeed();
-        cout << "Odstampao randome" << endl;
+       // model.printRandomSeed();
+        //cout << "Odstampao randome" << endl;
+        ofstream predictedMovements("predikcija.txt");
 
-        int currentZ = model.getIndexForZ();
-        cout << "index na kom je trazeno z je: " << currentZ << endl;
+        int firstZ = model.getIndexForZ();
 
-        int currentX = model.getXFromE();
-        cout << "index na kom je trazeno x je: " << currentX << endl;
+        int nextZ = model.getZFromT(firstZ);
+       // cout << "index na kom je trazeno z je: " << currentZ << endl;
+        for(int i = 0; i < 100; i++)
+        {
+            model.getRandom();
 
+            int currentX = model.getXFromE(nextZ);
+            //cout << "index na kom je trazeno x je: " << currentX << endl;
 
-        int nextZ = model.getZFromT();
-        cout << "index na kom je sledece Z je: " << nextZ << endl;
+            predictedMovements << currentX << endl;
 
+            nextZ = model.getZFromT(nextZ);
+            //cout << "index na kom je sledece Z je: " << nextZ << endl;
+            cout << "iteracija: " << i << endl;
 
+        }
 
 }
 

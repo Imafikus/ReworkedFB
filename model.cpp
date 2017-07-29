@@ -368,9 +368,9 @@ int Model::getIndexForZ()
     delete[] niz;
     return index;
 }
-int Model::getXFromE()//picks X from col which is determined by Z,
+int Model::getXFromE(int &currentZ)//picks X from col which is determined by Z,
 {
-    int Z = getIndexForZ();
+    int Z = currentZ;
 
     for(int i = 0; i < numberOfPossibleStatesX; i++)
         cout << emissionProbs[i][Z] << " ";
@@ -417,9 +417,9 @@ int Model::getXFromE()//picks X from col which is determined by Z,
     cout << "trazeni indeks za X je:" << index << endl;
     return index;
 }
-int Model::getZFromT()//picks Z from col which is determined by Z,
+int Model::getZFromT(int &currentZ)//picks Z from col which is determined by currentZ,
 {
-    int Z = getIndexForZ();
+    int Z = currentZ;
 
     for(int i = 0; i < numberOfPossibleStatesZ; i++)
         cout << transitionProbs[Z][i] << " ";
@@ -445,7 +445,6 @@ int Model::getZFromT()//picks Z from col which is determined by Z,
     cout << "Odstampao novi niz " << endl;
 
     //srand(time(NULL));
-    cout << "STAMPAM RANDOM SEED" << randomSeed[2] << endl;
     double r = randomSeed[2];//((double)rand() / RAND_MAX); // generating radnom value between 0 and 1
 
     int index;
